@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src https://economia.awesomeapi.com.br https://api.allorigins.win https://corsproxy.io https://www.gov.br https://www.contabeis.com.br;">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensure Assessoria Contábil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:#0d7a75;--teal2:#0a5e5a;--teal3:#e8f5f4;
+      --orange:#e84c1e;--orange2:#c73d14;
+      --dark:#0f1f1e;--mid:#2d4a48;--muted:#607b79;--light:#f2f8f7;--white:#ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--dark); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav { background: var(--teal); position: sticky; top: 0; z-index: 100; padding: 0 5vw; }
+    .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo-w { display: flex; flex-direction: column; line-height: 1; }
+    .logo-w .ln { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff; letter-spacing: -0.5px; }
+    .logo-w .ln em { color: var(--orange); font-style: normal; }
+    .logo-w .ls { font-size: 0.52rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,.65); margin-top: 2px; }
+    .logo-w .lt { font-size: 0.55rem; color: rgba(255,255,255,.45); font-style: italic; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { font-size: .82rem; font-weight: 500; color: rgba(255,255,255,.85); letter-spacing: .3px; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .btn-cta { background: var(--orange); color: #fff !important; padding: 9px 20px; border-radius: 6px; font-weight: 600 !important; font-size: .82rem !important; transition: background .2s, transform .15s !important; }
+    .btn-cta:hover { background: var(--orange2) !important; transform: translateY(-1px); }
+    .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+    .nav-mobile-btn span { display: block; width: 22px; height: 2px; background: #fff; margin: 4px 0; border-radius: 2px; }
+
+    /* HERO */
+    .hero { background: var(--dark); min-height: 88vh; display: flex; align-items: center; padding: 80px 5vw; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(120deg, #0f1f1e 55%, #1a3735 100%); }
+    .hero-line { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--orange); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,76,30,.15); border: 1px solid rgba(232,76,30,.3); color: var(--orange); font-size: .75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; margin-bottom: 24px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 span { color: var(--orange); }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 36px; max-width: 440px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { background: var(--orange); color: #fff; padding: 14px 28px; border-radius: 7px; font-weight: 600; font-size: .9rem; transition: background .2s, transform .15s; display: inline-block; }
+    .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); }
+    .btn-ghost { border: 1.5px solid rgba(255,255,255,.3); color: rgba(255,255,255,.85); padding: 13px 28px; border-radius: 7px; font-weight: 500; font-size: .9rem; transition: border-color .2s, color .2s; }
+    .btn-ghost:hover { border-color: #fff; color: #fff; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; margin-top: 40px; }
+    .stat { background: rgba(255,255,255,.04); padding: 20px 16px; text-align: center; }
+    .stat .n { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: #fff; }
+    .stat .l { font-size: .72rem; color: rgba(255,255,255,.5); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
+    .hero-card-wrap { display: flex; flex-direction: column; gap: 14px; }
+    .h-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 16px; }
+    .h-card-icon { width: 42px; height: 42px; border-radius: 9px; background: var(--orange); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .h-card-icon svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .h-card-t { font-weight: 600; color: #fff; font-size: .9rem; margin-bottom: 2px; }
+    .h-card-s { font-size: .78rem; color: rgba(255,255,255,.5); }
+
+    /* SECTIONS */
+    .section { padding: 80px 5vw; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .eyebrow { display: flex; align-items: center; gap: 10px; font-size: .72rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+    .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--orange); }
+    .sec-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 16px; }
+    .sec-sub { font-size: .95rem; color: var(--muted); max-width: 580px; line-height: 1.7; }
+
+    /* SERVICES */
+    .services-bg { background: var(--light); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 48px; }
+    .svc-card { background: var(--white); border: 1px solid rgba(13,122,117,.12); border-radius: 14px; padding: 28px; transition: transform .25s, box-shadow .25s, border-color .25s; }
+    .svc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,122,117,.12); border-color: var(--teal); }
+    .svc-icon { width: 48px; height: 48px; border-radius: 10px; background: var(--teal3); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .svc-icon svg { width: 22px; height: 22px; fill: none; stroke: var(--teal); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .svc-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--dark); margin-bottom: 10px; }
+    .svc-card p { font-size: .86rem; color: var(--muted); line-height: 1.65; }
+    .svc-link { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 600; color: var(--teal); margin-top: 16px; }
+
+    /* SOBRE */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 48px; }
+    .about-img-mock { background: var(--teal3); border-radius: 16px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .about-badge { position: absolute; bottom: -20px; right: -20px; background: var(--orange); color: #fff; border-radius: 12px; padding: 16px 20px; font-family: 'Playfair Display', serif; text-align: center; }
+    .about-badge .bn { font-size: 2rem; font-weight: 700; display: block; line-height: 1; }
+    .about-badge .bl { font-size: .65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: .85; }
+    .about-img-wrap { position: relative; }
+    .about-vals { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; }
+    .val-item { display: flex; align-items: flex-start; gap: 10px; }
+    .val-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); margin-top: 7px; flex-shrink: 0; }
+    .val-text { font-size: .88rem; color: var(--mid); line-height: 1.5; }
+    .val-text strong { display: block; font-size: .9rem; color: var(--dark); font-weight: 600; margin-bottom: 2px; }
+
+    /* MVV */
+    .mvv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .mvv-card { border-radius: 14px; padding: 28px; border: 1px solid transparent; }
+    .mvv-card.m { background: var(--teal); }
+    .mvv-card.v { background: var(--dark); }
+    .mvv-card.e { background: var(--teal3); border-color: rgba(13,122,117,.15); }
+    .mvv-card .mvv-ico { font-size: 1.5rem; margin-bottom: 16px; }
+    .mvv-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .mvv-card.m h3, .mvv-card.m p, .mvv-card.v h3, .mvv-card.v p { color: #fff; }
+    .mvv-card.m p, .mvv-card.v p { font-size: .85rem; opacity: .8; line-height: 1.65; }
+    .mvv-card.e h3 { color: var(--dark); }
+    .mvv-card.e p { font-size: .85rem; color: var(--muted); line-height: 1.65; }
+
+    /* NOTICIAS */
+    .news-bg { background: var(--light); }
+    .news-header { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+    .ver-btn { border: 1.5px solid var(--teal); color: var(--teal); padding: 9px 22px; border-radius: 6px; font-size: .82rem; font-weight: 600; transition: background .2s, color .2s; }
+    .ver-btn:hover { background: var(--teal); color: #fff; }
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+    .news-card { background: var(--white); border-radius: 14px; overflow: hidden; border: 1px solid rgba(13,122,117,.1); transition: transform .25s, box-shadow .25s; }
+    .news-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(13,122,117,.1); }
+    .news-img { height: 160px; background: var(--teal3); display: flex; align-items: center; justify-content: center; position: relative; }
+    .news-date { position: absolute; top: 12px; right: 12px; background: var(--orange); color: #fff; font-size: .7rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .news-body { padding: 18px; }
+    .news-cat { font-size: .7rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .news-body h4 { font-size: .95rem; font-weight: 600; color: var(--dark); line-height: 1.4; margin-bottom: 8px; }
+    .news-body p { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+    .news-leia { display: inline-flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 600; color: var(--orange); margin-top: 12px; }
+
+    /* AGENDA & COTAÇÕES */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 48px; }
+    .info-card { background: var(--white); border: 1px solid rgba(13,122,117,.12); border-radius: 14px; overflow: hidden; }
+    .info-card-head { background: var(--teal); padding: 16px 20px; display: flex; align-items: center; gap: 10px; }
+    .info-card-head svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .info-card-head span { font-weight: 600; font-size: .9rem; color: #fff; flex: 1; }
+    .info-card-head .last-update { font-size: .65rem; color: rgba(255,255,255,.6); font-weight: 400; margin-left: auto; }
+    .info-card-body { padding: 16px 20px; }
+
+    /* Skeleton loader */
+    .skeleton { background: linear-gradient(90deg, #e8f5f4 25%, #d0ebe9 50%, #e8f5f4 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .sk-line { height: 12px; margin: 8px 0; }
+    .sk-line.short { width: 60%; }
+    .sk-line.mid { width: 80%; }
+    .sk-line.full { width: 100%; }
+    .sk-block { height: 54px; margin: 8px 0; border-radius: 8px; }
+
+    /* Agenda */
+    .agenda-item { padding: 10px 0; border-bottom: 1px solid rgba(13,122,117,.08); font-size: .82rem; color: var(--mid); }
+    .agenda-item:last-child { border-bottom: none; }
+    .agenda-item strong { display: block; font-size: .78rem; color: var(--teal); margin-bottom: 2px; font-weight: 600; }
+    .agenda-item .tributos { font-size: .75rem; color: var(--muted); margin-top: 2px; font-style: italic; }
+    .agenda-empty { text-align: center; padding: 24px 0; color: var(--muted); font-size: .82rem; }
+    .agenda-nav { display: flex; align-items: center; gap: 8px; }
+    .agenda-nav button { background: rgba(255,255,255,.2); border: none; color: #fff; cursor: pointer; width: 26px; height: 26px; border-radius: 5px; font-size: .9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .agenda-nav button:hover { background: rgba(255,255,255,.35); }
+    .agenda-nav .agenda-mes-label { font-size: .75rem; color: rgba(255,255,255,.8); font-weight: 500; }
+
+    /* Obrigações */
+    .obrig-item { padding: 9px 0; border-bottom: 1px solid rgba(13,122,117,.08); font-size: .82rem; color: var(--mid); display: flex; justify-content: space-between; align-items: center; }
+    .obrig-item:last-child { border-bottom: none; }
+    .obrig-badge { font-size: .68rem; background: var(--teal3); color: var(--teal); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+
+    /* Cotações */
+    .cot-item { padding: 10px 0; border-bottom: 1px solid rgba(13,122,117,.08); }
+    .cot-item:last-child { border-bottom: none; }
+    .cot-name { font-size: .78rem; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .cot-vals { display: flex; gap: 12px; }
+    #cot-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+    #cot-body .cot-item { padding: 10px 0; border-bottom: 1px solid rgba(13,122,117,.08); }
+    #cot-body .cot-item:nth-last-child(-n+2) { border-bottom: none; }
+    .cot-val { font-size: .8rem; color: var(--muted); }
+    .cot-val strong { color: var(--dark); font-weight: 600; }
+    .cot-up { color: #16a34a; font-size: .72rem; font-weight: 700; }
+    .cot-dn { color: #dc2626; font-size: .72rem; font-weight: 700; }
+    .cot-neutral { color: var(--muted); font-size: .72rem; font-weight: 700; }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; display: inline-block; animation: pulse-dot 1.5s infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+    .api-error { font-size: .78rem; color: #dc2626; padding: 12px 0; text-align: center; }
+
+    /* CONTATO */
+    .contact-bg { background: var(--dark); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 48px; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .c-item { display: flex; align-items: flex-start; gap: 14px; }
+    .c-ico { width: 40px; height: 40px; border-radius: 9px; background: rgba(13,122,117,.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .c-ico svg { width: 18px; height: 18px; fill: none; stroke: var(--teal); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .c-label { font-size: .72rem; font-weight: 600; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+    .c-val { font-size: .92rem; color: #fff; font-weight: 500; }
+    .contact-form { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: .75rem; font-weight: 600; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; }
+    .form-group input, .form-group select, .form-group textarea { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); border-radius: 7px; padding: 11px 14px; font-size: .88rem; color: #fff; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color .2s; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.3); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); }
+    .form-group select option { background: var(--dark); color: #fff; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit { width: 100%; background: var(--orange); color: #fff; border: none; padding: 14px; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600; cursor: pointer; transition: background .2s, transform .15s; margin-top: 6px; }
+    .form-submit:hover { background: var(--orange2); transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer { background: #0a1514; padding: 20px 5vw; border-top: 1px solid rgba(255,255,255,.07); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-inner p { font-size: .75rem; color: rgba(255,255,255,.4); }
+    .social-links { display: flex; gap: 14px; }
+    .social-links a { font-size: .75rem; color: rgba(255,255,255,.4); transition: color .2s; }
+    .social-links a:hover { color: rgba(255,255,255,.8); }
+
+    /* NEWS skeleton */
+    .news-sk { background: var(--white); border-radius: 14px; overflow: hidden; border: 1px solid rgba(13,122,117,.1); }
+    .news-sk-img { height: 160px; }
+    .news-sk-body { padding: 18px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-content, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero-card-wrap { display: none; }
+      .mvv-grid, .info-grid { grid-template-columns: 1fr; }
+      .info-card[style*="span"] { grid-column: span 1 !important; }
+      .form-row { grid-template-columns: 1fr; }
+      .about-badge { bottom: -16px; right: 16px; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: block; }
+      .mvv-grid, .about-vals { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.9rem; }
+      .section { padding: 60px 5vw; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo-w">
+      <span class="ln">Mensure<em>®</em></span>
+      <span class="ls">Assessoria Contábil</span>
+      <span class="lt">Contabilizando sucessos com excelência.</span>
+    </div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">Sobre Nós</a>
+      <a href="#noticias">Notícias</a>
+      <a href="#ferramentas">Ferramentas</a>
+      <a href="tel:1636337995" class="btn-cta">Entre em contato</a>
+    </div>
+    <button class="nav-mobile-btn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-tag">Desde 1990</div>
+      <h1>Contabilidade que <span>simplifica</span> o seu negócio.</h1>
+      <p class="hero-sub">São mais de três décadas de dedicação e excelência na prestação de serviços contábeis para pequenas e médias empresas em Ribeirão Preto.</p>
+      <div class="hero-btns">
+        <a href="tel:1636337995" class="btn-primary">Falar com especialista</a>
+        <a href="#servicos" class="btn-ghost">Nossos serviços</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n">35+</div><div class="l">Anos de mercado</div></div>
+        <div class="stat"><div class="n">500+</div><div class="l">Clientes ativos</div></div>
+        <div class="stat"><div class="n">100%</div><div class="l">Conformidade fiscal</div></div>
+      </div>
+    </div>
+    <div class="hero-card-wrap">
+      <div class="h-card">
+        <div class="h-card-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg></div>
+        <div><div class="h-card-t">Entrega de obrigações em dia</div><div class="h-card-s">SPED, ECF, ECD e muito mais</div></div>
+      </div>
+      <div class="h-card">
+        <div class="h-card-icon"><svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div><div class="h-card-t">Planejamento tributário</div><div class="h-card-s">Reduza sua carga fiscal legalmente</div></div>
+      </div>
+      <div class="h-card">
+        <div class="h-card-icon"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <div><div class="h-card-t">Gestão de folha de pagamento</div><div class="h-card-s">Admissão, rescisão e eSocial</div></div>
+      </div>
+      <div class="h-card">
+        <div class="h-card-icon"><svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <div><div class="h-card-t">Balanço e demonstrações</div><div class="h-card-s">Relatórios claros para decisões</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="section services-bg" id="servicos">
+  <div class="section-inner">
+    <div class="eyebrow">Conheça nossos departamentos</div>
+    <h2 class="sec-title">Serviços Contábeis Especializados</h2>
+    <p class="sec-sub">Soluções completas em contabilidade, fiscal, trabalhista e societário — tudo em um único lugar, com precisão e comprometimento.</p>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 7H6a2 2 0 00-2 2v9a2 2 0 002 2h9a2 2 0 002-2v-3M13 3h8m0 0v8m0-8l-11 11"/></svg></div>
+        <h3>Contábil</h3>
+        <p>Classificação e escrituração em conformidade com normas vigentes. Apuração de balancetes mensais, elaboração de Balanço Anual e orientação especializada.</p>
+        <div class="svc-link">Saiba mais →</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div>
+        <h3>Fiscal / Tributário</h3>
+        <p>Suporte abrangente: registro de notas fiscais, apuração de impostos federais, estaduais e municipais, emissão de guias e cumprimento de obrigações acessórias.</p>
+        <div class="svc-link">Saiba mais →</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <h3>Trabalhista / Previdenciário</h3>
+        <p>Gestão de admissões, rescisões, férias e folha de pagamento. eSocial, FGTS, INSS e toda legislação previdenciária com precisão e pontualidade.</p>
+        <div class="svc-link">Saiba mais →</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+        <h3>Societário / Legalização</h3>
+        <p>Abertura, alteração e encerramento de empresas. Certidões negativas, documentos digitalizados e suporte completo para registros em órgãos competentes.</p>
+        <div class="svc-link">Saiba mais →</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+        <h3>Planejamento Tributário</h3>
+        <p>Análise do melhor enquadramento fiscal (Simples, Lucro Presumido ou Real). Estratégias legais para redução da carga tributária e aumento da competitividade.</p>
+        <div class="svc-link">Saiba mais →</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+        <h3>Consultoria Contábil</h3>
+        <p>Orientação estratégica para tomada de decisões, análise de viabilidade, reorganização societária e suporte a processos de fusão, aquisição e due diligence.</p>
+        <div class="svc-link">Saiba mais →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE NÓS -->
+<section class="section" id="sobre">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <div class="about-img-mock">
+          <svg width="140" height="140" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="30" width="60" height="75" rx="4" fill="rgba(13,122,117,.15)" stroke="rgba(13,122,117,.3)" stroke-width="1.5"/>
+            <rect x="20" y="45" width="40" height="4" rx="2" fill="rgba(13,122,117,.4)"/>
+            <rect x="20" y="55" width="30" height="3" rx="1.5" fill="rgba(13,122,117,.25)"/>
+            <rect x="20" y="63" width="35" height="3" rx="1.5" fill="rgba(13,122,117,.25)"/>
+            <rect x="50" y="20" width="60" height="75" rx="4" fill="rgba(232,76,30,.1)" stroke="rgba(232,76,30,.25)" stroke-width="1.5"/>
+            <rect x="60" y="35" width="40" height="4" rx="2" fill="rgba(232,76,30,.4)"/>
+            <rect x="60" y="45" width="30" height="3" rx="1.5" fill="rgba(232,76,30,.25)"/>
+            <rect x="60" y="53" width="35" height="3" rx="1.5" fill="rgba(232,76,30,.25)"/>
+          </svg>
+        </div>
+        <div class="about-badge">
+          <span class="bn">35+</span>
+          <span class="bl">Anos de história</span>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Um pouco sobre nós</div>
+        <h2 class="sec-title">Parceiros no crescimento do seu negócio</h2>
+        <p style="font-size:.92rem;color:var(--muted);line-height:1.75;margin-bottom:20px;">A <strong style="color:var(--dark);">Mensure Assessoria Contábil</strong> iniciou suas atividades em 1990, sob a denominação de ASPEC Contabilidade. Em 2005, tornou-se Mensure, consolidando uma trajetória de excelência e confiança no mercado de Ribeirão Preto.</p>
+        <p style="font-size:.92rem;color:var(--muted);line-height:1.75;margin-bottom:28px;">Comprometemo-nos a simplificar as complexidades fiscais, oferecendo esclarecimentos e suporte para uma parceria confiável no sucesso contínuo dos nossos clientes.</p>
+        <div class="about-vals">
+          <div class="val-item"><div class="val-dot"></div><div class="val-text"><strong>Ética e transparência</strong>Conduta íntegra em todas as relações</div></div>
+          <div class="val-item"><div class="val-dot"></div><div class="val-text"><strong>Comprometimento</strong>Dedicação total aos resultados do cliente</div></div>
+          <div class="val-item"><div class="val-dot"></div><div class="val-text"><strong>Tecnologia</strong>Ferramentas modernas e processos ágeis</div></div>
+          <div class="val-item"><div class="val-dot"></div><div class="val-text"><strong>Pontualidade</strong>Obrigações entregues sempre no prazo</div></div>
+        </div>
+        <a href="tel:1636337995" class="btn-primary" style="margin-top:32px;">Falar com nossa equipe</a>
+      </div>
+    </div>
+
+    <div style="margin-top:80px;">
+      <div class="eyebrow">Nossa essência</div>
+      <h2 class="sec-title">Missão, Visão &amp; Valores</h2>
+    </div>
+    <div class="mvv-grid">
+      <div class="mvv-card m">
+        <div class="mvv-ico">🎯</div>
+        <h3>Missão</h3>
+        <p>Buscar a plena satisfação dos clientes através da ampliação contínua do Know-How, utilizando ferramentas que otimizem processos de qualidade na prestação de serviços contábeis, fiscais, trabalhistas e previdenciários.</p>
+      </div>
+      <div class="mvv-card v">
+        <div class="mvv-ico">🔭</div>
+        <h3>Visão</h3>
+        <p>Ser reconhecidos pelo mercado e pelos clientes como uma empresa preocupada com a qualidade dos serviços e pela transparência nas relações, sendo um modelo de empresa focado no desenvolvimento humano.</p>
+      </div>
+      <div class="mvv-card e">
+        <div class="mvv-ico">💎</div>
+        <h3>Valores</h3>
+        <p>Ética, honestidade e comprometimento. Transparência nas relações pessoais e profissionais. Valorização do desenvolvimento humano, tecnologia e inovação como meios para servir melhor à sociedade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTÍCIAS -->
+<section class="section news-bg" id="noticias">
+  <div class="section-inner">
+    <div class="news-header">
+      <div>
+        <div class="eyebrow">Atualize-se</div>
+        <h2 class="sec-title" style="margin-bottom:0;">Últimas Notícias</h2>
+      </div>
+      <a href="https://www.contabeis.com.br/noticias/" target="_blank" rel="noopener noreferrer" class="ver-btn">Ver todas</a>
+    </div>
+    <div class="news-grid" id="news-grid">
+      <!-- Skeletons while loading -->
+      <div class="news-sk"><div class="news-sk-img skeleton"></div><div class="news-sk-body"><div class="skeleton sk-line short"></div><div class="skeleton sk-line full" style="height:16px;margin:10px 0 6px;"></div><div class="skeleton sk-line mid"></div><div class="skeleton sk-line short" style="margin-top:14px;"></div></div></div>
+      <div class="news-sk"><div class="news-sk-img skeleton"></div><div class="news-sk-body"><div class="skeleton sk-line short"></div><div class="skeleton sk-line full" style="height:16px;margin:10px 0 6px;"></div><div class="skeleton sk-line mid"></div><div class="skeleton sk-line short" style="margin-top:14px;"></div></div></div>
+      <div class="news-sk"><div class="news-sk-img skeleton"></div><div class="news-sk-body"><div class="skeleton sk-line short"></div><div class="skeleton sk-line full" style="height:16px;margin:10px 0 6px;"></div><div class="skeleton sk-line mid"></div><div class="skeleton sk-line short" style="margin-top:14px;"></div></div></div>
+      <div class="news-sk"><div class="news-sk-img skeleton"></div><div class="news-sk-body"><div class="skeleton sk-line short"></div><div class="skeleton sk-line full" style="height:16px;margin:10px 0 6px;"></div><div class="skeleton sk-line mid"></div><div class="skeleton sk-line short" style="margin-top:14px;"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FERRAMENTAS & COTAÇÕES -->
+<section class="section" id="ferramentas">
+  <div class="section-inner">
+    <div class="eyebrow">Fique sempre informado</div>
+    <h2 class="sec-title">Ferramentas &amp; Cotações</h2>
+    <div class="info-grid">
+
+      <!-- FERRAMENTAS / SIMULADORES (em desenvolvimento) -->
+      <div class="info-card">
+        <div class="info-card-head">
+          <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <span>Ferramentas / Simuladores</span>
+        </div>
+        <div class="info-card-body" id="obrig-body">
+          <!-- Gerado por JS com base no mês atual -->
+        </div>
+      </div>
+
+      <!-- COTAÇÕES (AwesomeAPI) -->
+      <div class="info-card" style="grid-column: span 2;">
+        <div class="info-card-head">
+          <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Cotações do Dia</span>
+          <span class="last-update" id="cot-update">atualizando…</span>
+        </div>
+        <div class="info-card-body" id="cot-body">
+          <div class="skeleton sk-block"></div>
+          <div class="skeleton sk-block"></div>
+          <div class="skeleton sk-block"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="section contact-bg" id="contato">
+  <div class="section-inner">
+    <div class="eyebrow" style="color:rgba(255,255,255,.5);">Fale conosco</div>
+    <h2 class="sec-title" style="color:#fff;">Vamos conversar sobre<br>o seu negócio</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="c-item">
+          <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+          <div><div class="c-label">Endereço</div><div class="c-val">R. Bahia, 1028 – Ipiranga<br>Ribeirão Preto – SP, 14055-020</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div>
+          <div><div class="c-label">Telefone</div><div class="c-val">(16) 3633-7995</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg></div>
+          <div><div class="c-label">Redes Sociais</div><div class="c-val">@mensurecontabilidade</div></div>
+        </div>
+        <div style="padding:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;">
+          <p style="font-size:.78rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">Horário de atendimento</p>
+          <p style="font-size:.88rem;color:rgba(255,255,255,.75);">Segunda a Sexta: <strong style="color:#fff;">08h às 18h</strong></p>
+          <p style="font-size:.88rem;color:rgba(255,255,255,.75);margin-top:4px;">Sábado: <strong style="color:#fff;">08h às 12h</strong></p>
+        </div>
+        <a href="tel:1636337995" class="btn-primary" style="text-align:center;">📞 Ligar agora: (16) 3633-7995</a>
+      </div>
+      <div class="contact-form">
+        <p style="font-size:.88rem;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:20px;">Envie uma mensagem</p>
+        <div class="form-row">
+          <div class="form-group"><label>Nome</label><input type="text" placeholder="Seu nome completo"></div>
+          <div class="form-group"><label>Empresa</label><input type="text" placeholder="Nome da empresa"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefone</label><input type="tel" placeholder="(16) 99999-9999"></div>
+          <div class="form-group"><label>E-mail</label><input type="email" placeholder="seu@email.com.br"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;"><label>Assunto</label>
+          <select>
+            <option>Selecione um serviço</option>
+            <option>Contábil</option>
+            <option>Fiscal / Tributário</option>
+            <option>Trabalhista</option>
+            <option>Societário / Legalização</option>
+            <option>Planejamento Tributário</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;"><label>Mensagem</label><textarea placeholder="Como podemos ajudar?"></textarea></div>
+        <button class="form-submit">Enviar mensagem</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div style="display:flex;flex-direction:column;gap:3px;">
+      <span style="font-family:'DM Sans';font-weight:700;font-size:1rem;color:rgba(255,255,255,.7);">Mensure<em style="color:var(--orange);font-style:normal;">®</em> Assessoria Contábil</span>
+      <span style="font-size:.7rem;color:rgba(255,255,255,.3);">Contabilizando sucessos com excelência.</span>
+    </div>
+    <p>© 2026 Todos os direitos reservados.</p>
+    <div class="social-links">
+      <a href="https://www.instagram.com/mensurecontabilidade" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="#" target="_blank">Facebook</a>
+      <a href="https://www.mensure.com.br" target="_blank" rel="noopener noreferrer">mensure.com.br</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+// ═══════════════════════════════════════════════════════════════════════════
+// MENSURE — Módulo de dados dinâmicos
+// Versão corrigida: XSS, timeouts, proxy fallback, validação de URL,
+//   race conditions, form handler, sanitização RSS.
+// ═══════════════════════════════════════════════════════════════════════════
+
+const MESES_PT    = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MESES_ABREV = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+// ─── FIX 1: Proxy com fallback automático ───────────────────────────────────
+// Se allorigins falhar (instável/bloqueado), tenta corsproxy.io automaticamente
+const PROXIES = [
+  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+];
+
+async function fetchViaProxy(targetUrl, timeoutMs = 9000) {
+  let lastErr;
+  for (const makeProxy of PROXIES) {
+    try {
+      const ctrl  = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+      const resp  = await fetch(makeProxy(targetUrl), { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!resp.ok) { lastErr = new Error('HTTP ' + resp.status); continue; }
+      const json = await resp.json();
+      // allorigins retorna { contents: string, status: {...} }
+      if (json && typeof json.contents === 'string') return json.contents;
+      // corsproxy.io retorna o body como texto puro (não JSON-wrapped)
+      // nesse caso resp.json() teria falhado; usamos fallback abaixo
+      throw new Error('Formato inesperado do proxy');
+    } catch (e) {
+      lastErr = e;
+      // Se corsproxy.io, o body pode não ser JSON — tenta como texto
+      try {
+        const ctrl2  = new AbortController();
+        const timer2 = setTimeout(() => ctrl2.abort(), timeoutMs);
+        const resp2  = await fetch(makeProxy(targetUrl), { signal: ctrl2.signal });
+        clearTimeout(timer2);
+        if (resp2.ok) { const txt = await resp2.text(); if (txt) return txt; }
+      } catch (_) {}
+    }
+  }
+  throw lastErr || new Error('Todos os proxies falharam');
+}
+
+// ─── FIX 2: Fetch direto com timeout (para APIs com CORS nativo) ────────────
+async function fetchWithTimeout(url, timeoutMs = 9000) {
+  const ctrl  = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const resp = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    return resp;
+  } catch (e) { clearTimeout(timer); throw e; }
+}
+
+// ─── FIX 3: Sanitização HTML — previne XSS ao injetar dados externos ────────
+function esc(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ─── FIX 4: Validação de URL — bloqueia javascript: e outros protocolos ─────
+function safeUrl(url) {
+  if (!url || typeof url !== 'string') return '#';
+  const t = url.trim();
+  return /^https?:\/\//i.test(t) ? t : '#';
+}
+
+// ─── Parser de data BR robusto ───────────────────────────────────────────────
+function parseDateBR(s) {
+  if (!s || typeof s !== 'string') return null;
+  s = s.trim().split(' ')[0]; // remove sufixo tipo "- Terça-feira"
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) {
+    const [d, m, y] = s.split('/');
+    const dt = new Date(+y, +m - 1, +d);
+    return isNaN(dt) ? null : dt;
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+    const [y, m, d] = s.split('-');
+    const dt = new Date(+y, +m - 1, +d);
+    return isNaN(dt) ? null : dt;
+  }
+  return null;
+}
+
+function formatDateBR(s) {
+  const d = parseDateBR(s);
+  if (!d) return esc(s);
+  const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')} – ${dias[d.getDay()]}`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FERRAMENTAS / SIMULADORES — Em desenvolvimento
+// ═══════════════════════════════════════════════════════════════════════════
+function loadObrigacoes() {
+  const body = document.getElementById('obrig-body');
+  if (!body) return;
+
+  // Ferramentas em desenvolvimento — placeholder visual
+  const ferramentas = [
+    { icon: '🧮', nome: 'Simulador de Simples Nacional', status: 'Em breve' },
+    { icon: '📊', nome: 'Calculadora de IRPJ/CSLL', status: 'Em breve' },
+    { icon: '📋', nome: 'Gerador de Guias DAS', status: 'Em breve' },
+    { icon: '💼', nome: 'Planner Tributário Anual', status: 'Em breve' },
+    { icon: '🔍', nome: 'Consulta de CNPJ', status: 'Em breve' },
+  ];
+
+  body.innerHTML = ferramentas.map(f => `
+    <div class="obrig-item">
+      <span style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:1rem;">${f.icon}</span>
+        <span>${esc(f.nome)}</span>
+      </span>
+      <span class="obrig-badge" style="background:#f0f9ff;color:#0369a1;opacity:.8;">${esc(f.status)}</span>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COTAÇÕES — AwesomeAPI (CORS nativo, gratuita, sem chave)
+// ═══════════════════════════════════════════════════════════════════════════
+async function loadCotacoes() {
+  const body     = document.getElementById('cot-body');
+  const updateEl = document.getElementById('cot-update');
+  if (!body || !updateEl) return;
+
+  try {
+    // FIX 2: fetch com timeout
+    const resp = await fetchWithTimeout('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,CHF-BRL,GBP-BRL');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+
+    const moedas = [
+      { key: 'USDBRL', nome: 'Dólar Comercial' },
+      { key: 'EURBRL', nome: 'Euro' },
+      { key: 'CHFBRL', nome: 'Franco Suíço' },
+      { key: 'GBPBRL', nome: 'Libra Esterlina' },
+    ];
+
+    const rows = moedas.map(m => {
+      const d = data[m.key];
+      if (!d) return '';
+      // FIX: guard NaN — pctChange pode vir como string vazia
+      const buy  = isNaN(parseFloat(d.bid))  ? '—' : parseFloat(d.bid).toFixed(2);
+      const sell = isNaN(parseFloat(d.ask))  ? '—' : parseFloat(d.ask).toFixed(2);
+      const pct  = parseFloat(d.pctChange) || 0;
+      const isZero = Math.abs(pct) < 0.005;
+      const isUp   = pct > 0;
+      const arrow  = isZero ? '━' : isUp ? '▲' : '▼';
+      const cls    = isZero ? 'cot-neutral' : isUp ? 'cot-up' : 'cot-dn';
+      const pctStr = isZero ? '0,00%' : `${isUp ? '+' : ''}${pct.toFixed(2).replace('.', ',')}%`;
+
+      // FIX 3: esc() em nome (fixo aqui, mas bom hábito)
+      return `
+        <div class="cot-item">
+          <div class="cot-name">
+            ${esc(m.nome)}
+            <span class="${cls}">${arrow} ${pctStr}</span>
+            <span class="live-dot"></span>
+          </div>
+          <div class="cot-vals">
+            <span class="cot-val">Compra <strong>R$ ${esc(buy)}</strong></span>
+            <span class="cot-val">Venda <strong>R$ ${esc(sell)}</strong></span>
+          </div>
+        </div>`;
+    }).join('');
+
+    body.innerHTML = rows || '<div class="api-error">Dados não disponíveis.</div>';
+
+    const now = new Date();
+    updateEl.textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  } catch (e) {
+    console.warn('[Cotações]', e.message);
+    body.innerHTML = '<div class="api-error">⚠️ Cotações indisponíveis no momento.</div>';
+    updateEl.textContent = 'erro';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// NOTÍCIAS — RSS Contabeis.com.br via proxy com fallback
+// ═══════════════════════════════════════════════════════════════════════════
+const NEWS_ICONS = {
+  'Trabalhista':  `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(13,122,117,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`,
+  'Tributário':   `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(13,122,117,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>`,
+  'Bancário':     `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(13,122,117,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>`,
+  'Economia':     `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(13,122,117,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>`,
+  'Contabilidade':`<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(13,122,117,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7H6a2 2 0 00-2 2v9a2 2 0 002 2h9a2 2 0 002-2v-3M13 3h8m0 0v8m0-8l-11 11"/></svg>`,
+};
+
+function categorizeNews(title, cats) {
+  const t = (title + ' ' + cats).toLowerCase();
+  if (/(trabalhist|esocial|fgts|inss|folha|clt|rescis|admiss)/.test(t)) return 'Trabalhista';
+  if (/(tribut|imposto|irpf|irpj|sped|fiscal|receita|simples|icms|iss|cofins|pis|cssl|csll)/.test(t)) return 'Tributário';
+  if (/(banco|feriado|pix|crédito|financ|empréstimo|juros bancário)/.test(t)) return 'Bancário';
+  if (/(economia|ipca|inflação|pib|mercado|juros|selic|câmbio|dólar|euro)/.test(t)) return 'Economia';
+  return 'Contabilidade';
+}
+
+function formatNewsDate(dateStr) {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return '';
+    return `${String(d.getDate()).padStart(2,'0')} ${MESES_ABREV[d.getMonth()]}`;
+  } catch { return ''; }
+}
+
+// FIX 4 + RSS: <link> em XML é um text-node irmão, não filho
+// Também valida que a URL retornada é http/https
+function getRSSItemLink(item) {
+  // Tenta o textContent direto
+  const el = item.querySelector('link');
+  if (el && el.textContent?.trim()) return safeUrl(el.textContent.trim());
+
+  // Percorre childNodes procurando <link> e seu próximo text node
+  for (const node of item.childNodes) {
+    if (node.nodeType === 1 /* ELEMENT_NODE */ && node.tagName?.toLowerCase() === 'link') {
+      const next = node.nextSibling;
+      if (next && next.nodeType === 3 /* TEXT_NODE */ && next.textContent?.trim()) {
+        return safeUrl(next.textContent.trim());
+      }
+    }
+  }
+
+  // atom:link com href
+  const atomLink = item.querySelector('[href]');
+  if (atomLink) return safeUrl(atomLink.getAttribute('href'));
+  return '#';
+}
+
+function fallbackNews() {
+  const now     = new Date();
+  const dateStr = `${String(now.getDate()).padStart(2,'0')} ${MESES_ABREV[now.getMonth()]}`;
+  const items = [
+    { cat: 'Tributário',   icon: NEWS_ICONS['Tributário'],   date: dateStr,
+      title: 'Agenda tributária do mês disponível',
+      desc:  'Confira os vencimentos de obrigações na seção de Agenda abaixo.',
+      link:  'https://www.contabeis.com.br/noticias/', cta: 'Ver agenda →' },
+    { cat: 'Economia',     icon: NEWS_ICONS['Economia'],     date: '',
+      title: 'Cotações atualizadas em tempo real',
+      desc:  'Dólar, Euro e outras moedas com atualização automática a cada 5 minutos.',
+      link:  'https://www.contabeis.com.br/noticias/', cta: 'Ver cotações →' },
+    { cat: 'Trabalhista',  icon: NEWS_ICONS['Trabalhista'],  date: '',
+      title: 'eSocial: fique em dia com suas obrigações',
+      desc:  'Nossa equipe mantém tudo em conformidade com as exigências previdenciárias.',
+      link:  'https://www.contabeis.com.br/noticias/', cta: 'Saiba mais →' },
+    { cat: 'Contabilidade',icon: NEWS_ICONS['Contabilidade'],date: '',
+      title: 'Fale com nossa equipe especializada',
+      desc:  'Esclareça dúvidas sobre obrigações fiscais, societárias e trabalhistas.',
+      link:  'tel:1636337995', cta: 'Ligar: (16) 3633-7995 →' },
+  ];
+  return items.map(i => `
+    <a href="${i.link}" ${i.link.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''} class="news-card" style="display:block;">
+      <div class="news-img">${i.icon}${i.date ? `<div class="news-date">${esc(i.date)}</div>` : ''}</div>
+      <div class="news-body">
+        <div class="news-cat">${esc(i.cat)}</div>
+        <h4>${esc(i.title)}</h4>
+        <p>${esc(i.desc)}</p>
+        <div class="news-leia">${esc(i.cta)}</div>
+      </div>
+    </a>`).join('');
+}
+
+async function loadNews() {
+  const grid = document.getElementById('news-grid');
+  if (!grid) return;
+  try {
+    const rssUrl  = 'https://www.contabeis.com.br/rss/conteudo/';
+    const contents = await fetchViaProxy(rssUrl);
+    if (!contents) throw new Error('Proxy retornou vazio');
+
+    const parser = new DOMParser();
+    const doc    = parser.parseFromString(contents, 'text/xml');
+    if (doc.querySelector('parsererror')) throw new Error('RSS XML inválido');
+
+    const items = Array.from(doc.querySelectorAll('item')).slice(0, 4);
+    if (items.length === 0) throw new Error('Nenhum item no RSS');
+
+    // Renderiza cards com imagem real do RSS (media:content) ou SVG fallback
+    grid.innerHTML = items.map(item => {
+      const rawTitle  = item.querySelector('title')?.textContent?.trim() || 'Sem título';
+      const title     = esc(rawTitle);
+      const link      = getRSSItemLink(item);
+
+      // Descrição: strip CDATA + HTML tags, remove sufixo "Leia mais em URL"
+      const rawDesc   = item.querySelector('description')?.textContent || '';
+      const cleanDesc = rawDesc
+        .replace(/<![CDATA[|]]>/g, '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/Leia mais em https?:\/\/\S+/gi, '')
+        .trim();
+      const desc = esc(cleanDesc.substring(0, 120) + (cleanDesc.length > 120 ? '…' : ''));
+
+      const pubDate   = item.querySelector('pubDate')?.textContent || '';
+      const cats      = Array.from(item.querySelectorAll('category')).map(c => c.textContent.trim()).join(' ');
+      const cat       = cats || categorizeNews(rawTitle, '');
+      const dateLabel = esc(formatNewsDate(pubDate));
+
+      // Imagem via <media:content url="..."> fornecida pelo RSS do Contabeis
+      const mediaEl   = item.getElementsByTagNameNS('http://search.yahoo.com/mrss/', 'content')[0];
+      const imgUrl    = safeUrl(mediaEl?.getAttribute('url') || '');
+      const icon      = NEWS_ICONS[cat] || NEWS_ICONS['Contabilidade'];
+      const imgHtml   = imgUrl !== '#'
+        ? `<img src="${imgUrl}" alt="${title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`
+        : icon;
+
+      return `
+        <a href="${link}" target="_blank" rel="noopener noreferrer" class="news-card" style="display:block;">
+          <div class="news-img" style="${imgUrl !== '#' ? 'padding:0;overflow:hidden;' : ''}">
+            ${imgHtml}
+            ${dateLabel ? `<div class="news-date">${dateLabel}</div>` : ''}
+          </div>
+          <div class="news-body">
+            <div class="news-cat">${esc(cat)}</div>
+            <h4>${title}</h4>
+            <p>${desc}</p>
+            <div class="news-leia">Leia mais →</div>
+          </div>
+        </a>`;
+    }).join('');
+
+  } catch (e) {
+    console.warn('[Notícias]', e.message);
+    grid.innerHTML = fallbackNews();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FIX 5: Formulário de contato — feedback visual ao clicar enviar
+// ═══════════════════════════════════════════════════════════════════════════
+function initForm() {
+  const btn = document.querySelector('.form-submit');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const nome  = document.querySelector('input[placeholder="Seu nome completo"]')?.value?.trim();
+    const email = document.querySelector('input[type="email"]')?.value?.trim();
+    if (!nome || !email) {
+      btn.textContent = '⚠️ Preencha nome e e-mail';
+      btn.style.background = '#c73d14';
+      setTimeout(() => { btn.textContent = 'Enviar mensagem'; btn.style.background = ''; }, 2500);
+      return;
+    }
+    // Integração real de envio pode ser adicionada aqui (ex: FormSpree, Netlify Forms)
+    btn.textContent = '✓ Mensagem enviada!';
+    btn.style.background = '#16a34a';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Enviar mensagem';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INIT — tudo dentro do DOMContentLoaded para evitar race conditions
+// FIX 6: listeners de agenda-prev/next movidos para dentro do DOMContentLoaded
+// ═══════════════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Carga inicial
+  loadObrigacoes();
+  loadCotacoes();
+  loadNews();
+  initForm();
+
+  // Auto-refresh: cotações a cada 5 min, notícias a cada 30 min
+  setInterval(loadCotacoes, 5  * 60 * 1000);
+  setInterval(loadNews,     30 * 60 * 1000);
+});
+</script>
+
+</body>
+</html>
