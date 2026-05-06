@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consulta de Recibos — Gestor de Recibos</title>
+  <meta name="description" content="Consulte, filtre e exporte os recibos de atendimento. Gere o arquivo CSV para o Carnê-Leão da Receita Federal."/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="logo-icon">🧠</div>
+    <span>Gestor de Recibos</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="clientes.html">👥 Pacientes</a>
+    <a href="cadastrar.html">➕ Novo Recibo</a>
+    <a href="consultar.html" class="active">📋 Recibos</a>
+    <a href="adm.html">⚙️ ADM</a>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-overlay" id="navOverlay">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="clientes.html">👥 Pacientes</a>
+  <a href="cadastrar.html">➕ Novo Recibo</a>
+  <a href="consultar.html">📋 Recibos</a>
+  <a href="adm.html">⚙️ ADM</a>
+</div>
+
+<main class="page-wrapper">
+  <div class="page-header">
+    <h1>Consulta de Recibos</h1>
+    <p>Filtre, gerencie e exporte seus lançamentos para o Carnê-Leão.</p>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-bar" style="min-width:200px; flex:1">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar por paciente..."/>
+      </div>
+      <div>
+        <input class="form-control" type="month" id="filtroMes" style="width:auto;"/>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <button class="btn btn-success" id="btnExportar">📥 Exportar CSV</button>
+      <a href="cadastrar.html" class="btn btn-primary">➕ Novo</a>
+    </div>
+  </div>
+
+  <!-- Resumo do mês -->
+  <div id="resumoMes" style="margin-bottom:20px; display:none;" class="card" style="padding:16px">
+    <div style="display:flex; flex-wrap:wrap; gap:24px; align-items:center;">
+      <div><span style="font-size:.78rem;color:var(--text-muted);text-transform:uppercase;font-weight:600">Total Filtrado</span><div style="font-size:1.4rem;font-weight:800;color:var(--primary-light)" id="totalFiltrado">—</div></div>
+      <div><span style="font-size:.78rem;color:var(--text-muted);text-transform:uppercase;font-weight:600">Lançamentos</span><div style="font-size:1.4rem;font-weight:800;" id="qtdFiltrado">—</div></div>
+      <div><span style="font-size:.78rem;color:var(--text-muted);text-transform:uppercase;font-weight:600">Ticket Médio</span><div style="font-size:1.4rem;font-weight:800;" id="ticketFiltrado">—</div></div>
+    </div>
+  </div>
+
+  <!-- Tabela (desktop) -->
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div class="table-wrapper">
+      <table id="tabelaRecibos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Paciente</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th style="text-align:center">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="6"><div class="skeleton" style="height:48px;margin:8px;"></div></td></tr>
+          <tr><td colspan="6"><div class="skeleton" style="height:48px;margin:8px;"></div></td></tr>
+          <tr><td colspan="6"><div class="skeleton" style="height:48px;margin:8px;"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Cards (mobile) -->
+    <div class="card-list" id="cardList"></div>
+  </div>
+</main>
+
+<!-- MODAL: Confirmar Exclusão -->
+<div class="modal-overlay" id="modalDeletar">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h2 class="modal-title">⚠️ Confirmar Exclusão</h2>
+      <button class="modal-close" onclick="closeModal('modalDeletar')">✕</button>
+    </div>
+    <p style="color:var(--text-secondary); font-size:.9rem; line-height:1.7">
+      Deseja excluir o recibo de <strong id="deletarNome" style="color:var(--text-primary)"></strong> 
+      no valor de <strong id="deletarValor" style="color:var(--primary-light)"></strong>?
+    </p>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalDeletar')">Cancelar</button>
+      <button class="btn btn-danger" id="btnConfirmarDelete">
+        <span id="btnDeleteText">Excluir Recibo</span>
+        <span class="spinner" id="btnDeleteSpinner" style="display:none;"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>
+let todosRecibos   = [];
+let todosClientes  = [];
+let reciboParaDeletar = null;
+
+// ── INIT ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  // Define mês atual como padrão
+  const hoje = new Date();
+  const mesAtual = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
+  document.getElementById('filtroMes').value = mesAtual;
+
+  document.getElementById('searchInput').addEventListener('input', filtrar);
+  document.getElementById('filtroMes').addEventListener('change', filtrar);
+  document.getElementById('btnExportar').addEventListener('click', handleExportar);
+  document.getElementById('btnConfirmarDelete').addEventListener('click', confirmarDelete);
+
+  try {
+    const data = await loadData();
+    todosRecibos  = data.recibos  || [];
+    todosClientes = data.clientes || [];
+    filtrar();
+  } catch (err) {
+    showToast('Erro ao carregar recibos: ' + err.message, 'error');
+    renderTabela([]);
+  }
+});
+
+// ── FILTRO ────────────────────────────────────────────────
+function filtrar() {
+  const q   = document.getElementById('searchInput').value.toLowerCase();
+  const mes = document.getElementById('filtroMes').value;
+
+  let lista = [...todosRecibos];
+
+  if (mes) lista = lista.filter(r => String(r.DATA_ATENDIMENTO || '').startsWith(mes));
+  if (q)   lista = lista.filter(r => (r.NOME_CLIENTE || '').toLowerCase().includes(q));
+
+  lista.sort((a, b) => (b.DATA_ATENDIMENTO > a.DATA_ATENDIMENTO ? 1 : -1));
+
+  renderTabela(lista);
+  atualizarResumo(lista);
+}
+
+function atualizarResumo(lista) {
+  if (lista.length === 0) {
+    document.getElementById('resumoMes').style.display = 'none';
+    return;
+  }
+  const total  = lista.reduce((s, r) => s + Number(r.VALOR || 0), 0);
+  const ticket = total / lista.length;
+  document.getElementById('resumoMes').style.display = '';
+  document.getElementById('totalFiltrado').textContent  = formatCurrency(total);
+  document.getElementById('qtdFiltrado').textContent    = lista.length;
+  document.getElementById('ticketFiltrado').textContent = formatCurrency(ticket);
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderTabela(lista) {
+  const tbody    = document.getElementById('tbody');
+  const cardList = document.getElementById('cardList');
+
+  if (lista.length === 0) {
+    const empty = `<div class="empty-state"><div class="empty-icon">📋</div><h3>Nenhum recibo encontrado</h3><p>Tente ajustar os filtros ou cadastre um novo recibo.</p></div>`;
+    tbody.innerHTML    = `<tr><td colspan="6">${empty}</td></tr>`;
+    cardList.innerHTML = empty;
+    return;
+  }
+
+  tbody.innerHTML = lista.map(r => {
+    const locked  = isDateLocked(r.DATA_ATENDIMENTO);
+    const tipoCls = r.TIPO_CONSULTA === 'Online' ? 'badge-cyan' : 'badge-purple';
+    const lockBadge = locked ? `<span class="lock-badge">🔒 Bloqueado</span>` : '';
+    return `
+      <tr>
+        <td><span style="color:var(--text-muted);font-size:.8rem">#${r.ID}</span></td>
+        <td>${formatDate(r.DATA_ATENDIMENTO)} ${lockBadge}</td>
+        <td><strong>${r.NOME_CLIENTE || '—'}</strong></td>
+        <td><span class="badge ${tipoCls}">${r.TIPO_CONSULTA || '—'}</span></td>
+        <td><strong style="color:var(--primary-light)">${formatCurrency(r.VALOR)}</strong></td>
+        <td style="text-align:center">
+          <div style="display:flex;gap:8px;justify-content:center">
+            <a href="cadastrar.html?id=${r.ID}" class="btn btn-secondary btn-sm" ${locked ? 'style="pointer-events:none;opacity:.4"' : ''}>✏️</a>
+            <button class="btn btn-danger btn-sm" onclick="abrirModalDeletar(${r.ID}, '${(r.NOME_CLIENTE||'').replace(/'/g,"\\'")}', ${r.VALOR})" ${locked ? 'disabled' : ''}>🗑️</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+
+  cardList.innerHTML = lista.map(r => {
+    const locked  = isDateLocked(r.DATA_ATENDIMENTO);
+    const tipoCls = r.TIPO_CONSULTA === 'Online' ? 'badge-cyan' : 'badge-purple';
+    return `
+      <div class="card-item">
+        <div class="card-item-title">${r.NOME_CLIENTE || '—'}</div>
+        <div class="card-item-sub">${formatDate(r.DATA_ATENDIMENTO)} ${locked ? '🔒' : ''}</div>
+        <div class="card-item-row">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge ${tipoCls}">${r.TIPO_CONSULTA || '—'}</span>
+            <strong style="color:var(--primary-light)">${formatCurrency(r.VALOR)}</strong>
+          </div>
+          <div class="card-item-actions">
+            <a href="cadastrar.html?id=${r.ID}" class="btn btn-secondary btn-sm" ${locked ? 'style="pointer-events:none;opacity:.4"' : ''}>✏️</a>
+            <button class="btn btn-danger btn-sm" onclick="abrirModalDeletar(${r.ID}, '${(r.NOME_CLIENTE||'').replace(/'/g,"\\'")}', ${r.VALOR})" ${locked ? 'disabled' : ''}>🗑️</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── EXPORTAR ──────────────────────────────────────────────
+function handleExportar() {
+  const mes = document.getElementById('filtroMes').value;
+  exportarCSV(todosRecibos, todosClientes, window.AppState.config, mes || null);
+}
+
+// ── DELETAR ───────────────────────────────────────────────
+function abrirModalDeletar(id, nome, valor) {
+  reciboParaDeletar = id;
+  document.getElementById('deletarNome').textContent  = nome;
+  document.getElementById('deletarValor').textContent = formatCurrency(valor);
+  openModal('modalDeletar');
+}
+
+async function confirmarDelete() {
+  document.getElementById('btnDeleteText').style.display    = 'none';
+  document.getElementById('btnDeleteSpinner').style.display = '';
+  document.getElementById('btnConfirmarDelete').disabled    = true;
+  try {
+    await apiPost({ action: 'delete_lancamento', id: reciboParaDeletar });
+    showToast('Recibo excluído com sucesso.', 'success');
+    closeModal('modalDeletar');
+    const data = await loadData();
+    todosRecibos  = data.recibos  || [];
+    todosClientes = data.clientes || [];
+    filtrar();
+  } catch (err) {
+    showToast('Erro: ' + err.message, 'error');
+  } finally {
+    document.getElementById('btnDeleteText').style.display    = '';
+    document.getElementById('btnDeleteSpinner').style.display = 'none';
+    document.getElementById('btnConfirmarDelete').disabled    = false;
+  }
+}
+</script>
+</body>
+</html>

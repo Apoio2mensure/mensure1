@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pacientes — Gestor de Recibos</title>
+  <meta name="description" content="Cadastro e gerenciamento de pacientes. Adicione, edite e consulte os dados dos seus pacientes."/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="logo-icon">🧠</div>
+    <span>Gestor de Recibos</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="clientes.html" class="active">👥 Pacientes</a>
+    <a href="cadastrar.html">➕ Novo Recibo</a>
+    <a href="consultar.html">📋 Recibos</a>
+    <a href="adm.html">⚙️ ADM</a>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-overlay" id="navOverlay">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="clientes.html">👥 Pacientes</a>
+  <a href="cadastrar.html">➕ Novo Recibo</a>
+  <a href="consultar.html">📋 Recibos</a>
+  <a href="adm.html">⚙️ ADM</a>
+</div>
+
+<main class="page-wrapper">
+  <div class="page-header">
+    <h1>Gestão de Pacientes</h1>
+    <p>Cadastre, edite e gerencie os dados dos seus pacientes.</p>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-bar" style="flex:1">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar por nome ou CPF..."/>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <button class="btn btn-primary" id="btnNovo">➕ Novo Paciente</button>
+    </div>
+  </div>
+
+  <!-- Tabela (desktop) -->
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div class="table-wrapper">
+      <table id="tabelaClientes">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome Completo</th>
+            <th>CPF</th>
+            <th>Data de Nascimento</th>
+            <th style="text-align:center">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5"><div class="skeleton" style="height:48px;margin:8px;"></div></td></tr>
+          <tr><td colspan="5"><div class="skeleton" style="height:48px;margin:8px;"></div></td></tr>
+          <tr><td colspan="5"><div class="skeleton" style="height:48px;margin:8px;"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Cards (mobile) -->
+    <div class="card-list" id="cardList"></div>
+  </div>
+</main>
+
+<!-- ── MODAL: CADASTRO / EDIÇÃO ──────────────────────────── -->
+<div class="modal-overlay" id="modalCliente">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle">Novo Paciente</h2>
+      <button class="modal-close" onclick="closeModal('modalCliente')">✕</button>
+    </div>
+    <form id="formCliente" novalidate>
+      <input type="hidden" id="clienteId"/>
+      <div class="form-group">
+        <label class="form-label" for="nomeCompleto">Nome Completo *</label>
+        <input class="form-control" id="nomeCompleto" type="text" placeholder="Nome completo do paciente" required/>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="cpf">CPF *</label>
+          <input class="form-control" id="cpf" type="text" placeholder="000.000.000-00" maxlength="14" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="dataNascimento">Data de Nascimento</label>
+          <input class="form-control" id="dataNascimento" type="date"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalCliente')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btnSalvar">
+          <span id="btnSalvarText">Salvar Paciente</span>
+          <span class="spinner" id="btnSalvarSpinner" style="display:none;"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── MODAL: CONFIRMAR EXCLUSÃO ─────────────────────────── -->
+<div class="modal-overlay" id="modalDeletar">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <h2 class="modal-title">⚠️ Confirmar Exclusão</h2>
+      <button class="modal-close" onclick="closeModal('modalDeletar')">✕</button>
+    </div>
+    <p style="color:var(--text-secondary); font-size:.9rem; line-height:1.7">
+      Tem certeza que deseja remover o paciente <strong id="deletarNome" style="color:var(--text-primary)"></strong>?
+      Esta ação não pode ser desfeita.
+    </p>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalDeletar')">Cancelar</button>
+      <button class="btn btn-danger" id="btnConfirmarDelete">
+        <span id="btnDeleteText">Excluir</span>
+        <span class="spinner" id="btnDeleteSpinner" style="display:none;"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>
+let clienteParaDeletar = null;
+let todosClientes      = [];
+
+// ── INIT ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  applyMaskCPF(document.getElementById('cpf'));
+  document.getElementById('btnNovo').addEventListener('click', abrirModalNovo);
+  document.getElementById('formCliente').addEventListener('submit', salvarCliente);
+  document.getElementById('searchInput').addEventListener('input', filtrar);
+  document.getElementById('btnConfirmarDelete').addEventListener('click', confirmarDelete);
+  await carregarClientes();
+});
+
+async function carregarClientes() {
+  try {
+    const data = await loadData();
+    todosClientes = data.clientes || [];
+    renderTabela(todosClientes);
+  } catch (err) {
+    showToast('Erro ao carregar pacientes: ' + err.message, 'error');
+    renderTabela([]);
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderTabela(lista) {
+  const tbody    = document.getElementById('tbody');
+  const cardList = document.getElementById('cardList');
+
+  if (lista.length === 0) {
+    const empty = `<div class="empty-state"><div class="empty-icon">👤</div><h3>Nenhum paciente encontrado</h3><p>Clique em "Novo Paciente" para começar.</p></div>`;
+    tbody.innerHTML    = `<tr><td colspan="5">${empty}</td></tr>`;
+    cardList.innerHTML = empty;
+    return;
+  }
+
+  tbody.innerHTML = lista.map(c => `
+    <tr>
+      <td><span style="color:var(--text-muted);font-size:.8rem">#${c.ID}</span></td>
+      <td><strong>${c.NOME_COMPLETO || '—'}</strong></td>
+      <td style="font-family:monospace">${formatCPF(c.CPF)}</td>
+      <td>${formatDate(c.DATA_NASCIMENTO)}</td>
+      <td style="text-align:center">
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar(${c.ID})">✏️ Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="abrirModalDeletar(${c.ID}, '${(c.NOME_COMPLETO||'').replace(/'/g,"\\'")}')">🗑️</button>
+        </div>
+      </td>
+    </tr>`).join('');
+
+  cardList.innerHTML = lista.map(c => `
+    <div class="card-item">
+      <div class="card-item-title">${c.NOME_COMPLETO || '—'}</div>
+      <div class="card-item-sub">CPF: ${formatCPF(c.CPF)} &nbsp;|&nbsp; Nasc.: ${formatDate(c.DATA_NASCIMENTO)}</div>
+      <div class="card-item-row">
+        <span class="badge badge-purple">#${c.ID}</span>
+        <div class="card-item-actions">
+          <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar(${c.ID})">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="abrirModalDeletar(${c.ID}, '${(c.NOME_COMPLETO||'').replace(/'/g,"\\'")}')">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filtrar() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if (!q) { renderTabela(todosClientes); return; }
+  const filtrados = todosClientes.filter(c =>
+    (c.NOME_COMPLETO || '').toLowerCase().includes(q) ||
+    (c.CPF || '').includes(q)
+  );
+  renderTabela(filtrados);
+}
+
+// ── MODAL NOVO ────────────────────────────────────────────
+function abrirModalNovo() {
+  document.getElementById('modalTitle').textContent = 'Novo Paciente';
+  document.getElementById('clienteId').value        = '';
+  document.getElementById('nomeCompleto').value     = '';
+  document.getElementById('cpf').value              = '';
+  document.getElementById('dataNascimento').value   = '';
+  document.getElementById('btnSalvarText').textContent = 'Salvar Paciente';
+  openModal('modalCliente');
+}
+
+function abrirModalEditar(id) {
+  const c = todosClientes.find(x => String(x.ID) === String(id));
+  if (!c) return;
+  document.getElementById('modalTitle').textContent  = 'Editar Paciente';
+  document.getElementById('clienteId').value         = c.ID;
+  document.getElementById('nomeCompleto').value      = c.NOME_COMPLETO || '';
+  document.getElementById('cpf').value               = formatCPF(c.CPF);
+  document.getElementById('dataNascimento').value    = c.DATA_NASCIMENTO || '';
+  document.getElementById('btnSalvarText').textContent = 'Atualizar Paciente';
+  openModal('modalCliente');
+}
+
+// ── SALVAR ────────────────────────────────────────────────
+async function salvarCliente(e) {
+  e.preventDefault();
+  const nome = document.getElementById('nomeCompleto').value.trim();
+  const cpf  = cleanCPF(document.getElementById('cpf').value);
+  const dn   = document.getElementById('dataNascimento').value;
+  const id   = document.getElementById('clienteId').value;
+
+  if (!nome) { showToast('Informe o nome completo.', 'error'); return; }
+  if (!validateCPF(cpf)) { showToast('CPF inválido. Verifique os dígitos.', 'error'); return; }
+
+  setBtnLoading(true);
+  try {
+    await apiPost({
+      action: 'upsert_client',
+      data: { id: id || null, nome_completo: nome, cpf, data_nascimento: dn }
+    });
+    showToast(id ? 'Paciente atualizado com sucesso!' : 'Paciente cadastrado com sucesso!', 'success');
+    closeModal('modalCliente');
+    await carregarClientes();
+  } catch (err) {
+    showToast('Erro: ' + err.message, 'error');
+  } finally {
+    setBtnLoading(false);
+  }
+}
+
+function setBtnLoading(on) {
+  document.getElementById('btnSalvarText').style.display    = on ? 'none' : '';
+  document.getElementById('btnSalvarSpinner').style.display = on ? '' : 'none';
+  document.getElementById('btnSalvar').disabled             = on;
+}
+
+// ── DELETAR ───────────────────────────────────────────────
+function abrirModalDeletar(id, nome) {
+  clienteParaDeletar = id;
+  document.getElementById('deletarNome').textContent = nome;
+  openModal('modalDeletar');
+}
+
+async function confirmarDelete() {
+  document.getElementById('btnDeleteText').style.display    = 'none';
+  document.getElementById('btnDeleteSpinner').style.display = '';
+  document.getElementById('btnConfirmarDelete').disabled    = true;
+  try {
+    await apiPost({ action: 'delete_client', id: clienteParaDeletar });
+    showToast('Paciente removido com sucesso.', 'success');
+    closeModal('modalDeletar');
+    await carregarClientes();
+  } catch (err) {
+    showToast('Erro: ' + err.message, 'error');
+  } finally {
+    document.getElementById('btnDeleteText').style.display    = '';
+    document.getElementById('btnDeleteSpinner').style.display = 'none';
+    document.getElementById('btnConfirmarDelete').disabled    = false;
+  }
+}
+</script>
+</body>
+</html>

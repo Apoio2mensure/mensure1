@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel ADM — Gestor de Recibos</title>
+  <meta name="description" content="Painel administrativo para configuração da URL da API, trava de competência e dados fiscais do emissor."/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="logo-icon">🧠</div>
+    <span>Gestor de Recibos</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="clientes.html">👥 Pacientes</a>
+    <a href="cadastrar.html">➕ Novo Recibo</a>
+    <a href="consultar.html">📋 Recibos</a>
+    <a href="adm.html" class="active">⚙️ ADM</a>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-overlay" id="navOverlay">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="clientes.html">👥 Pacientes</a>
+  <a href="cadastrar.html">➕ Novo Recibo</a>
+  <a href="consultar.html">📋 Recibos</a>
+  <a href="adm.html">⚙️ ADM</a>
+</div>
+
+<main class="page-wrapper">
+  <div class="page-header">
+    <h1>⚙️ Painel Administrativo</h1>
+    <p>Configure a integração com a API e os parâmetros fiscais do sistema.</p>
+  </div>
+
+  <!-- ── BLOCO 1: URL DA API ─────────────────────────────── -->
+  <div class="card" style="margin-bottom:20px;">
+    <h2 class="section-title">🔗 Conexão com a API (Google Apps Script)</h2>
+    <p style="font-size:.875rem; color:var(--text-secondary); margin-bottom:16px; line-height:1.7">
+      Cole abaixo a URL do seu Web App publicado no Google Apps Script. Ela será salva localmente no navegador.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="apiUrl">URL do Web App</label>
+      <input class="form-control" id="apiUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec"/>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button class="btn btn-primary" id="btnSalvarUrl">💾 Salvar URL</button>
+      <button class="btn btn-secondary" id="btnTestarConexao">🔌 Testar Conexão</button>
+      <button class="btn btn-secondary" id="btnResetarUrl" onclick="resetarUrl()">↩️ Restaurar Padrão</button>
+      <span id="statusConexao" style="font-size:.85rem; color:var(--text-muted)"></span>
+</div>
+  </div>
+
+  <!-- ── BLOCO 2: TRAVA DE COMPETÊNCIA ──────────────────── -->
+  <div class="card" style="margin-bottom:20px;">
+    <h2 class="section-title">🔒 Trava de Competência</h2>
+    <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:var(--radius-md); padding:14px 16px; margin-bottom:18px; font-size:.875rem; color:#FCD34D; line-height:1.7;">
+      ⚠️ <strong>Atenção:</strong> Lançamentos com datas iguais ou anteriores a esta data serão bloqueados para edição e exclusão. Use ao encerrar o mês contábil para o Carnê-Leão.
+    </div>
+    <div class="form-group" style="max-width:300px;">
+      <label class="form-label" for="dataTrava">Data de Trava</label>
+      <input class="form-control" id="dataTrava" type="date"/>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <span style="font-size:.85rem; color:var(--text-muted)">Trava atual: <strong id="travaAtual" style="color:var(--warning)">Carregando...</strong></span>
+    </div>
+  </div>
+
+  <!-- ── BLOCO 3: DADOS FISCAIS ──────────────────────────── -->
+  <div class="card" style="margin-bottom:24px;">
+    <h2 class="section-title">📋 Dados Fiscais do Emissor</h2>
+    <p style="font-size:.875rem; color:var(--text-secondary); margin-bottom:20px; line-height:1.7">
+      Estes dados serão inseridos automaticamente nas colunas 15 e 16 do CSV exportado para o Carnê-Leão.
+    </p>
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="nomeProfissional">Nome do Profissional *</label>
+        <input class="form-control" id="nomeProfissional" type="text" placeholder="Ex: Ana Paula"/>
+        <small style="color:var(--text-muted);font-size:.78rem;margin-top:4px;display:block">Usado no nome do arquivo CSV: <code style="color:var(--primary-light)">TESTE1-Nome.csv</code></small>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="cpfProfissional">CPF do Profissional</label>
+        <input class="form-control" id="cpfProfissional" type="text" placeholder="000.000.000-00" maxlength="14"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="registroProfissional">Registro (CRP)</label>
+        <input class="form-control" id="registroProfissional" type="text" placeholder="Ex: 06/92831"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="codigoRendimento">Código do Rendimento</label>
+        <input class="form-control" id="codigoRendimento" type="text" placeholder="Ex: R01.001.001"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="codigoOcupacao">Código de Ocupação</label>
+        <input class="form-control" id="codigoOcupacao" type="text" placeholder="Ex: 255"/>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btnSalvarConfig">
+      <span id="btnConfigText">💾 Salvar Configurações</span>
+      <span class="spinner" id="btnConfigSpinner" style="display:none;"></span>
+    </button>
+  </div>
+
+  <!-- ── BLOCO 4: GUIA DE SETUP ─────────────────────────── -->
+  <div class="card" style="margin-bottom:20px;">
+    <h2 class="section-title">📖 Guia de Configuração Inicial</h2>
+    <div style="display:flex; flex-direction:column; gap:16px; font-size:.875rem; color:var(--text-secondary); line-height:1.8;">
+      <div style="display:flex; gap:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">1</div>
+        <div>Acesse <a href="https://sheets.google.com" target="_blank" style="color:var(--primary-light)">Google Sheets</a> e crie uma nova planilha. Copie o ID da URL (o trecho entre <code style="background:var(--bg-hover);padding:2px 6px;border-radius:4px;">/d/</code> e <code style="background:var(--bg-hover);padding:2px 6px;border-radius:4px;">/edit</code>).</div>
+      </div>
+      <div style="display:flex; gap:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">2</div>
+        <div>Na planilha, clique em <strong style="color:var(--text-primary)">Extensões → Apps Script</strong>. Cole o conteúdo do arquivo <code style="background:var(--bg-hover);padding:2px 6px;border-radius:4px;">backend/Code.gs</code> e substitua <code style="background:var(--bg-hover);padding:2px 6px;border-radius:4px;">SEU_ID_DA_PLANILHA_AQUI</code> pelo ID copiado.</div>
+      </div>
+      <div style="display:flex; gap:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">3</div>
+        <div>Execute a função <strong style="color:var(--text-primary)">setupPlanilha()</strong> uma vez para criar as abas automaticamente.</div>
+      </div>
+      <div style="display:flex; gap:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">4</div>
+        <div>Clique em <strong style="color:var(--text-primary)">Implantar → Novo Implantação → App da Web</strong>. Defina o acesso como "Qualquer pessoa" e copie a URL gerada.</div>
+      </div>
+      <div style="display:flex; gap:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">5</div>
+        <div>Cole a URL acima no campo <strong style="color:var(--text-primary)">"URL do Web App"</strong> e clique em Salvar. O sistema estará pronto para uso!</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>
+// ── INIT ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  applyMaskCPF(document.getElementById('cpfProfissional'));
+
+  // Carrega URL salva localmente
+  const savedUrl = localStorage.getItem('api_url') || API_URL_DEFAULT;
+  document.getElementById('apiUrl').value = savedUrl;
+
+  document.getElementById('btnSalvarUrl').addEventListener('click', salvarUrl);
+  document.getElementById('btnTestarConexao').addEventListener('click', testarConexao);
+  document.getElementById('btnSalvarConfig').addEventListener('click', salvarConfig);
+
+  if (savedUrl) {
+    await carregarConfig();
+  } else {
+    document.getElementById('travaAtual').textContent = 'Sem API configurada';
+  }
+});
+
+// ── SALVAR URL LOCAL ──────────────────────────────────────
+function salvarUrl() {
+  const url = document.getElementById('apiUrl').value.trim();
+  if (!url || !url.startsWith('https://')) {
+    showToast('Informe uma URL válida do Google Apps Script.', 'error');
+    return;
+  }
+  localStorage.setItem('api_url', url);
+  showToast('URL da API salva com sucesso!', 'success');
+}
+
+function resetarUrl() {
+  localStorage.removeItem('api_url');
+  document.getElementById('apiUrl').value = API_URL_DEFAULT;
+  showToast('URL restaurada para o padrão.', 'info');
+}
+
+// ── TESTAR CONEXÃO ────────────────────────────────────────
+async function testarConexao() {
+  salvarUrl();
+  const status = document.getElementById('statusConexao');
+  status.textContent = '⏳ Testando...';
+  status.style.color = 'var(--text-muted)';
+  try {
+    const data = await loadData();
+    status.textContent = `✅ Conectado! ${(data.clientes||[]).length} paciente(s), ${(data.recibos||[]).length} recibo(s).`;
+    status.style.color = 'var(--success)';
+    preencherFormConfig(data.config || {});
+  } catch (err) {
+    status.textContent = '❌ Falha: ' + err.message;
+    status.style.color = 'var(--danger)';
+  }
+}
+
+// ── CARREGAR CONFIG ───────────────────────────────────────
+async function carregarConfig() {
+  try {
+    const data = await loadData();
+    preencherFormConfig(data.config || {});
+  } catch (err) {
+    document.getElementById('travaAtual').textContent = 'Erro ao carregar';
+  }
+}
+
+function preencherFormConfig(cfg) {
+  document.getElementById('dataTrava').value             = cfg.data_trava            || '';
+  document.getElementById('nomeProfissional').value      = cfg.nome_profissional     || 'Ana Paula';
+  document.getElementById('cpfProfissional').value       = formatCPF(cfg.cpf_profissional || '');
+  document.getElementById('registroProfissional').value  = cfg.registro_profissional || '';
+  document.getElementById('codigoRendimento').value      = cfg.codigo_rendimento     || '';
+  document.getElementById('codigoOcupacao').value        = cfg.codigo_ocupacao       || '';
+
+  const trava = cfg.data_trava;
+  document.getElementById('travaAtual').textContent = trava && trava !== '2000-01-01'
+    ? `Bloqueado até ${formatDate(trava)}`
+    : 'Sem trava ativa';
+}
+
+// ── SALVAR CONFIG ─────────────────────────────────────────
+async function salvarConfig() {
+  const dataTrava = document.getElementById('dataTrava').value;
+  const nome      = document.getElementById('nomeProfissional').value.trim();
+  const cpf       = cleanCPF(document.getElementById('cpfProfissional').value);
+  const crp       = document.getElementById('registroProfissional').value.trim();
+  const codRend   = document.getElementById('codigoRendimento').value.trim();
+  const codOcup   = document.getElementById('codigoOcupacao').value.trim();
+
+  if (!nome) {
+    showToast('Informe o nome do profissional.', 'error');
+    return;
+  }
+  if (cpf && !validateCPF(cpf)) {
+    showToast('CPF do profissional inválido.', 'error');
+    return;
+  }
+
+  document.getElementById('btnConfigText').style.display    = 'none';
+  document.getElementById('btnConfigSpinner').style.display = '';
+  document.getElementById('btnSalvarConfig').disabled       = true;
+
+  try {
+    await apiPost({
+      action: 'update_config',
+      data: {
+        data_trava:            dataTrava,
+        nome_profissional:     nome,
+        cpf_profissional:      cpf,
+        registro_profissional: crp,
+        codigo_rendimento:     codRend,
+        codigo_ocupacao:       codOcup
+      }
+    });
+    showToast('Configurações salvas na planilha!', 'success');
+    await carregarConfig();
+  } catch (err) {
+    showToast('Erro: ' + err.message, 'error');
+  } finally {
+    document.getElementById('btnConfigText').style.display    = '';
+    document.getElementById('btnConfigSpinner').style.display = 'none';
+    document.getElementById('btnSalvarConfig').disabled       = false;
+  }
+}
+</script>
+</body>
+</html>

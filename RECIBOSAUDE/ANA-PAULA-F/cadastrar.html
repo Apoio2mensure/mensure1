@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Novo Recibo — Gestor de Recibos</title>
+  <meta name="description" content="Cadastre novos recibos de atendimento psicoterápico com seleção automática de paciente."/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="logo-icon">🧠</div>
+    <span>Gestor de Recibos</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">🏠 Dashboard</a>
+    <a href="clientes.html">👥 Pacientes</a>
+    <a href="cadastrar.html" class="active">➕ Novo Recibo</a>
+    <a href="consultar.html">📋 Recibos</a>
+    <a href="adm.html">⚙️ ADM</a>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-overlay" id="navOverlay">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="clientes.html">👥 Pacientes</a>
+  <a href="cadastrar.html">➕ Novo Recibo</a>
+  <a href="consultar.html">📋 Recibos</a>
+  <a href="adm.html">⚙️ ADM</a>
+</div>
+
+<main class="page-wrapper">
+  <div class="page-header">
+    <h1 id="pageTitle">Novo Recibo</h1>
+    <p id="pageSubtitle">Registre um atendimento psicoterápico.</p>
+  </div>
+
+  <!-- Trava de Competência (aviso) -->
+  <div id="travaAviso" style="display:none; margin-bottom:20px;" class="card" style="border-color: rgba(245,158,11,0.4);">
+    <div style="display:flex; align-items:center; gap:12px; color:#FCD34D;">
+      <span style="font-size:22px;">🔒</span>
+      <div>
+        <strong>Atenção: Competência Bloqueada</strong>
+        <p style="font-size:.85rem; color:var(--text-secondary); margin-top:4px;" id="travaMsg"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="max-width: 680px;">
+    <form id="formRecibo" novalidate>
+      <input type="hidden" id="reciboId"/>
+
+      <!-- Paciente com Autocomplete -->
+      <div class="form-group">
+        <label class="form-label" for="buscaPaciente">Paciente *</label>
+        <div class="autocomplete-wrapper">
+          <input class="form-control" id="buscaPaciente" type="text" placeholder="Digite o nome ou CPF do paciente..." autocomplete="off"/>
+          <div class="autocomplete-list" id="autocompleteList" style="display:none;"></div>
+        </div>
+        <input type="hidden" id="clienteIdSelecionado"/>
+        <input type="hidden" id="cpfSelecionado"/>
+        <!-- Cartão do paciente selecionado -->
+        <div id="pacienteSelecionado" style="display:none; margin-top:10px; padding:12px 16px; background:rgba(124,58,237,0.08); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:600" id="pacienteNomeCard">—</div>
+              <div style="font-size:.8rem; color:var(--text-muted)" id="pacienteCpfCard">—</div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnTrocarPaciente">Trocar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="dataAtendimento">Data do Atendimento *</label>
+          <input class="form-control" id="dataAtendimento" type="date" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="valor">Valor da Sessão (R$) *</label>
+          <input class="form-control" id="valor" type="number" step="0.01" min="0.01" placeholder="0,00" required/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="tipoConsulta">Tipo de Consulta *</label>
+        <select class="form-control" id="tipoConsulta" required>
+          <option value="">Selecione...</option>
+          <option value="Presencial">🏥 Presencial</option>
+          <option value="Online">💻 Online</option>
+        </select>
+      </div>
+
+      <!-- Preview do Histórico CSV -->
+      <div id="previewHistorico" style="display:none; margin-top:4px; margin-bottom:18px; padding:14px 16px; background:rgba(6,182,212,0.07); border:1px solid rgba(6,182,212,0.2); border-radius:var(--radius-md);">
+        <div style="font-size:.75rem; color:var(--accent); font-weight:600; text-transform:uppercase; margin-bottom:6px;">Preview do Histórico (CSV)</div>
+        <div style="font-size:.82rem; color:var(--text-secondary); font-family:monospace; line-height:1.6;" id="previewHistoricoTexto"></div>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit">
+          <span id="btnSubmitText">💾 Salvar Recibo</span>
+          <span class="spinner" id="btnSubmitSpinner" style="display:none;"></span>
+        </button>
+        <a href="consultar.html" class="btn btn-secondary btn-lg">Ver Histórico</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>
+let todosClientes = [];
+let clienteSelecionado = null;
+const isEditando = new URLSearchParams(location.search).has('id');
+
+// ── INIT ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('dataAtendimento').value = todayISO();
+  document.getElementById('buscaPaciente').addEventListener('input', filtrarAutocomplete);
+  document.getElementById('btnTrocarPaciente').addEventListener('click', trocarPaciente);
+  document.getElementById('formRecibo').addEventListener('submit', salvarRecibo);
+  document.getElementById('dataAtendimento').addEventListener('change', atualizarPreview);
+  document.getElementById('valor').addEventListener('input', atualizarPreview);
+
+  // Fecha autocomplete ao clicar fora
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.autocomplete-wrapper')) {
+      document.getElementById('autocompleteList').style.display = 'none';
+    }
+  });
+
+  try {
+    const data = await loadData();
+    todosClientes = data.clientes || [];
+    verificarTrava();
+
+    // Modo edição
+    const params = new URLSearchParams(location.search);
+    const editId = params.get('id');
+    if (editId) {
+      const recibo = (data.recibos || []).find(r => String(r.ID) === editId);
+      if (recibo) preencherEdicao(recibo);
+    }
+  } catch (err) {
+    showToast('Erro ao carregar dados: ' + err.message, 'error');
+  }
+});
+
+// ── TRAVA ─────────────────────────────────────────────────
+function verificarTrava() {
+  const cfg = window.AppState.config;
+  if (cfg.data_trava && cfg.data_trava !== '2000-01-01') {
+    const d = formatDate(cfg.data_trava);
+    document.getElementById('travaAviso').style.display = '';
+    document.getElementById('travaMsg').textContent = `Datas iguais ou anteriores a ${d} estão bloqueadas e não podem ser alteradas.`;
+  }
+}
+
+// ── AUTOCOMPLETE ──────────────────────────────────────────
+function filtrarAutocomplete() {
+  const q   = document.getElementById('buscaPaciente').value.toLowerCase();
+  const box = document.getElementById('autocompleteList');
+
+  if (q.length < 1) { box.style.display = 'none'; return; }
+
+  const matches = todosClientes.filter(c =>
+    (c.NOME_COMPLETO || '').toLowerCase().includes(q) || (c.CPF || '').includes(q)
+  ).slice(0, 8);
+
+  if (matches.length === 0) {
+    box.innerHTML = `<div class="autocomplete-item" style="color:var(--text-muted)">Nenhum paciente encontrado</div>`;
+    box.style.display = '';
+    return;
+  }
+
+  box.innerHTML = matches.map(c => `
+    <div class="autocomplete-item" data-id="${c.ID}" onclick="selecionarPaciente(${c.ID})">
+      <div>${c.NOME_COMPLETO}</div>
+      <div class="item-sub">CPF: ${formatCPF(c.CPF)}</div>
+    </div>`).join('');
+  box.style.display = '';
+}
+
+function selecionarPaciente(id) {
+  clienteSelecionado = todosClientes.find(c => String(c.ID) === String(id));
+  if (!clienteSelecionado) return;
+
+  document.getElementById('clienteIdSelecionado').value = clienteSelecionado.ID;
+  document.getElementById('cpfSelecionado').value        = clienteSelecionado.CPF;
+  document.getElementById('pacienteNomeCard').textContent = clienteSelecionado.NOME_COMPLETO;
+  document.getElementById('pacienteCpfCard').textContent  = 'CPF: ' + formatCPF(clienteSelecionado.CPF);
+  document.getElementById('buscaPaciente').style.display      = 'none';
+  document.getElementById('pacienteSelecionado').style.display = '';
+  document.getElementById('autocompleteList').style.display   = 'none';
+  atualizarPreview();
+}
+
+function trocarPaciente() {
+  clienteSelecionado = null;
+  document.getElementById('clienteIdSelecionado').value = '';
+  document.getElementById('buscaPaciente').value         = '';
+  document.getElementById('buscaPaciente').style.display      = '';
+  document.getElementById('pacienteSelecionado').style.display = 'none';
+  document.getElementById('buscaPaciente').focus();
+  atualizarPreview();
+}
+
+// ── PREVIEW DO HISTÓRICO ──────────────────────────────────
+function atualizarPreview() {
+  const data  = document.getElementById('dataAtendimento').value;
+  const valor = document.getElementById('valor').value;
+  const prev  = document.getElementById('previewHistorico');
+  const txt   = document.getElementById('previewHistoricoTexto');
+
+  if (!data || !valor || !clienteSelecionado) { prev.style.display = 'none'; return; }
+
+  const dataFmt = formatDate(data);
+  const valorFmt = Number(valor).toFixed(2);
+  txt.textContent = `Ref. à sessão psicoterápica realizada na data ${dataFmt}, no valor de R$ ${valorFmt}`;
+  prev.style.display = '';
+}
+
+// ── MODO EDIÇÃO ───────────────────────────────────────────
+function preencherEdicao(r) {
+  document.getElementById('pageTitle').textContent    = 'Editar Recibo';
+  document.getElementById('pageSubtitle').textContent = `Editando lançamento #${r.ID}`;
+  document.getElementById('reciboId').value           = r.ID;
+  document.getElementById('dataAtendimento').value    = r.DATA_ATENDIMENTO || '';
+  document.getElementById('valor').value              = r.VALOR || '';
+  document.getElementById('tipoConsulta').value       = r.TIPO_CONSULTA || '';
+  document.getElementById('btnSubmitText').textContent = '💾 Atualizar Recibo';
+
+  // Pré-seleciona paciente
+  selecionarPaciente(r.CLIENTE_ID);
+  atualizarPreview();
+}
+
+// ── SALVAR ────────────────────────────────────────────────
+async function salvarRecibo(e) {
+  e.preventDefault();
+
+  const clienteId = document.getElementById('clienteIdSelecionado').value;
+  const data      = document.getElementById('dataAtendimento').value;
+  const valor     = document.getElementById('valor').value;
+  const tipo      = document.getElementById('tipoConsulta').value;
+  const id        = document.getElementById('reciboId').value;
+
+  if (!clienteId)  { showToast('Selecione um paciente.', 'error'); return; }
+  if (!data)       { showToast('Informe a data do atendimento.', 'error'); return; }
+  if (!valor || Number(valor) <= 0) { showToast('Informe um valor válido.', 'error'); return; }
+  if (!tipo)       { showToast('Selecione o tipo de consulta.', 'error'); return; }
+
+  // Valida trava (frontend)
+  if (isDateLocked(data)) {
+    showToast('Esta data está bloqueada pela Trava de Competência.', 'error');
+    return;
+  }
+
+  document.getElementById('btnSubmitText').style.display    = 'none';
+  document.getElementById('btnSubmitSpinner').style.display = '';
+  document.getElementById('btnSubmit').disabled             = true;
+
+  try {
+    await apiPost({
+      action: 'upsert_lancamento',
+      data: {
+        id: id || null,
+        data_atendimento: data,
+        cliente_id: clienteId,
+        nome_cliente: clienteSelecionado?.NOME_COMPLETO || '',
+        valor: valor,
+        tipo_consulta: tipo
+      }
+    });
+    showToast(id ? 'Recibo atualizado!' : 'Recibo lançado com sucesso!', 'success');
+    setTimeout(() => { window.location.href = 'consultar.html'; }, 1500);
+  } catch (err) {
+    showToast('Erro: ' + err.message, 'error');
+    document.getElementById('btnSubmitText').style.display    = '';
+    document.getElementById('btnSubmitSpinner').style.display = 'none';
+    document.getElementById('btnSubmit').disabled             = false;
+  }
+}
+</script>
+</body>
+</html>
