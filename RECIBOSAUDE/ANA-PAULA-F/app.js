@@ -5,7 +5,7 @@
 
 // ── CONFIGURAÇÃO ─────────────────────────────────────────
 // ⚠️ IMPORTANTE: Cole aqui a URL do seu Web App do Google Apps Script
-const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzK84RHWOK9IAPLOtVHrhggSDzLI0JGjTVepd89tXedZ_X2rMtnkYOesgOiB-sPqifgKw/exec';
+const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyJE2QuWhv5yQHyELBtINhFMNv7dhFBXjYPHRu-0axrM0KDCQJ8pY_9lX8zWgxTlS4RlQ/exec';
 const API_URL = localStorage.getItem('api_url') || API_URL_DEFAULT;
 
 // ── ESTADO GLOBAL ────────────────────────────────────────
@@ -143,10 +143,16 @@ function applyMaskCPF(input) {
 // ── TRAVA DE COMPETÊNCIA (Frontend) ──────────────────────
 function isDateLocked(dateStr) {
   const config = window.AppState.config;
-  if (!config.data_trava || config.data_trava === '2000-01-01') return false;
-  const dataTrava = new Date(config.data_trava + 'T00:00:00');
-  const dataAtendimento = new Date(dateStr + 'T00:00:00');
-  return dataAtendimento <= dataTrava;
+  if (!config || !config.data_trava) return false;
+
+  // Normaliza: extrai só YYYY-MM-DD de qualquer formato
+  const travaRaw = String(config.data_trava).split('T')[0].trim();
+  const dataRaw  = String(dateStr).split('T')[0].trim();
+
+  if (!travaRaw || travaRaw === '2000-01-01') return false;
+
+  // Compara como string YYYY-MM-DD (funciona perfeitamente para datas ISO)
+  return dataRaw <= travaRaw;
 }
 
 // ── NAVBAR ────────────────────────────────────────────────

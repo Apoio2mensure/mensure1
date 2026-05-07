@@ -6,6 +6,106 @@
   <title>Novo Recibo — Gestor de Recibos</title>
   <meta name="description" content="Cadastre novos recibos de atendimento psicoterápico com seleção automática de paciente."/>
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── LOTE STYLES ─────────────────────────────────────── */
+    .recibo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative;
+      transition: border-color 0.22s, box-shadow 0.22s;
+      animation: cardEntrar 0.28s cubic-bezier(.4,0,.2,1) both;
+    }
+    @keyframes cardEntrar {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .recibo-card:first-child {
+      border-color: rgba(124,58,237,0.35);
+    }
+    .recibo-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .recibo-card-num {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--primary-light);
+    }
+    .recibo-card-num-badge {
+      width: 28px; height: 28px;
+      background: rgba(124,58,237,0.18);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 800;
+      color: var(--primary-light);
+    }
+    .btn-remover-card {
+      display: flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: var(--radius-sm);
+      background: rgba(239,68,68,0.1);
+      color: #F87171;
+      border: 1px solid rgba(239,68,68,0.2);
+      font-size: 0.8rem; font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-remover-card:hover {
+      background: rgba(239,68,68,0.2);
+    }
+
+    .btn-add-rec {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 20px;
+      border-radius: var(--radius-lg);
+      background: transparent;
+      border: 2px dashed rgba(124,58,237,0.35);
+      color: var(--primary-light);
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s;
+      margin-bottom: 20px;
+    }
+    .btn-add-rec:hover {
+      background: rgba(124,58,237,0.08);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .btn-add-rec .add-icon {
+      width: 26px; height: 26px;
+      background: rgba(124,58,237,0.18);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+    .btn-add-rec:hover .add-icon {
+      background: rgba(124,58,237,0.3);
+    }
+
+    .lote-summary {
+      display: none;
+      align-items: center;
+      gap: 20px;
+      padding: 14px 20px;
+      background: rgba(124,58,237,0.07);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .lote-summary.visible { display: flex; flex-wrap: wrap; }
+    .lote-summary strong { color: var(--primary-light); font-size: 1rem; }
+  </style>
 </head>
 <body>
 
@@ -34,11 +134,11 @@
 <main class="page-wrapper">
   <div class="page-header">
     <h1 id="pageTitle">Novo Recibo</h1>
-    <p id="pageSubtitle">Registre um atendimento psicoterápico.</p>
+    <p id="pageSubtitle">Registre um ou mais atendimentos de uma vez.</p>
   </div>
 
   <!-- Trava de Competência (aviso) -->
-  <div id="travaAviso" style="display:none; margin-bottom:20px;" class="card" style="border-color: rgba(245,158,11,0.4);">
+  <div id="travaAviso" style="display:none; margin-bottom:20px;" class="card">
     <div style="display:flex; align-items:center; gap:12px; color:#FCD34D;">
       <span style="font-size:22px;">🔒</span>
       <div>
@@ -48,105 +148,65 @@
     </div>
   </div>
 
-  <div class="card" style="max-width: 680px;">
-    <form id="formRecibo" novalidate>
-      <input type="hidden" id="reciboId"/>
+  <!-- Resumo do lote (aparece com 2+ cards) -->
+  <div class="lote-summary" id="loteSummary">
+    <span>📦 Lote com <strong id="loteQtd">0</strong> recibo(s)</span>
+    <span>💰 Total: <strong id="loteTotal">R$ 0,00</strong></span>
+  </div>
 
-      <!-- Paciente com Autocomplete -->
-      <div class="form-group">
-        <label class="form-label" for="buscaPaciente">Paciente *</label>
-        <div class="autocomplete-wrapper">
-          <input class="form-control" id="buscaPaciente" type="text" placeholder="Digite o nome ou CPF do paciente..." autocomplete="off"/>
-          <div class="autocomplete-list" id="autocompleteList" style="display:none;"></div>
-        </div>
-        <input type="hidden" id="clienteIdSelecionado"/>
-        <input type="hidden" id="cpfSelecionado"/>
-        <!-- Cartão do paciente selecionado -->
-        <div id="pacienteSelecionado" style="display:none; margin-top:10px; padding:12px 16px; background:rgba(124,58,237,0.08); border:1px solid var(--border); border-radius:var(--radius-md);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-weight:600" id="pacienteNomeCard">—</div>
-              <div style="font-size:.8rem; color:var(--text-muted)" id="pacienteCpfCard">—</div>
-            </div>
-            <button type="button" class="btn btn-secondary btn-sm" id="btnTrocarPaciente">Trocar</button>
-          </div>
-        </div>
-      </div>
+  <!-- Container dos cards de recibo -->
+  <div id="recibosContainer"></div>
 
-      <div class="form-grid-2">
-        <div class="form-group">
-          <label class="form-label" for="dataAtendimento">Data do Atendimento *</label>
-          <input class="form-control" id="dataAtendimento" type="date" required/>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="valor">Valor da Sessão (R$) *</label>
-          <input class="form-control" id="valor" type="number" step="0.01" min="0.01" placeholder="0,00" required/>
-        </div>
-      </div>
+  <!-- Botão Adicionar -->
+  <button class="btn-add-rec" id="btnAddRec" type="button">
+    <span class="add-icon">＋</span>
+    Add rec — Adicionar outro recibo
+  </button>
 
-      <div class="form-group">
-        <label class="form-label" for="tipoConsulta">Tipo de Consulta *</label>
-        <select class="form-control" id="tipoConsulta" required>
-          <option value="">Selecione...</option>
-          <option value="Presencial">🏥 Presencial</option>
-          <option value="Online">💻 Online</option>
-        </select>
-      </div>
-
-      <!-- Preview do Histórico CSV -->
-      <div id="previewHistorico" style="display:none; margin-top:4px; margin-bottom:18px; padding:14px 16px; background:rgba(6,182,212,0.07); border:1px solid rgba(6,182,212,0.2); border-radius:var(--radius-md);">
-        <div style="font-size:.75rem; color:var(--accent); font-weight:600; text-transform:uppercase; margin-bottom:6px;">Preview do Histórico (CSV)</div>
-        <div style="font-size:.82rem; color:var(--text-secondary); font-family:monospace; line-height:1.6;" id="previewHistoricoTexto"></div>
-      </div>
-
-      <div style="display:flex; gap:12px; flex-wrap:wrap;">
-        <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit">
-          <span id="btnSubmitText">💾 Salvar Recibo</span>
-          <span class="spinner" id="btnSubmitSpinner" style="display:none;"></span>
-        </button>
-        <a href="consultar.html" class="btn btn-secondary btn-lg">Ver Histórico</a>
-      </div>
-    </form>
+  <!-- Ações de submit -->
+  <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <button type="button" class="btn btn-primary btn-lg" id="btnSubmit">
+      <span id="btnSubmitText">💾 Salvar Recibo(s)</span>
+      <span class="spinner" id="btnSubmitSpinner" style="display:none;"></span>
+    </button>
+    <a href="consultar.html" class="btn btn-secondary btn-lg">Ver Histórico</a>
   </div>
 </main>
 
 <div id="toast-container"></div>
 <script src="app.js"></script>
 <script>
+// ── ESTADO ────────────────────────────────────────────────
 let todosClientes = [];
-let clienteSelecionado = null;
+let cardsCount = 0;         // contador para IDs únicos
 const isEditando = new URLSearchParams(location.search).has('id');
 
 // ── INIT ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  document.getElementById('dataAtendimento').value = todayISO();
-  document.getElementById('buscaPaciente').addEventListener('input', filtrarAutocomplete);
-  document.getElementById('btnTrocarPaciente').addEventListener('click', trocarPaciente);
-  document.getElementById('formRecibo').addEventListener('submit', salvarRecibo);
-  document.getElementById('dataAtendimento').addEventListener('change', atualizarPreview);
-  document.getElementById('valor').addEventListener('input', atualizarPreview);
-
-  // Fecha autocomplete ao clicar fora
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.autocomplete-wrapper')) {
-      document.getElementById('autocompleteList').style.display = 'none';
-    }
-  });
+  document.getElementById('btnAddRec').addEventListener('click', adicionarCard);
+  document.getElementById('btnSubmit').addEventListener('click', salvarLote);
 
   try {
     const data = await loadData();
     todosClientes = data.clientes || [];
     verificarTrava();
 
-    // Modo edição
+    // Modo edição: apenas 1 card, pré-preenchido
     const params = new URLSearchParams(location.search);
     const editId = params.get('id');
     if (editId) {
+      document.getElementById('pageTitle').textContent    = 'Editar Recibo';
+      document.getElementById('pageSubtitle').textContent = `Editando lançamento #${editId}`;
+      document.getElementById('btnAddRec').style.display  = 'none'; // sem lote no modo edição
+      document.getElementById('btnSubmitText').textContent = '💾 Atualizar Recibo';
       const recibo = (data.recibos || []).find(r => String(r.ID) === editId);
-      if (recibo) preencherEdicao(recibo);
+      adicionarCard(null, recibo, editId);
+    } else {
+      adicionarCard(); // começa com 1 card vazio
     }
   } catch (err) {
     showToast('Erro ao carregar dados: ' + err.message, 'error');
+    adicionarCard();
   }
 });
 
@@ -156,14 +216,165 @@ function verificarTrava() {
   if (cfg.data_trava && cfg.data_trava !== '2000-01-01') {
     const d = formatDate(cfg.data_trava);
     document.getElementById('travaAviso').style.display = '';
-    document.getElementById('travaMsg').textContent = `Datas iguais ou anteriores a ${d} estão bloqueadas e não podem ser alteradas.`;
+    document.getElementById('travaMsg').textContent = `Datas iguais ou anteriores a ${d} estão bloqueadas.`;
   }
 }
 
+// ── CRIAR CARD ────────────────────────────────────────────
+function adicionarCard(e, reciboData, editId) {
+  cardsCount++;
+  const idx = cardsCount;
+  const container = document.getElementById('recibosContainer');
+  const totalCards = container.querySelectorAll('.recibo-card').length;
+
+  const card = document.createElement('div');
+  card.className = 'recibo-card';
+  card.dataset.idx = idx;
+
+  const podeRemover = !isEditando; // no modo edição, não mostra botão de remover
+
+  card.innerHTML = `
+    <div class="recibo-card-header">
+      <div class="recibo-card-num">
+        <div class="recibo-card-num-badge" id="badge-${idx}">${totalCards + 1}</div>
+        <span>Recibo</span>
+      </div>
+      ${podeRemover ? `<button type="button" class="btn-remover-card" onclick="removerCard(${idx})" title="Remover este recibo">✕ Remover</button>` : ''}
+    </div>
+
+    ${editId ? `<input type="hidden" class="field-id" value="${editId}"/>` : ''}
+
+    <!-- Paciente com Autocomplete -->
+    <div class="form-group">
+      <label class="form-label">Paciente *</label>
+      <div class="autocomplete-wrapper">
+        <input class="form-control field-busca" type="text"
+          placeholder="Digite o nome ou CPF do paciente..."
+          autocomplete="off"
+          oninput="filtrarAutocomplete(${idx})"
+          onfocus="filtrarAutocomplete(${idx})"/>
+        <div class="autocomplete-list" id="acList-${idx}" style="display:none;"></div>
+      </div>
+      <input type="hidden" class="field-clienteid"/>
+      <input type="hidden" class="field-cpf"/>
+      <div class="paciente-selecionado" style="display:none; margin-top:10px; padding:12px 16px; background:rgba(124,58,237,0.08); border:1px solid var(--border); border-radius:var(--radius-md);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-weight:600" class="pac-nome">—</div>
+            <div style="font-size:.8rem; color:var(--text-muted)" class="pac-cpf">—</div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="trocarPaciente(${idx})">Trocar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Data do Atendimento *</label>
+        <input class="form-control field-data" type="date" required
+          onchange="validarDataTrava(${idx}); atualizarPreview(${idx}); atualizarLoteSummary()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Valor da Sessão (R$) *</label>
+        <input class="form-control field-valor" type="number" step="0.01" min="0.01"
+          placeholder="0,00" required
+          oninput="atualizarPreview(${idx}); atualizarLoteSummary()"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tipo de Consulta *</label>
+      <select class="form-control field-tipo" required onchange="atualizarPreview(${idx})">
+        <option value="">Selecione...</option>
+        <option value="Presencial">🏥 Presencial</option>
+        <option value="Online">💻 Online</option>
+      </select>
+    </div>
+
+    <!-- Preview Histórico -->
+    <div class="preview-historico" style="display:none; margin-top:4px; margin-bottom:4px; padding:14px 16px; background:rgba(6,182,212,0.07); border:1px solid rgba(6,182,212,0.2); border-radius:var(--radius-md);">
+      <div style="font-size:.75rem; color:var(--accent); font-weight:600; text-transform:uppercase; margin-bottom:6px;">Preview do Histórico (CSV)</div>
+      <div class="preview-texto" style="font-size:.82rem; color:var(--text-secondary); font-family:monospace; line-height:1.6;"></div>
+    </div>
+  `;
+
+  container.appendChild(card);
+
+  // Fecha autocomplete ao clicar fora
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.autocomplete-wrapper')) {
+      const list = document.getElementById(`acList-${idx}`);
+      if (list) list.style.display = 'none';
+    }
+  });
+
+  // Preencher data padrão
+  card.querySelector('.field-data').value = todayISO();
+
+  // Se veio com dados (modo edição ou copiar)
+  if (reciboData) {
+    card.querySelector('.field-data').value  = reciboData.DATA_ATENDIMENTO || '';
+    card.querySelector('.field-valor').value = reciboData.VALOR || '';
+    card.querySelector('.field-tipo').value  = reciboData.TIPO_CONSULTA || '';
+    selecionarPacienteNoCard(idx, reciboData.CLIENTE_ID);
+  }
+
+  atualizarNumeracaoCards();
+  atualizarLoteSummary();
+}
+
+// ── REMOVER CARD ──────────────────────────────────────────
+function removerCard(idx) {
+  const container = document.getElementById('recibosContainer');
+  const cards = container.querySelectorAll('.recibo-card');
+  if (cards.length <= 1) {
+    showToast('É necessário ao menos um recibo.', 'info');
+    return;
+  }
+  const card = container.querySelector(`.recibo-card[data-idx="${idx}"]`);
+  if (card) {
+    card.style.animation = 'cardEntrar 0.22s reverse both';
+    setTimeout(() => {
+      card.remove();
+      atualizarNumeracaoCards();
+      atualizarLoteSummary();
+    }, 200);
+  }
+}
+
+// ── NUMERAÇÃO ─────────────────────────────────────────────
+function atualizarNumeracaoCards() {
+  const cards = document.querySelectorAll('#recibosContainer .recibo-card');
+  cards.forEach((card, i) => {
+    const badge = card.querySelector('[id^="badge-"]');
+    if (badge) badge.textContent = i + 1;
+  });
+}
+
+// ── RESUMO LOTE ───────────────────────────────────────────
+function atualizarLoteSummary() {
+  const cards = document.querySelectorAll('#recibosContainer .recibo-card');
+  if (cards.length < 2) {
+    document.getElementById('loteSummary').classList.remove('visible');
+    return;
+  }
+  let total = 0;
+  cards.forEach(card => {
+    const v = parseFloat(card.querySelector('.field-valor').value) || 0;
+    total += v;
+  });
+  document.getElementById('loteSummary').classList.add('visible');
+  document.getElementById('loteQtd').textContent   = cards.length;
+  document.getElementById('loteTotal').textContent = formatCurrency(total);
+}
+
 // ── AUTOCOMPLETE ──────────────────────────────────────────
-function filtrarAutocomplete() {
-  const q   = document.getElementById('buscaPaciente').value.toLowerCase();
-  const box = document.getElementById('autocompleteList');
+function filtrarAutocomplete(idx) {
+  const card = document.querySelector(`.recibo-card[data-idx="${idx}"]`);
+  if (!card) return;
+  const input = card.querySelector('.field-busca');
+  const box   = document.getElementById(`acList-${idx}`);
+  const q     = input.value.toLowerCase();
 
   if (q.length < 1) { box.style.display = 'none'; return; }
 
@@ -178,105 +389,136 @@ function filtrarAutocomplete() {
   }
 
   box.innerHTML = matches.map(c => `
-    <div class="autocomplete-item" data-id="${c.ID}" onclick="selecionarPaciente(${c.ID})">
+    <div class="autocomplete-item" onclick="selecionarPacienteNoCard(${idx}, ${c.ID})">
       <div>${c.NOME_COMPLETO}</div>
       <div class="item-sub">CPF: ${formatCPF(c.CPF)}</div>
     </div>`).join('');
   box.style.display = '';
 }
 
-function selecionarPaciente(id) {
-  clienteSelecionado = todosClientes.find(c => String(c.ID) === String(id));
-  if (!clienteSelecionado) return;
+function selecionarPacienteNoCard(idx, clienteId) {
+  const card    = document.querySelector(`.recibo-card[data-idx="${idx}"]`);
+  if (!card) return;
+  const cliente = todosClientes.find(c => String(c.ID) === String(clienteId));
+  if (!cliente) return;
 
-  document.getElementById('clienteIdSelecionado').value = clienteSelecionado.ID;
-  document.getElementById('cpfSelecionado').value        = clienteSelecionado.CPF;
-  document.getElementById('pacienteNomeCard').textContent = clienteSelecionado.NOME_COMPLETO;
-  document.getElementById('pacienteCpfCard').textContent  = 'CPF: ' + formatCPF(clienteSelecionado.CPF);
-  document.getElementById('buscaPaciente').style.display      = 'none';
-  document.getElementById('pacienteSelecionado').style.display = '';
-  document.getElementById('autocompleteList').style.display   = 'none';
-  atualizarPreview();
+  card.querySelector('.field-clienteid').value    = cliente.ID;
+  card.querySelector('.field-cpf').value           = cliente.CPF;
+  card.querySelector('.pac-nome').textContent      = cliente.NOME_COMPLETO;
+  card.querySelector('.pac-cpf').textContent       = 'CPF: ' + formatCPF(cliente.CPF);
+  card.querySelector('.field-busca').style.display = 'none';
+  card.querySelector('.paciente-selecionado').style.display = '';
+  const box = document.getElementById(`acList-${idx}`);
+  if (box) box.style.display = 'none';
+  atualizarPreview(idx);
 }
 
-function trocarPaciente() {
-  clienteSelecionado = null;
-  document.getElementById('clienteIdSelecionado').value = '';
-  document.getElementById('buscaPaciente').value         = '';
-  document.getElementById('buscaPaciente').style.display      = '';
-  document.getElementById('pacienteSelecionado').style.display = 'none';
-  document.getElementById('buscaPaciente').focus();
-  atualizarPreview();
+function trocarPaciente(idx) {
+  const card = document.querySelector(`.recibo-card[data-idx="${idx}"]`);
+  if (!card) return;
+  card.querySelector('.field-clienteid').value    = '';
+  card.querySelector('.field-busca').value         = '';
+  card.querySelector('.field-busca').style.display = '';
+  card.querySelector('.paciente-selecionado').style.display = 'none';
+  card.querySelector('.field-busca').focus();
+  atualizarPreview(idx);
 }
 
 // ── PREVIEW DO HISTÓRICO ──────────────────────────────────
-function atualizarPreview() {
-  const data  = document.getElementById('dataAtendimento').value;
-  const valor = document.getElementById('valor').value;
-  const prev  = document.getElementById('previewHistorico');
-  const txt   = document.getElementById('previewHistoricoTexto');
+function atualizarPreview(idx) {
+  const card    = document.querySelector(`.recibo-card[data-idx="${idx}"]`);
+  if (!card) return;
+  const data    = card.querySelector('.field-data').value;
+  const valor   = card.querySelector('.field-valor').value;
+  const clienteId = card.querySelector('.field-clienteid').value;
+  const prev    = card.querySelector('.preview-historico');
+  const txt     = card.querySelector('.preview-texto');
 
-  if (!data || !valor || !clienteSelecionado) { prev.style.display = 'none'; return; }
+  if (!data || !valor || !clienteId) { prev.style.display = 'none'; return; }
 
-  const dataFmt = formatDate(data);
+  const dataFmt  = formatDate(data);
   const valorFmt = Number(valor).toFixed(2);
   txt.textContent = `Ref. à sessão psicoterápica realizada na data ${dataFmt}, no valor de R$ ${valorFmt}`;
   prev.style.display = '';
 }
+// ── VALIDAÇÃO DE TRAVA NO CAMPO ───────────────────────────
+function validarDataTrava(idx) {
+  const card  = document.querySelector(`.recibo-card[data-idx="${idx}"]`);
+  if (!card) return;
+  const input = card.querySelector('.field-data');
+  const data  = input.value;
 
-// ── MODO EDIÇÃO ───────────────────────────────────────────
-function preencherEdicao(r) {
-  document.getElementById('pageTitle').textContent    = 'Editar Recibo';
-  document.getElementById('pageSubtitle').textContent = `Editando lançamento #${r.ID}`;
-  document.getElementById('reciboId').value           = r.ID;
-  document.getElementById('dataAtendimento').value    = r.DATA_ATENDIMENTO || '';
-  document.getElementById('valor').value              = r.VALOR || '';
-  document.getElementById('tipoConsulta').value       = r.TIPO_CONSULTA || '';
-  document.getElementById('btnSubmitText').textContent = '💾 Atualizar Recibo';
+  if (!data) return;
 
-  // Pré-seleciona paciente
-  selecionarPaciente(r.CLIENTE_ID);
-  atualizarPreview();
-}
-
-// ── SALVAR ────────────────────────────────────────────────
-async function salvarRecibo(e) {
-  e.preventDefault();
-
-  const clienteId = document.getElementById('clienteIdSelecionado').value;
-  const data      = document.getElementById('dataAtendimento').value;
-  const valor     = document.getElementById('valor').value;
-  const tipo      = document.getElementById('tipoConsulta').value;
-  const id        = document.getElementById('reciboId').value;
-
-  if (!clienteId)  { showToast('Selecione um paciente.', 'error'); return; }
-  if (!data)       { showToast('Informe a data do atendimento.', 'error'); return; }
-  if (!valor || Number(valor) <= 0) { showToast('Informe um valor válido.', 'error'); return; }
-  if (!tipo)       { showToast('Selecione o tipo de consulta.', 'error'); return; }
-
-  // Valida trava (frontend)
   if (isDateLocked(data)) {
-    showToast('Esta data está bloqueada pela Trava de Competência.', 'error');
+    showToast('Esta data está bloqueada pela Trava de Competência. Escolha uma data mais recente.', 'error');
+    input.value = '';          // limpa o campo
+    input.focus();
     return;
   }
+}
 
+// ── SALVAR (lote ou individual/edição) ────────────────────
+async function salvarLote() {
+  const cards = document.querySelectorAll('#recibosContainer .recibo-card');
+  const editId = isEditando ? new URLSearchParams(location.search).get('id') : null;
+
+  // Coleta e valida todos os cards
+  const lista = [];
+  let temErro = false;
+
+  cards.forEach((card, i) => {
+    const clienteId = card.querySelector('.field-clienteid').value;
+    const data      = card.querySelector('.field-data').value;
+    const valor     = card.querySelector('.field-valor').value;
+    const tipo      = card.querySelector('.field-tipo').value;
+    const idField   = card.querySelector('.field-id');
+    const id        = idField ? idField.value : null;
+    const cliente   = todosClientes.find(c => String(c.ID) === String(clienteId));
+
+    if (!clienteId) { showToast(`Recibo ${i+1}: selecione um paciente.`, 'error'); temErro = true; return; }
+    if (!data)      { showToast(`Recibo ${i+1}: informe a data.`, 'error'); temErro = true; return; }
+    if (!valor || Number(valor) <= 0) { showToast(`Recibo ${i+1}: informe um valor válido.`, 'error'); temErro = true; return; }
+    if (!tipo)      { showToast(`Recibo ${i+1}: selecione o tipo de consulta.`, 'error'); temErro = true; return; }
+    if (isDateLocked(data)) {
+      showToast(`Recibo ${i+1}: data ${formatDate(data)} está bloqueada. Trava ativa até ${formatDate(window.AppState.config.data_trava)}.`, 'error');
+      temErro = true;
+      // Limpa o campo para forçar correção
+      card.querySelector('.field-data').value = '';
+      return;
+    }
+
+    lista.push({
+      id:               id || null,
+      data_atendimento: data,
+      cliente_id:       clienteId,
+      nome_cliente:     cliente?.NOME_COMPLETO || '',
+      valor:            valor,
+      tipo_consulta:    tipo
+    });
+  });
+
+  if (temErro || lista.length === 0) return;
+
+  // UI loading
   document.getElementById('btnSubmitText').style.display    = 'none';
   document.getElementById('btnSubmitSpinner').style.display = '';
   document.getElementById('btnSubmit').disabled             = true;
 
   try {
-    await apiPost({
-      action: 'upsert_lancamento',
-      data: {
-        id: id || null,
-        data_atendimento: data,
-        cliente_id: clienteId,
-        nome_cliente: clienteSelecionado?.NOME_COMPLETO || '',
-        valor: valor,
-        tipo_consulta: tipo
-      }
-    });
-    showToast(id ? 'Recibo atualizado!' : 'Recibo lançado com sucesso!', 'success');
+    if (editId) {
+      // Modo edição: usa rota individual
+      await apiPost({ action: 'upsert_lancamento', data: lista[0] });
+      showToast('Recibo atualizado!', 'success');
+    } else if (lista.length === 1) {
+      // 1 recibo: rota individual
+      await apiPost({ action: 'upsert_lancamento', data: lista[0] });
+      showToast('Recibo lançado com sucesso!', 'success');
+    } else {
+      // Lote: rota upsert_lote
+      await apiPost({ action: 'upsert_lote', lista });
+      showToast(`${lista.length} recibo(s) lançados com sucesso!`, 'success');
+    }
     setTimeout(() => { window.location.href = 'consultar.html'; }, 1500);
   } catch (err) {
     showToast('Erro: ' + err.message, 'error');
