@@ -30,15 +30,41 @@ async function apiPost(payload) {
   });
   const json = await res.json();
   if (json.status === 'error') throw new Error(json.message);
+
+  // Limpa o cache se for uma ação de escrita
+  if (payload.action && payload.action !== 'get_data') {
+    sessionStorage.removeItem('app_cache');
+    sessionStorage.removeItem('app_cache_time');
+  }
+
   return json;
 }
 
-async function loadData() {
+async function loadData(force = false) {
   try {
+    if (!force) {
+      const cached = sessionStorage.getItem('app_cache');
+      if (cached) {
+        const data = JSON.parse(cached);
+        window.AppState.clientes = data.clientes || [];
+        window.AppState.recibos = data.recibos || [];
+        window.AppState.config = data.config || {};
+        atualizarBotaoSync();
+        return data;
+      }
+    }
+
     const data = await apiPost({ action: 'get_data' });
     window.AppState.clientes = data.clientes || [];
     window.AppState.recibos = data.recibos || [];
     window.AppState.config = data.config || {};
+    
+    // Salva no cache com a data atual
+    sessionStorage.setItem('app_cache', JSON.stringify(data));
+    sessionStorage.setItem('app_cache_time', new Date().toISOString());
+    
+    atualizarBotaoSync();
+    
     return data;
   } catch (err) {
     console.error('Erro ao carregar dados:', err);
@@ -176,6 +202,67 @@ function initNavbar() {
   document.querySelectorAll('.nav-links a, #navOverlay a').forEach(a => {
     if (a.getAttribute('href') === cur) a.classList.add('active');
   });
+
+  injetarBotaoSync();
+}
+
+function injetarBotaoSync() {
+  const brand = document.querySelector('.navbar-brand');
+  if (brand && !document.getElementById('btnSyncManual')) {
+    const btnContainer = document.createElement('div');
+    btnContainer.style.display = 'inline-flex';
+    btnContainer.style.alignItems = 'center';
+    btnContainer.style.marginLeft = '12px';
+    
+    const btn = document.createElement('button');
+    btn.id = 'btnSyncManual';
+    btn.type = 'button';
+    btn.className = 'btn btn-secondary btn-sm';
+    btn.style.fontSize = '0.75rem';
+    btn.style.padding = '4px 8px';
+    btn.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+    btn.style.color = '#10B981';
+    btn.style.border = '1px solid rgba(16, 185, 129, 0.2)';
+    btn.style.borderRadius = 'var(--radius-sm)';
+    btn.style.cursor = 'pointer';
+    btn.style.whiteSpace = 'nowrap';
+    btn.innerHTML = 'Atualizar';
+    
+    btn.onclick = async () => {
+      btn.innerHTML = 'Atualizando...';
+      btn.disabled = true;
+      try {
+        await loadData(true);
+        showToast('Dados sincronizados com sucesso!', 'success');
+        setTimeout(() => location.reload(), 600);
+      } catch (e) {
+        showToast('Erro ao sincronizar.', 'error');
+        btn.disabled = false;
+        atualizarBotaoSync();
+      }
+    };
+    
+    btnContainer.appendChild(btn);
+    brand.appendChild(btnContainer);
+    atualizarBotaoSync();
+  }
+}
+
+function atualizarBotaoSync() {
+  const btn = document.getElementById('btnSyncManual');
+  if (btn) {
+    const time = sessionStorage.getItem('app_cache_time');
+    if (time) {
+      const d = new Date(time);
+      const DD = String(d.getDate()).padStart(2, '0');
+      const MM = String(d.getMonth() + 1).padStart(2, '0');
+      const HH = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      btn.innerHTML = `Atualizar - [${DD}/${MM} ${HH}:${mm}]`;
+    } else {
+      btn.innerHTML = 'Atualizar';
+    }
+  }
 }
 
 // ── EXPORTAÇÃO CSV (Motor Carnê-Leão) ────────────────────

@@ -186,6 +186,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('btnAddRec').addEventListener('click', adicionarCard);
   document.getElementById('btnSubmit').addEventListener('click', salvarLote);
 
+  // Fecha autocomplete ao clicar fora (listener global único)
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.autocomplete-wrapper')) {
+      document.querySelectorAll('.autocomplete-list').forEach(list => list.style.display = 'none');
+    }
+  });
+
   try {
     const data = await loadData();
     todosClientes = data.clientes || [];
@@ -300,14 +307,6 @@ function adicionarCard(e, reciboData, editId) {
 
   container.appendChild(card);
 
-  // Fecha autocomplete ao clicar fora
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.autocomplete-wrapper')) {
-      const list = document.getElementById(`acList-${idx}`);
-      if (list) list.style.display = 'none';
-    }
-  });
-
   // Preencher data padrão
   card.querySelector('.field-data').value = todayISO();
 
@@ -374,13 +373,19 @@ function filtrarAutocomplete(idx) {
   if (!card) return;
   const input = card.querySelector('.field-busca');
   const box   = document.getElementById(`acList-${idx}`);
-  const q     = input.value.toLowerCase();
+  const qRaw  = input.value.toLowerCase();
+  const qNome = qRaw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const qCpf  = qRaw.replace(/\D/g, '');
 
-  if (q.length < 1) { box.style.display = 'none'; return; }
-
-  const matches = todosClientes.filter(c =>
-    (c.NOME_COMPLETO || '').toLowerCase().includes(q) || (c.CPF || '').includes(q)
-  ).slice(0, 8);
+  const matches = todosClientes.filter(c => {
+    const nome = String(c.NOME_COMPLETO || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const cpf  = String(c.CPF || '').replace(/\D/g, '');
+    
+    const matchNome = nome.includes(qNome);
+    const matchCpf  = qCpf.length > 0 ? cpf.includes(qCpf) : false;
+    
+    return matchNome || matchCpf;
+  });
 
   if (matches.length === 0) {
     box.innerHTML = `<div class="autocomplete-item" style="color:var(--text-muted)">Nenhum paciente encontrado</div>`;
