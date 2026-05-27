@@ -445,7 +445,6 @@
         <div style="padding:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;">
           <p style="font-size:.78rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">Hor&#225;rio de atendimento</p>
           <p style="font-size:.88rem;color:rgba(255,255,255,.75);">Segunda a Sexta: <strong style="color:#fff;">08h &#224;s 17:30h</strong></p>
-          <p style="font-size:.88rem;color:rgba(255,255,255,.75);margin-top:4px;">S&#225;bado: <strong style="color:#fff;">08h &#224;s 12h</strong></p>
         </div>
         <a href="tel:1636337995" class="btn-primary" style="text-align:center;">&#128222; Ligar agora: (16) 3633-7995</a>
       </div>
@@ -683,40 +682,56 @@ function fallbackNews() {
   }).join('');
 }
 
+function parseRSS(contents) {
+  if (!contents) throw new Error('vazio');
+  var doc = (new DOMParser()).parseFromString(contents, 'text/xml');
+  if (doc.querySelector('parsererror')) throw new Error('xml invalido');
+  var items = Array.from(doc.querySelectorAll('item')).slice(0, 4);
+  if (!items.length) throw new Error('sem itens');
+  return items.map(function(item){
+    var rawT = item.querySelector('title') ? (item.querySelector('title').textContent || '').trim() : 'Sem t&#237;tulo';
+    var title = esc(rawT);
+    var link = getRSSItemLink(item);
+    var rawD = item.querySelector('description') ? (item.querySelector('description').textContent || '') : '';
+    var clean = rawD.replace(/<!\[CDATA\[|\]\]>/g,'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').replace(/Leia mais em https?:\/\/\S+/gi,'').trim();
+    var desc = esc(clean.substring(0,120) + (clean.length>120?'\u2026':''));
+    var pd = item.querySelector('pubDate') ? (item.querySelector('pubDate').textContent||'') : '';
+    var catTxt = Array.from(item.querySelectorAll('category')).map(function(c){return c.textContent.trim();}).join(' ');
+    var cat = catTxt || categorizeNews(rawT, '');
+    var dl = esc(formatNewsDate(pd));
+    var mel = item.getElementsByTagNameNS('http://search.yahoo.com/mrss/','content')[0];
+    var imgUrl = safeUrl(mel ? (mel.getAttribute('url')||'') : '');
+    var icon = NEWS_ICONS[cat] || NEWS_ICONS.Contabilidade;
+    var imgH = imgUrl !== '#' ? '<img src="'+imgUrl+'" alt="'+title+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">' : icon;
+    return '<a href="' + link + '" target="_blank" rel="noopener noreferrer" class="news-card" style="display:block;">'
+      + '<div class="news-img" style="' + (imgUrl!=='#'?'padding:0;overflow:hidden;':'') + '">' + imgH + (dl?'<div class="news-date">'+dl+'</div>':'') + '</div>'
+      + '<div class="news-body"><div class="news-cat">' + esc(cat) + '</div><h4>' + title + '</h4><p>' + desc + '</p><div class="news-leia">Leia mais &#8594;</div></div>'
+      + '</a>';
+  }).join('');
+}
+
+// Tenta carregar noticias com retry automatico (3 tentativas com delay crescente)
+var _newsLoaded = false;
 async function loadNews() {
+  if (_newsLoaded) return;
   var grid = document.getElementById('news-grid');
   if (!grid) return;
-  try {
-    var contents = await fetchViaProxy('https://www.contabeis.com.br/rss/conteudo/');
-    if (!contents) throw new Error('vazio');
-    var doc = (new DOMParser()).parseFromString(contents, 'text/xml');
-    if (doc.querySelector('parsererror')) throw new Error('xml invalido');
-    var items = Array.from(doc.querySelectorAll('item')).slice(0, 4);
-    if (!items.length) throw new Error('sem itens');
-    grid.innerHTML = items.map(function(item){
-      var rawT = item.querySelector('title') ? (item.querySelector('title').textContent || '').trim() : 'Sem t&#237;tulo';
-      var title = esc(rawT);
-      var link = getRSSItemLink(item);
-      var rawD = item.querySelector('description') ? (item.querySelector('description').textContent || '') : '';
-      var clean = rawD.replace(/<!\[CDATA\[|\]\]>/g,'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').replace(/Leia mais em https?:\/\/\S+/gi,'').trim();
-      var desc = esc(clean.substring(0,120) + (clean.length>120?'\u2026':''));
-      var pd = item.querySelector('pubDate') ? (item.querySelector('pubDate').textContent||'') : '';
-      var catTxt = Array.from(item.querySelectorAll('category')).map(function(c){return c.textContent.trim();}).join(' ');
-      var cat = catTxt || categorizeNews(rawT, '');
-      var dl = esc(formatNewsDate(pd));
-      var mel = item.getElementsByTagNameNS('http://search.yahoo.com/mrss/','content')[0];
-      var imgUrl = safeUrl(mel ? (mel.getAttribute('url')||'') : '');
-      var icon = NEWS_ICONS[cat] || NEWS_ICONS.Contabilidade;
-      var imgH = imgUrl !== '#' ? '<img src="'+imgUrl+'" alt="'+title+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">' : icon;
-      return '<a href="' + link + '" target="_blank" rel="noopener noreferrer" class="news-card" style="display:block;">'
-        + '<div class="news-img" style="' + (imgUrl!=='#'?'padding:0;overflow:hidden;':'') + '">' + imgH + (dl?'<div class="news-date">'+dl+'</div>':'') + '</div>'
-        + '<div class="news-body"><div class="news-cat">' + esc(cat) + '</div><h4>' + title + '</h4><p>' + desc + '</p><div class="news-leia">Leia mais &#8594;</div></div>'
-        + '</a>';
-    }).join('');
-  } catch(e) {
-    console.warn('[News]', e.message);
-    grid.innerHTML = fallbackNews();
+  var RSS = 'https://www.contabeis.com.br/rss/conteudo/';
+  var delays = [0, 1500, 3500]; // ms antes de cada tentativa
+  for (var i = 0; i < delays.length; i++) {
+    if (delays[i] > 0) await new Promise(function(r){ setTimeout(r, delays[i]); });
+    try {
+      var contents = await fetchViaProxy(RSS, 12000);
+      var html = parseRSS(contents);
+      grid.innerHTML = html;
+      _newsLoaded = true;
+      return;
+    } catch(e) {
+      console.warn('[News] tentativa ' + (i+1) + ' falhou:', e.message);
+    }
   }
+  // Todas as tentativas falharam — mostra fallback
+  grid.innerHTML = fallbackNews();
 }
 
 // ── FIX 4: "Saiba mais" scroll + pre-seleciona assunto ───────────────────────
@@ -785,6 +800,11 @@ document.addEventListener('DOMContentLoaded', function(){
   initSvcLinks();
   setInterval(loadCotacoes, 5  * 60 * 1000);
   setInterval(loadNews,     30 * 60 * 1000);
+});
+// Gatilho secundario: se as noticias ainda nao carregaram quando a pagina
+// terminar de carregar completamente (window.load), tenta de novo.
+window.addEventListener('load', function(){
+  if (!_newsLoaded) loadNews();
 });
 </script>
 </body>
