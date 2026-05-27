@@ -6,8 +6,7 @@
   <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mensure Assessoria Cont&#225;bil</title>
-  <!-- FIX 1: Favicon SVG inline data URI -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d7a75'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='20' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/x-icon" href="https://portal.mensure.com.br/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -445,7 +444,7 @@
         </div>
         <div style="padding:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;">
           <p style="font-size:.78rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">Hor&#225;rio de atendimento</p>
-          <p style="font-size:.88rem;color:rgba(255,255,255,.75);">Segunda a Sexta: <strong style="color:#fff;">08h &#224;s 18h</strong></p>
+          <p style="font-size:.88rem;color:rgba(255,255,255,.75);">Segunda a Sexta: <strong style="color:#fff;">08h &#224;s 17:30h</strong></p>
           <p style="font-size:.88rem;color:rgba(255,255,255,.75);margin-top:4px;">S&#225;bado: <strong style="color:#fff;">08h &#224;s 12h</strong></p>
         </div>
         <a href="tel:1636337995" class="btn-primary" style="text-align:center;">&#128222; Ligar agora: (16) 3633-7995</a>
@@ -760,7 +759,7 @@ function initForm() {
     if (msg)     linhas.push('\nMensagem:\n'+msg);
 
     var subject = 'Contato pelo site' + (assunto?' \u2013 '+assunto:'');
-    window.location.href = 'mailto:contato@mensure.com.br'
+    window.location.href = 'mailto:Mensure@mensure.com.br'
       + '?subject=' + encodeURIComponent(subject)
       + '&body=' + encodeURIComponent(linhas.join('\n'));
 
