@@ -539,24 +539,49 @@ var PROXIES = [
 ];
 
 async function fetchViaProxy(targetUrl, timeoutMs) {
-  timeoutMs = timeoutMs || 8000;
-  var lastErr;
-  for (var i = 0; i < PROXIES.length; i++) {
-    var makeProxy = PROXIES[i];
+  timeoutMs = timeoutMs || 5000;
+  if (typeof Promise.any === 'function') {
+    const promises = PROXIES.map(function(makeProxy) {
+      return new Promise(function(resolve, reject) {
+        var ctrl = new AbortController();
+        var timer = setTimeout(function(){ ctrl.abort(); reject(new Error('Timeout')); }, timeoutMs);
+        fetch(makeProxy(targetUrl), { signal: ctrl.signal })
+          .then(function(resp){
+            clearTimeout(timer);
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.text();
+          })
+          .then(function(txt){
+            if (txt && txt.trim().length > 0) resolve(txt);
+            else throw new Error('Vazio');
+          })
+          .catch(function(err){
+            clearTimeout(timer);
+            reject(err);
+          });
+      });
+    });
     try {
-      var ctrl = new AbortController();
-      var timer = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
-      var resp = await fetch(makeProxy(targetUrl), { signal: ctrl.signal });
-      clearTimeout(timer);
-      if (!resp.ok) { lastErr = new Error('HTTP ' + resp.status); continue; }
-      var txt = await resp.text();
-      if (txt && txt.trim().length > 0) return txt;
-      throw new Error('Resposta vazia ou inválida');
+      return await Promise.any(promises);
     } catch(e) {
-      lastErr = e;
+      throw new Error('Todos os proxies falharam (Promise.any)');
     }
+  } else {
+    var lastErr;
+    for (var i = 0; i < PROXIES.length; i++) {
+      try {
+        var ctrl = new AbortController();
+        var timer = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
+        var resp = await fetch(PROXIES[i](targetUrl), { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!resp.ok) { lastErr = new Error('HTTP ' + resp.status); continue; }
+        var txt = await resp.text();
+        if (txt && txt.trim().length > 0) return txt;
+        throw new Error('Vazio');
+      } catch(e) { lastErr = e; }
+    }
+    throw lastErr || new Error('Todos os proxies falharam');
   }
-  throw lastErr || new Error('Todos os proxies falharam');
 }
 
 async function fetchWithTimeout(url, timeoutMs) {
@@ -747,23 +772,19 @@ async function loadNews() {
     }
   } catch(e) {}
 
-  // 2. Fetch via proxy se nao tem cache ou expirou
-  var delays = [0, 2000]; // 2 tentativas, menor tempo total bloqueado
-  for (var i = 0; i < delays.length; i++) {
-    if (delays[i] > 0) await new Promise(function(r){ setTimeout(r, delays[i]); });
+  // 2. Tenta os proxies em paralelo (muito mais rápido, não trava a tela)
+  try {
+    var contents = await fetchViaProxy(RSS, 5000);
+    var html = parseRSS(contents);
+    grid.innerHTML = html;
+    _newsLoaded = true;
     try {
-      var contents = await fetchViaProxy(RSS, 8000);
-      var html = parseRSS(contents);
-      grid.innerHTML = html;
-      _newsLoaded = true;
-      try {
-        localStorage.setItem('mensure_news_cache', contents);
-        localStorage.setItem('mensure_news_time', Date.now().toString());
-      } catch(e) {}
-      return;
-    } catch(e) {
-      console.warn('[News] tentativa ' + (i+1) + ' falhou:', e.message);
-    }
+      localStorage.setItem('mensure_news_cache', contents);
+      localStorage.setItem('mensure_news_time', Date.now().toString());
+    } catch(e) {}
+    return;
+  } catch(e) {
+    console.warn('[News] falhou (proxies bloqueados ou lentos):', e.message);
   }
   
   // 3. Se falhou tudo, tenta usar o cache antigo (mesmo expirado)
@@ -775,7 +796,7 @@ async function loadNews() {
     }
   } catch(e) {}
   
-  // 4. Se nao tem nada, mostra fallback estatico
+  // 4. Se não tem nada e proxies falharam, mostra fallback estático instantaneamente
   grid.innerHTML = fallbackNews();
 }
 

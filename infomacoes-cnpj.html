@@ -1374,24 +1374,49 @@
         ];
 
         async function fetchViaProxy(targetUrl, timeoutMs) {
-            timeoutMs = timeoutMs || 8000;
-            var lastErr;
-            for (var i = 0; i < PROXIES.length; i++) {
-                var makeProxy = PROXIES[i];
+            timeoutMs = timeoutMs || 5000;
+            if (typeof Promise.any === 'function') {
+                const promises = PROXIES.map(function(makeProxy) {
+                    return new Promise(function(resolve, reject) {
+                        var ctrl = new AbortController();
+                        var timer = setTimeout(function(){ ctrl.abort(); reject(new Error('Timeout')); }, timeoutMs);
+                        fetch(makeProxy(targetUrl), { signal: ctrl.signal })
+                            .then(function(resp){
+                                clearTimeout(timer);
+                                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                                return resp.text();
+                            })
+                            .then(function(txt){
+                                if (txt && txt.trim().length > 0) resolve(txt);
+                                else throw new Error('Vazio');
+                            })
+                            .catch(function(err){
+                                clearTimeout(timer);
+                                reject(err);
+                            });
+                    });
+                });
                 try {
-                    var ctrl = new AbortController();
-                    var timer = setTimeout(function () { ctrl.abort(); }, timeoutMs);
-                    var resp = await fetch(makeProxy(targetUrl), { signal: ctrl.signal });
-                    clearTimeout(timer);
-                    if (!resp.ok) { lastErr = new Error('HTTP ' + resp.status); continue; }
-                    var txt = await resp.text();
-                    if (txt && txt.trim().length > 0) return txt;
-                    throw new Error('Resposta vazia ou inválida');
-                } catch (e) {
-                    lastErr = e;
+                    return await Promise.any(promises);
+                } catch(e) {
+                    throw new Error('Todos os proxies falharam (Promise.any)');
                 }
+            } else {
+                var lastErr;
+                for (var i = 0; i < PROXIES.length; i++) {
+                    try {
+                        var ctrl = new AbortController();
+                        var timer = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
+                        var resp = await fetch(PROXIES[i](targetUrl), { signal: ctrl.signal });
+                        clearTimeout(timer);
+                        if (!resp.ok) { lastErr = new Error('HTTP ' + resp.status); continue; }
+                        var txt = await resp.text();
+                        if (txt && txt.trim().length > 0) return txt;
+                        throw new Error('Vazio');
+                    } catch(e) { lastErr = e; }
+                }
+                throw lastErr || new Error('Todos os proxies falharam');
             }
-            throw lastErr || new Error('Todos os proxies falharam');
         }
 
         async function fetchWithTimeout(url, timeoutMs) {
