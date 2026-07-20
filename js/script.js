@@ -245,7 +245,7 @@ async function loadNews() {
 
   // 2. Tenta os proxies em paralelo (muito mais rápido, não trava a tela)
   try {
-    var contents = await fetchViaProxy(RSS, 5000);
+    var contents = await fetchViaProxy(RSS, 8000);
     var html = parseRSS(contents);
     grid.innerHTML = html;
     _newsLoaded = true;
@@ -322,6 +322,30 @@ function initForm() {
   });
 }
 
+// ── Banner de cookies (LGPD) ─────────────────────────────────────────────────
+function initCookieBanner() {
+  var banner = document.getElementById('cookie-banner');
+  if (!banner) return;
+
+  var CHAVE = 'mensure_cookie_consent';
+  var jaEscolheu;
+  try { jaEscolheu = localStorage.getItem(CHAVE); } catch(e) { jaEscolheu = null; }
+
+  if (!jaEscolheu) {
+    setTimeout(function(){ banner.classList.add('active'); }, 600);
+  }
+
+  function fechar(valor) {
+    try { localStorage.setItem(CHAVE, valor); } catch(e) {}
+    banner.classList.remove('active');
+  }
+
+  var btnAceitar    = document.getElementById('cookie-accept-btn');
+  var btnEssenciais = document.getElementById('cookie-essential-btn');
+  if (btnAceitar)    btnAceitar.addEventListener('click', function(){ fechar('aceitou-todos'); });
+  if (btnEssenciais) btnEssenciais.addEventListener('click', function(){ fechar('somente-essenciais'); });
+}
+
 // ── Modal de noticias: abre a materia por cima do site, fundo borrado ───────
 function openNewsModal(url, title) {
   var overlay = document.getElementById('news-modal');
@@ -383,6 +407,7 @@ document.addEventListener('DOMContentLoaded', function(){
   initForm();
   initSvcLinks();
   initNewsModal();
+  initCookieBanner();
   setInterval(loadCotacoes, 5  * 60 * 1000);
   setInterval(loadNews,     30 * 60 * 1000);
 });
