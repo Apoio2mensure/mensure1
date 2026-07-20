@@ -250,17 +250,27 @@ function parseRSS(contents) {
     var rawT = item.querySelector('title') ? (item.querySelector('title').textContent || '').trim() : 'Sem t&#237;tulo';
     var title = esc(rawT);
     var link = getRSSItemLink(item);
+    
+    // Pega o conteúdo bruto da descrição (onde o Contábeis insere a imagem)
     var rawD = item.querySelector('description') ? (item.querySelector('description').textContent || '') : '';
+    
+    // Puxa o link da imagem escondida no texto da notícia
+    var imgMatch = rawD.match(/<img[^>]+src=["']([^"']+)["']/i);
+    
     var clean = rawD.replace(/<!\[CDATA\[|\]\]>/g,'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').replace(/Leia mais em https?:\/\/\S+/gi,'').trim();
     var desc = esc(clean.substring(0,120) + (clean.length>120?'\u2026':''));
     var pd = item.querySelector('pubDate') ? (item.querySelector('pubDate').textContent||'') : '';
     var catTxt = Array.from(item.querySelectorAll('category')).map(function(c){return c.textContent.trim();}).join(' ');
     var cat = catTxt || categorizeNews(rawT, '');
     var dl = esc(formatNewsDate(pd));
+    
+    // Se a imagem existir, extrai, se não, usa o ícone
     var mel = item.getElementsByTagNameNS('http://search.yahoo.com/mrss/','content')[0];
-    var imgUrl = safeUrl(mel ? (mel.getAttribute('url')||'') : '');
+    var imgUrl = safeUrl(mel ? (mel.getAttribute('url')||'') : (imgMatch ? imgMatch[1] : ''));
+    
     var icon = NEWS_ICONS[cat] || NEWS_ICONS.Contabilidade;
     var imgH = imgUrl !== '#' ? '<img src="'+imgUrl+'" alt="'+title+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">' : icon;
+    
     return '<a href="' + link + '" target="_blank" rel="noopener noreferrer" class="news-card" data-modal="1" data-news-title="' + title + '" style="display:block;">'
       + '<div class="news-img" style="' + (imgUrl!=='#'?'padding:0;overflow:hidden;':'') + '">' + imgH + (dl?'<div class="news-date">'+dl+'</div>':'') + '</div>'
       + '<div class="news-body"><div class="news-cat">' + esc(cat) + '</div><h4>' + title + '</h4><p>' + desc + '</p><div class="news-leia">Leia mais &#8594;</div></div>'
@@ -274,7 +284,9 @@ async function loadNews() {
   if (_newsLoaded) return;
   var grid = document.getElementById('news-grid');
   if (!grid) return;
-  var RSS = 'https://news.google.com/rss/search?q=contabilidade%20OR%20impostos%20OR%20%22receita%20federal%22%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR%3Apt-419';
+  
+  // A URL direta e imbatível do SEU Cloudflare Worker!
+  var RSS = 'https://hidden-grass-15f0.apoio2.workers.dev/';
   
   // 1. Tenta ler do cache primeiro (valido por 2 horas)
   try {
@@ -287,22 +299,26 @@ async function loadNews() {
     }
   } catch(e) {}
 
-  // 2. Tenta os proxies em paralelo (muito mais rápido, não trava a tela)
+  // 2. Faz o fetch DIRETO no seu Worker
   try {
-    var contents = await fetchViaProxy(RSS, 10000);
+    var resp = await fetch(RSS, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    
+    var contents = await resp.text();
     var html = parseRSS(contents);
     grid.innerHTML = html;
     _newsLoaded = true;
+    
     try {
       localStorage.setItem('mensure_news_cache', contents);
       localStorage.setItem('mensure_news_time', Date.now().toString());
     } catch(e) {}
     return;
   } catch(e) {
-    console.warn('[News] falhou (proxies bloqueados ou lentos):', e.message);
+    console.warn('[News] falhou pelo Worker:', e.message);
   }
   
-  // 3. Se falhou tudo, tenta usar o cache antigo (mesmo expirado)
+  // 3. Se falhou tudo, tenta usar o cache antigo
   try {
     var oldCache = localStorage.getItem('mensure_news_cache');
     if (oldCache) {
@@ -311,7 +327,7 @@ async function loadNews() {
     }
   } catch(e) {}
   
-  // 4. Se não tem nada e proxies falharam, mostra fallback estático instantaneamente
+  // 4. Se não tem nada e falhou, mostra fallback estático
   grid.innerHTML = fallbackNews();
 }
 
