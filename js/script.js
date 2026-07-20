@@ -3,35 +3,75 @@
 var MESES_ABREV = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
 // Proxies com fallback
+// NOTA (jul/2026): corsproxy.io mudou o formato da URL para exigir "?url="
+// e, no plano gratuito, passou a atender só origens de desenvolvimento
+// (localhost, GitHub Pages, CodeSandbox etc.) — não mais domínios de
+// produção como o nosso. Por isso ele foi removido da lista abaixo e
+// substituído por um serviço que continua funcionando em produção.
 var PROXIES = [
   function(url){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url); },
-  function(url){ return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url); },
-  function(url){ return 'https://corsproxy.io/?' + encodeURIComponent(url); }
+  function(url){ return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url); }
 ];
 
+// rss2json é feito especificamente para feeds RSS públicos e devolve JSON
+// com cabeçalhos CORS liberados para qualquer origem — mais confiável que
+// os proxies genéricos para este caso de uso específico.
+async function fetchViaRss2Json(targetUrl, timeoutMs) {
+  var api = 'https://api.rss2json.com/v1/api.json?count=8&rss_url=' + encodeURIComponent(targetUrl);
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
+  try {
+    var resp = await fetch(api, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    var data = await resp.json();
+    if (data.status !== 'ok' || !data.items || !data.items.length) throw new Error('rss2json vazio');
+    var itemsXml = data.items.map(function(it){
+      var img = (it.thumbnail || (it.enclosure && it.enclosure.link) || '');
+      var media = img ? '<media:content url="' + img + '" xmlns:media="http://search.yahoo.com/mrss/"/>' : '';
+      var cats = (it.categories || []).map(function(c){ return '<category>' + c + '</category>'; }).join('');
+      return '<item>'
+        + '<title><![CDATA[' + (it.title || '') + ']]></title>'
+        + '<link>' + (it.link || '') + '</link>'
+        + '<description><![CDATA[' + (it.description || '') + ']]></description>'
+        + '<pubDate>' + (it.pubDate || '') + '</pubDate>'
+        + cats + media
+        + '</item>';
+    }).join('');
+    return '<rss><channel>' + itemsXml + '</channel></rss>';
+  } catch(e) {
+    clearTimeout(timer);
+    throw e;
+  }
+}
+
 async function fetchViaProxy(targetUrl, timeoutMs) {
-  timeoutMs = timeoutMs || 5000;
-  if (typeof Promise.any === 'function') {
-    const promises = PROXIES.map(function(makeProxy) {
-      return new Promise(function(resolve, reject) {
-        var ctrl = new AbortController();
-        var timer = setTimeout(function(){ ctrl.abort(); reject(new Error('Timeout')); }, timeoutMs);
-        fetch(makeProxy(targetUrl), { signal: ctrl.signal })
-          .then(function(resp){
-            clearTimeout(timer);
-            if (!resp.ok) throw new Error('HTTP ' + resp.status);
-            return resp.text();
-          })
-          .then(function(txt){
-            if (txt && txt.trim().length > 0) resolve(txt);
-            else throw new Error('Vazio');
-          })
-          .catch(function(err){
-            clearTimeout(timer);
-            reject(err);
-          });
-      });
+  timeoutMs = timeoutMs || 9000;
+
+  function proxyPromise(makeProxy) {
+    return new Promise(function(resolve, reject) {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function(){ ctrl.abort(); reject(new Error('Timeout')); }, timeoutMs);
+      fetch(makeProxy(targetUrl), { signal: ctrl.signal })
+        .then(function(resp){
+          clearTimeout(timer);
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          return resp.text();
+        })
+        .then(function(txt){
+          if (txt && txt.trim().length > 0) resolve(txt);
+          else throw new Error('Vazio');
+        })
+        .catch(function(err){
+          clearTimeout(timer);
+          reject(err);
+        });
     });
+  }
+
+  if (typeof Promise.any === 'function') {
+    const promises = PROXIES.map(proxyPromise);
+    promises.push(fetchViaRss2Json(targetUrl, timeoutMs));
     try {
       return await Promise.any(promises);
     } catch(e) {
@@ -51,7 +91,11 @@ async function fetchViaProxy(targetUrl, timeoutMs) {
         throw new Error('Vazio');
       } catch(e) { lastErr = e; }
     }
-    throw lastErr || new Error('Todos os proxies falharam');
+    try {
+      return await fetchViaRss2Json(targetUrl, timeoutMs);
+    } catch(e2) {
+      throw lastErr || e2 || new Error('Todos os proxies falharam');
+    }
   }
 }
 
@@ -245,7 +289,7 @@ async function loadNews() {
 
   // 2. Tenta os proxies em paralelo (muito mais rápido, não trava a tela)
   try {
-    var contents = await fetchViaProxy(RSS, 8000);
+    var contents = await fetchViaProxy(RSS, 10000);
     var html = parseRSS(contents);
     grid.innerHTML = html;
     _newsLoaded = true;
