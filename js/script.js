@@ -274,7 +274,7 @@ async function loadNews() {
   if (_newsLoaded) return;
   var grid = document.getElementById('news-grid');
   if (!grid) return;
-  var RSS = 'https://www.contabeis.com.br/rss/conteudo/';
+  var RSS = 'https://news.google.com/rss/search?q=contabilidade%20OR%20impostos%20OR%20%22receita%20federal%22%20when%3A1d&hl=pt-BR&gl=BR&ceid=BR%3Apt-419';
   
   // 1. Tenta ler do cache primeiro (valido por 2 horas)
   try {
