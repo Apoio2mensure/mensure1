@@ -69,6 +69,7 @@ nav { background: var(--teal); position: sticky; top: 0; z-index: 100; padding: 
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 48px; }
 .about-img-mock { background: var(--teal3); border-radius: 16px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+.about-img-mock img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .about-badge { position: absolute; bottom: -20px; right: -20px; background: var(--orange); color: #fff; border-radius: 12px; padding: 16px 20px; font-family: 'Playfair Display', serif; text-align: center; }
 .about-badge .bn { font-size: 2rem; font-weight: 700; display: block; line-height: 1; }
 .about-badge .bl { font-size: .65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: .85; }
