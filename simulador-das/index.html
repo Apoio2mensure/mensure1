@@ -22,13 +22,62 @@
 <!-- ── HEADER ──────────────────────────────────────────────────────────── -->
 <header class="sim-header" role="banner">
   <div class="sim-header-inner">
-    <div class="sim-logo-icon" aria-hidden="true">%</div>
-    <div class="sim-logo-text">
-      <div class="sim-logo-name">Mensure<em>®</em></div>
-      <div class="sim-logo-sub">Assessoria Contábil — Ribeirão Preto desde 1990</div>
-    </div>
+    <a href="https://portal.mensure.com.br/" class="sim-logo-link" aria-label="Ir para o site da Mensure">
+      <div class="sim-logo-icon" aria-hidden="true">%</div>
+      <div class="sim-logo-text">
+        <div class="sim-logo-name">Mensure<em>®</em></div>
+        <div class="sim-logo-sub">Assessoria Contábil — Ribeirão Preto desde 1990</div>
+      </div>
+    </a>
+
+    <nav class="sim-nav" aria-label="Navegação principal">
+      <a href="https://portal.mensure.com.br/#home">Home</a>
+      <a href="https://portal.mensure.com.br/#servicos">Serviços</a>
+      <a href="https://portal.mensure.com.br/#sobre">Sobre Nós</a>
+      <a href="https://portal.mensure.com.br/#noticias">Notícias</a>
+      <a href="https://portal.mensure.com.br/#ferramentas">Ferramentas</a>
+      <a href="https://portal.mensure.com.br/#login">Login Cliente</a>
+    </nav>
+
+    <a href="tel:1636337995" class="sim-nav-cta">Entre em contato</a>
+
+    <button class="sim-nav-toggle" id="sim-nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="sim-nav-mobile">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+
+  <!-- MENU MOBILE (aparece abaixo do header em telas pequenas) -->
+  <nav class="sim-nav-mobile" id="sim-nav-mobile" aria-label="Navegação mobile">
+    <a href="https://portal.mensure.com.br/#home">Home</a>
+    <a href="https://portal.mensure.com.br/#servicos">Serviços</a>
+    <a href="https://portal.mensure.com.br/#sobre">Sobre Nós</a>
+    <a href="https://portal.mensure.com.br/#noticias">Notícias</a>
+    <a href="https://portal.mensure.com.br/#ferramentas">Ferramentas</a>
+    <a href="https://portal.mensure.com.br/#login">Login Cliente</a>
+    <a href="tel:1636337995" class="sim-nav-cta sim-nav-cta-mobile">Entre em contato</a>
+  </nav>
 </header>
+
+<script>
+  // Menu mobile do header (abre/fecha o painel de navegação)
+  (function () {
+    var btn   = document.getElementById('sim-nav-toggle');
+    var panel = document.getElementById('sim-nav-mobile');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function () {
+      var open = panel.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    panel.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        panel.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
 
 <!-- ── APP WRAPPER ─────────────────────────────────────────────────────── -->
 <main class="sim-main" id="simulador-main">
