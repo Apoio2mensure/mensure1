@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador Simples Nacional 2026 | Mensure Assessoria Contábil</title>
+  <meta name="description" content="Calcule o DAS do Simples Nacional 2026 gratuitamente. Informe seu CNAE, faturamento e folha de pagamento para simular o imposto com Fator R. Mensure Assessoria Contábil – Ribeirão Preto.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Simulador Simples Nacional 2026 | Mensure">
+  <meta property="og:description" content="Simule seu DAS no Simples Nacional. Busca por CNAE, cálculo de Fator R e tabela completa de faixas 2026.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts (mesmas do portal Mensure) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/simulador.css">
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────────────────── -->
+<header class="sim-header" role="banner">
+  <div class="sim-header-inner">
+    <div class="sim-logo-icon" aria-hidden="true">%</div>
+    <div class="sim-logo-text">
+      <div class="sim-logo-name">Mensure<em>®</em></div>
+      <div class="sim-logo-sub">Assessoria Contábil — Ribeirão Preto desde 1990</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── APP WRAPPER ─────────────────────────────────────────────────────── -->
+<main class="sim-main" id="simulador-main">
+
+  <!-- LOADING -->
+  <div id="sim-loading" class="sim-loading" role="status" aria-label="Carregando dados">
+    <div class="sim-spinner"></div>
+    <div class="sim-loading-text">Carregando base de CNAEs…</div>
+  </div>
+
+  <!-- APP (oculto até os dados carregarem) -->
+  <div id="sim-app" class="hidden">
+
+    <!-- HERO -->
+    <section class="sim-hero" aria-labelledby="sim-titulo">
+      <div class="sim-hero-tag">
+        <span aria-hidden="true">📊</span> Simples Nacional 2026
+      </div>
+      <h1 id="sim-titulo">
+        Simulador de <span>DAS</span> com Fator R
+      </h1>
+      <p class="sim-hero-sub">
+        Informe sua atividade (CNAE), faturamento e folha de pagamento para
+        calcular o imposto exato — incluindo a migração automática pelo Fator R.
+      </p>
+    </section>
+
+    <!-- ── LINHA DESKTOP: ATIVIDADE + FATURAMENTO LADO A LADO ─────────── -->
+    <div class="sim-row-desktop">
+
+    <!-- ── CARD 1: ATIVIDADE ─────────────────────────────────────────── -->
+    <section class="sim-card" aria-labelledby="card-ativ-titulo" id="card-atividade">
+      <div class="sim-card-header">
+        <div class="sim-card-icon" aria-hidden="true">🏢</div>
+        <div>
+          <div class="sim-card-title" id="card-ativ-titulo">Atividade da Empresa</div>
+          <div class="sim-card-desc">Busque pelo código CNAE ou nome da atividade</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="sim-tabs" role="tablist" aria-label="Modo de seleção">
+        <button
+          id="tab-busca"
+          class="sim-tab active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-busca"
+        >
+          <span aria-hidden="true">🔍</span> Buscar por atividade / CNAE
+        </button>
+        <button
+          id="tab-manual"
+          class="sim-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-manual"
+        >
+          <span aria-hidden="true">📋</span> Selecionar anexo manualmente
+        </button>
+      </div>
+
+      <!-- PAINEL: BUSCA -->
+      <div id="panel-busca" role="tabpanel" aria-labelledby="tab-busca">
+        <label class="sim-label" for="input-busca">Atividade ou código CNAE</label>
+        <div class="sim-input-wrap">
+          <input
+            type="search"
+            id="input-busca"
+            class="sim-input"
+            placeholder="Ex: restaurante, 6201, advocacia, engenharia, fisioterapia…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-autocomplete="list"
+            aria-controls="sim-dropdown"
+            aria-haspopup="listbox"
+          >
+          <!-- DROPDOWN -->
+          <div id="sim-dropdown" class="sim-dropdown hidden" role="listbox" aria-label="Resultados da busca"></div>
+        </div>
+
+        <!-- Dica inicial -->
+        <p id="search-hint" class="sim-input-hint">
+          Digite ao menos 2 caracteres para pesquisar entre <strong id="total-cnaes">250+</strong> atividades cadastradas.
+        </p>
+
+        <!-- SELECIONADO -->
+        <div id="selected-wrap" class="sim-selected hidden" role="status">
+          <div class="sim-selected-info">
+            <div class="sim-selected-code" id="selected-code"></div>
+            <div class="sim-selected-name" id="selected-name"></div>
+            <div class="sim-selected-badges" id="selected-badges"></div>
+          </div>
+          <button id="btn-clear" class="sim-clear-btn" aria-label="Remover seleção">×</button>
+        </div>
+      </div>
+
+      <!-- PAINEL: MANUAL -->
+      <div id="panel-manual" class="hidden" role="tabpanel" aria-labelledby="tab-manual">
+        <label class="sim-label">Anexo do Simples Nacional</label>
+        <div class="sim-anexo-grid" role="group" aria-label="Selecione o anexo">
+          <button class="sim-anexo-btn active" data-anexo="I"   aria-pressed="true">I</button>
+          <button class="sim-anexo-btn"        data-anexo="II"  aria-pressed="false">II</button>
+          <button class="sim-anexo-btn"        data-anexo="III" aria-pressed="false">III</button>
+          <button class="sim-anexo-btn"        data-anexo="IV"  aria-pressed="false">IV</button>
+          <button class="sim-anexo-btn"        data-anexo="V"   aria-pressed="false">V</button>
+        </div>
+        <p id="anexo-nome" class="sim-anexo-name">Anexo I – Comércio</p>
+
+        <!-- Legenda -->
+        <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="badge badge-blue">I – Comércio</span>
+          <span class="badge badge-blue">II – Indústria</span>
+          <span class="badge badge-green">III – Serviços (6%)</span>
+          <span class="badge badge-orange">IV – Serviços (4,5%)</span>
+          <span class="badge badge-gold">V – Serviços (15,5%)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CARD 2: FATURAMENTO ────────────────────────────────────────── -->
+    <section class="sim-card" aria-labelledby="card-fat-titulo" id="card-faturamento">
+      <div class="sim-card-header">
+        <div class="sim-card-icon" aria-hidden="true">💰</div>
+        <div>
+          <div class="sim-card-title" id="card-fat-titulo">Dados de Faturamento</div>
+          <div class="sim-card-desc">Receita do mês e acumulado dos últimos 12 meses</div>
+        </div>
+      </div>
+
+      <div class="sim-grid-2">
+        <div>
+          <label class="sim-label" for="input-rm">Receita bruta do mês (R$)</label>
+          <input
+            type="text"
+            id="input-rm"
+            class="sim-input"
+            inputmode="numeric"
+            placeholder="Ex: 30.000,00"
+            autocomplete="off"
+            aria-describedby="rm-hint"
+          >
+          <p id="rm-hint" class="sim-input-hint">Valor faturado neste mês</p>
+        </div>
+        <div>
+          <label class="sim-label" for="input-rbt">RBT12 – últimos 12 meses (R$)</label>
+          <input
+            type="text"
+            id="input-rbt"
+            class="sim-input"
+            inputmode="numeric"
+            placeholder="Vazio = mês × 12"
+            autocomplete="off"
+            aria-describedby="rbt-hint"
+          >
+          <p id="rbt-hint" class="sim-input-hint">Soma dos 12 meses anteriores. Se vazio, estimamos automaticamente.</p>
+        </div>
+      </div>
+
+      <p id="rbt-estimado" class="sim-input-hint hidden" style="margin-top:8px; color: var(--gold);"></p>
+    </section>
+
+    </div><!-- /.sim-row-desktop -->
+
+    <!-- ── CARD 3: FATOR R (condicional) ─────────────────────────────── -->
+    <section
+      id="secao-fatorr"
+      class="sim-card sim-card-gold hidden"
+      aria-labelledby="card-fr-titulo"
+    >
+      <div class="sim-card-header">
+        <div class="sim-card-icon" aria-hidden="true">⚖️</div>
+        <div>
+          <div class="sim-card-title" id="card-fr-titulo" style="color: var(--gold-light);">Fator R</div>
+          <div class="sim-card-desc">Esta atividade pode migrar do Anexo V para o Anexo III</div>
+        </div>
+      </div>
+
+      <!-- Explicação -->
+      <div class="sim-fatorr-info" role="note">
+        <div class="sim-fatorr-info-title">
+          <span aria-hidden="true">⚡</span> Como funciona o Fator R para esta atividade
+        </div>
+        <div class="sim-fatorr-info-text">
+          Esta atividade é <strong>sujeita ao Fator R</strong>. Por padrão, a empresa é tributada
+          pelo <strong>Anexo V (alíquota inicial: 15,5%)</strong>.<br>
+          Se a <strong>folha de pagamento acumulada dos últimos 12 meses</strong> for
+          <strong>igual ou superior a 28%</strong> da RBT12, a empresa migra para o
+          <strong>Anexo III (alíquota inicial: 6%)</strong> — uma economia significativa.<br>
+          <strong>Fórmula:</strong> Fator R = Folha 12m ÷ RBT12 × 100
+        </div>
+      </div>
+
+      <!-- Input Folha -->
+      <label class="sim-label gold" for="input-folha">
+        Folha de pagamento acumulada – últimos 12 meses (R$)
+      </label>
+      <input
+        type="text"
+        id="input-folha"
+        class="sim-input gold"
+        inputmode="numeric"
+        placeholder="Salários + pró-labore + INSS patronal + FGTS"
+        autocomplete="off"
+        aria-describedby="folha-hint"
+      >
+      <p id="folha-hint" class="sim-input-hint" style="color: rgba(201,168,76,0.6);">
+        Inclui: salários brutos, pró-labore dos sócios, 13º, férias, INSS patronal (CPP) e FGTS
+      </p>
+
+      <!-- Resultado Fator R -->
+      <div id="fr-resultado" class="hidden" aria-live="polite">
+        <!-- Barra de progresso -->
+        <div class="sim-progress-wrap" style="margin: 16px 0 12px;">
+          <div class="sim-progress-label">
+            <span>Fator R atual</span>
+            <span>Meta: 28%</span>
+          </div>
+          <div class="sim-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div id="fr-progress-fill" class="sim-progress-fill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Grade gauge + status -->
+        <div class="sim-fatorr-result">
+          <!-- Gauge -->
+          <div id="fr-pct-gauge" class="sim-fatorr-gauge">
+            <div style="font-size:11px; font-weight:700; color: var(--muted); text-transform:uppercase; letter-spacing:.7px;">
+              Fator R calculado
+            </div>
+            <div id="fr-pct" class="sim-fatorr-pct danger">—</div>
+            <div id="fr-meta" class="sim-fatorr-meta">meta: ≥ 28%</div>
+          </div>
+
+          <!-- Status -->
+          <div id="fr-status" class="sim-fatorr-status danger">
+            <div id="fr-status-title" class="sim-fatorr-status-title danger"></div>
+            <div id="fr-status-detail" class="sim-fatorr-status-detail"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RESULTADO DAS ───────────────────────────────────────────────── -->
+    <section
+      id="secao-resultado"
+      class="hidden"
+      aria-labelledby="result-anexo-label"
+      aria-live="polite"
+    >
+      <!-- Painel principal DAS -->
+      <div class="sim-result">
+        <div id="result-anexo-label" class="sim-result-label">DAS a recolher</div>
+        <div id="result-das" class="sim-result-das">R$ 0,00</div>
+
+        <div class="sim-result-metrics" role="list">
+          <div class="sim-metric highlight" role="listitem">
+            <div class="sim-metric-label">Alíq. Efetiva</div>
+            <div id="metric-efetiva" class="sim-metric-value">—</div>
+          </div>
+          <div class="sim-metric" role="listitem">
+            <div class="sim-metric-label">Alíq. Nominal</div>
+            <div id="metric-nominal" class="sim-metric-value">—</div>
+          </div>
+          <div class="sim-metric" role="listitem">
+            <div class="sim-metric-label">Faixa</div>
+            <div id="metric-faixa" class="sim-metric-value">—</div>
+          </div>
+          <div class="sim-metric" role="listitem">
+            <div class="sim-metric-label">Dedução</div>
+            <div id="metric-deducao" class="sim-metric-value">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Faixas -->
+      <div class="sim-card">
+        <div class="sim-card-header">
+          <div class="sim-card-icon" aria-hidden="true">📈</div>
+          <div>
+            <div id="tabela-anexo-nome" class="sim-card-title">Tabela de Faixas 2026</div>
+            <div class="sim-card-desc">A faixa destacada é a utilizada no cálculo acima</div>
+          </div>
+        </div>
+
+        <div class="sim-table-wrap">
+          <table class="sim-table" aria-label="Tabela de faixas do Simples Nacional">
+            <thead>
+              <tr>
+                <th scope="col">Faixa</th>
+                <th scope="col">Receita bruta (12 meses)</th>
+                <th scope="col">Alíquota</th>
+                <th scope="col">Dedução (R$)</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Nota sobre o cálculo -->
+        <div style="margin-top:16px; padding:12px 14px; background: rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.15); border-radius:8px;">
+          <p style="font-size:12px; color: var(--text2); line-height:1.7; margin:0;">
+            <strong style="color: var(--blue);">Como é calculado:</strong>
+            Alíquota efetiva = (RBT12 × Alíquota nominal − Dedução) ÷ RBT12<br>
+            DAS do mês = Receita do mês × Alíquota efetiva
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer class="sim-footer" role="contentinfo">
+      <p>
+        Simulação com base na tabela oficial do Simples Nacional 2026.<br>
+        Valores estimados — o DAS real pode variar conforme outras variáveis fiscais.<br>
+        <strong>Consulte sempre um contador de confiança.</strong>
+      </p>
+      <p style="margin-top:8px;">
+        © 2026
+        <a href="https://portal.mensure.com.br" target="_blank" rel="noopener noreferrer">
+          Mensure Assessoria Contábil
+        </a>
+        — Ribeirão Preto / SP &nbsp;|&nbsp;
+        <a href="tel:1636337995">(16) 3633-7995</a>
+      </p>
+    </footer>
+
+  </div><!-- /#sim-app -->
+</main>
+
+<!-- ── SCRIPTS (ordem importa!) ───────────────────────────────────────── -->
+<!-- 1. Dados e tabelas -->
+<script src="js/dados.js"></script>
+<!-- 2. Funções de cálculo e helpers -->
+<script src="js/calculos.js"></script>
+<!-- 3. Renderização da UI -->
+<script src="js/ui.js"></script>
+<!-- 4. Inicialização (carrega CSV e inicia tudo) -->
+<script src="js/main.js"></script>
+
+</body>
+</html>
