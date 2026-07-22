@@ -123,7 +123,7 @@ function loadObrigacoes() {
   var body = document.getElementById('obrig-body');
   if (!body) return;
   var list = [
-    { icon:'&#129518;', nome:'Simulador de Simples Nacional' },
+    { icon:'&#129518;', nome:'Simulador de Simples Nacional', link:'https://portal.mensure.com.br/simulador-das/' },
     { icon:'&#128202;', nome:'Calculadora de IRPJ/CSLL' },
     { icon:'&#128203;', nome:'Gerador de Guias DAS' },
     { icon:'&#128188;', nome:'Planner Tribut&#225;rio Anual' },
