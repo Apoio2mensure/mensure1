@@ -229,7 +229,7 @@ body {
 @media (max-width: 900px) {
   .sim-nav,
   .sim-header-inner > .sim-nav-cta { display: none; }
-  .sim-nav-toggle { display: flex; }
+  .sim-nav-toggle { display: flex; margin-left: auto; }
   .sim-nav-mobile { display: flex; }
   .sim-nav-mobile:not(.open) { display: none; }
 }

@@ -459,6 +459,26 @@ function showFErr(btn, msg) {
   setTimeout(function(){ btn.textContent=orig; btn.style.background=''; }, 2500);
 }
 
+// ── Menu hamburguer (mobile) ──────────────────────────────────────────────────
+function initMobileMenu() {
+  var btn = document.querySelector('.nav-mobile-btn');
+  var links = document.querySelector('.nav-links');
+  if (!btn || !links) return;
+
+  btn.addEventListener('click', function () {
+    btn.classList.toggle('active');
+    links.classList.toggle('active');
+  });
+
+  // Fecha o menu ao clicar em qualquer link
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      btn.classList.remove('active');
+      links.classList.remove('active');
+    });
+  });
+}
+
 // ── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function(){
   loadObrigacoes();
@@ -468,6 +488,7 @@ document.addEventListener('DOMContentLoaded', function(){
   initSvcLinks();
   initNewsModal();
   initCookieBanner();
+  initMobileMenu();
   setInterval(loadCotacoes, 5  * 60 * 1000);
   setInterval(loadNews,     30 * 60 * 1000);
 });
