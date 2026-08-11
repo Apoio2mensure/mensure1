@@ -80,6 +80,15 @@ nav { background: var(--teal); position: sticky; top: 0; z-index: 100; padding: 
 .val-text { font-size: .88rem; color: var(--mid); line-height: 1.5; }
 .val-text strong { display: block; font-size: .9rem; color: var(--dark); font-weight: 600; margin-bottom: 2px; }
 
+.seo-info-toggle { background: none; border: none; padding: 0; cursor: pointer; font-size: .75rem; color: rgba(255,255,255,.12); font-family: inherit; transition: color .2s; }
+.seo-info-toggle:hover, .seo-info-toggle:focus-visible { color: rgba(255,255,255,.4); }
+.seo-info-content { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.seo-info-content.open { max-height: 3000px; transition: max-height .6s ease; }
+.seo-info-inner { max-width: 780px; margin: 0 auto; padding: 20px 24px 8px; }
+.seo-info-inner p { font-size: .78rem; color: rgba(255,255,255,.35); line-height: 1.75; margin-bottom: 16px; }
+.seo-info-inner h3 { font-size: .85rem; font-weight: 700; color: rgba(255,255,255,.55); margin: 20px 0 8px; }
+.seo-info-inner strong { color: rgba(255,255,255,.5); }
+
 .mvv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
 .mvv-card { border-radius: 14px; padding: 28px; border: 1px solid transparent; }
 .mvv-card.m { background: var(--teal); }

@@ -459,6 +459,23 @@ function showFErr(btn, msg) {
   setTimeout(function(){ btn.textContent=orig; btn.style.background=''; }, 2500);
 }
 
+// ── Botão "SEO" discreto no rodapé (conteúdo real, visível ao clicar) ────────
+function initSeoInfoToggle() {
+  var btn = document.getElementById('seo-info-toggle');
+  var content = document.getElementById('seo-info-content');
+  if (!btn || !content) return;
+
+  btn.addEventListener('click', function () {
+    var expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    content.classList.toggle('open', !expanded);
+    content.setAttribute('aria-hidden', String(expanded));
+    if (!expanded) {
+      content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+}
+
 // ── Menu hamburguer (mobile) ──────────────────────────────────────────────────
 function initMobileMenu() {
   var btn = document.querySelector('.nav-mobile-btn');
@@ -489,6 +506,7 @@ document.addEventListener('DOMContentLoaded', function(){
   initNewsModal();
   initCookieBanner();
   initMobileMenu();
+  initSeoInfoToggle();
   setInterval(loadCotacoes, 5  * 60 * 1000);
   setInterval(loadNews,     30 * 60 * 1000);
 });
