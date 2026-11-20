@@ -15,4 +15,18 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- BLOG-INICIO -->
+  <url>
+    <loc>https://www.mensure.com.br/Blog/</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mensure.com.br/Blog/equiparacao-hospitalar/</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <!-- BLOG-FIM -->
 </urlset>

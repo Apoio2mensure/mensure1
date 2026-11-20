@@ -1446,10 +1446,15 @@
                 { icon: '&#129518;', nome: 'Simulador de Simples Nacional' },
                 { icon: '&#128202;', nome: 'Calculadora de IRPJ/CSLL' },
                 { icon: '&#128203;', nome: 'Gerador de Guias DAS' },
-                { icon: '&#128188;', nome: 'Planner Tribut&#225;rio Anual' },
+                { icon: '&#128188;', nome: 'Blog', link: 'Blog/' },
                 { icon: '&#128269;', nome: 'Consulta de CNPJ' }
             ];
             body.innerHTML = list.map(function (f) {
+                if (f.link) {
+                    return '<a href="' + f.link + '" class="obrig-item" style="text-decoration:none;">'
+                        + '<span style="display:flex;align-items:center;gap:8px;"><span style="font-size:1rem;">' + f.icon + '</span><span>' + f.nome + '</span></span>'
+                        + '<span style="font-size:.8rem;color:var(--teal);">&#8594;</span></a>';
+                }
                 return '<div class="obrig-item">'
                     + '<span style="display:flex;align-items:center;gap:8px;"><span style="font-size:1rem;">' + f.icon + '</span><span>' + f.nome + '</span></span>'
                     + '<span class="obrig-badge" style="background:#f0f9ff;color:#0369a1;opacity:.8;">Em breve</span>'

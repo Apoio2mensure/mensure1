@@ -77,7 +77,8 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 - Portal do Cliente (portal.mensure.com.br): Central de atendimento para envio de documentos, acesso a balancetes e download de guias de impostos a vencer de forma segura.
 - Simulador do Simples Nacional & Fator R: Ferramenta interativa de apoio ao planejamento tributário.
 - Consulta Rápida de CNPJ: Módulo de checagem cadastral.
-- Módulos em Expansão: Calculadora de IRPJ/CSLL, Gerador de Guias DAS e Planner Tributário Anual.
+- Módulos em Expansão: Calculadora de IRPJ/CSLL, Gerador de Guias DAS.
+- Blog (www.mensure.com.br/Blog/): Notícias e informações contábeis e tributárias publicadas pela Mensure.
 
 ---
 
@@ -125,3 +126,12 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 - Website Oficial: https://www.mensure.com.br
 - Portal do Cliente: https://portal.mensure.com.br
 - Redes Sociais: @mensurecontabilidade
+
+---
+
+<!-- BLOG-INICIO -->
+## Blog da Mensure
+Artigos informativos sobre impostos, contabilidade e gestão empresarial: https://www.mensure.com.br/Blog/
+
+- Equiparação hospitalar: como funciona e quais clínicas podem ter direito? (atualizado em 20/11/2026): Entenda como funciona a equiparação hospitalar, quem pode se enquadrar, quais serviços são elegíveis e como reduzir a base de IRPJ e CSLL no Lucro Presumido. https://www.mensure.com.br/Blog/equiparacao-hospitalar/
+<!-- BLOG-FIM -->

@@ -126,7 +126,7 @@ function loadObrigacoes() {
     { icon:'&#129518;', nome:'Simulador de Simples Nacional', link:'https://portal.mensure.com.br/simulador-das/' },
     { icon:'&#128202;', nome:'Calculadora de IRPJ/CSLL' },
     { icon:'&#128203;', nome:'Gerador de Guias DAS' },
-    { icon:'&#128188;', nome:'Planner Tribut&#225;rio Anual' },
+    { icon:'&#128188;', nome:'Blog', link:'Blog/' },
     { icon:'&#128269;', nome:'Informa&#231;&#245;es do CNPJ', link:'infomacoes-cnpj.html' }
   ];
   body.innerHTML = list.map(function(f){
