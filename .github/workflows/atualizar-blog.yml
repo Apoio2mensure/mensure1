@@ -1,0 +1,20 @@
+name: Atualizar índice do Blog
+on:
+  push:
+    paths:
+      - 'Blog/**.html'
+      - 'Blog/**/*.html'
+permissions:
+  contents: write
+jobs:
+  indice:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 Blog/gerar-indice.py
+      - name: Commit do índice
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Blog/posts.json sitemap.xml
+          git diff --cached --quiet || (git commit -m "Atualiza índice do Blog" && git push)
