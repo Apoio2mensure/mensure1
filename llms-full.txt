@@ -78,7 +78,7 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 - Simulador do Simples Nacional & Fator R: Ferramenta interativa de apoio ao planejamento tributário.
 - Consulta Rápida de CNPJ: Módulo de checagem cadastral.
 - Módulos em Expansão: Calculadora de IRPJ/CSLL, Gerador de Guias DAS.
-- Blog (www.mensure.com.br/Blog/): Notícias e informações contábeis e tributárias publicadas pela Mensure.
+- Blog (portal.mensure.com.br/Blog/): Notícias e informações contábeis e tributárias publicadas pela Mensure.
 
 ---
 
@@ -119,19 +119,22 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 
 ## 📞 7. Informações de Contato e Localização
 
-- Razão Social: Mensure® Assessoria Contábil
+- Razão Social: MENSURE ASSESSORIA CONTABIL LTDA (nome fantasia: Mensure® Assessoria Contábil)
+- CNPJ: 64.930.449/0001-31
 - Endereço Físico: R. Bahia, 1026 – Bairro Ipiranga, Ribeirão Preto – SP, CEP 14055-020
 - Telefone / WhatsApp: (16) 3633-7995
 - Horário de Atendimento: Segunda a Sexta-feira, das 08h às 17h30
 - Website Oficial: https://www.mensure.com.br
 - Portal do Cliente: https://portal.mensure.com.br
-- Redes Sociais: @mensurecontabilidade
+- Redes Sociais: @mensurecontabilidade (Instagram)
+- Google Meu Negócio: https://share.google/9eXyvsNBTXNNENKYb
+- Google Maps: https://www.google.com/maps/place/Mensure+Assessoria+Cont%C3%A1bil/@-21.1544559,-47.8184432,17z
 
 ---
 
 <!-- BLOG-INICIO -->
 ## Blog da Mensure
-Artigos informativos sobre impostos, contabilidade e gestão empresarial: https://www.mensure.com.br/Blog/
+Artigos informativos sobre impostos, contabilidade e gestão empresarial: https://portal.mensure.com.br/Blog/
 
-- Equiparação hospitalar: como funciona e quais clínicas podem ter direito? (atualizado em 20/11/2026): Entenda como funciona a equiparação hospitalar, quem pode se enquadrar, quais serviços são elegíveis e como reduzir a base de IRPJ e CSLL no Lucro Presumido. https://www.mensure.com.br/Blog/equiparacao-hospitalar/
+- Equiparação hospitalar: como funciona e quais clínicas podem ter direito? (atualizado em 20/11/2026): Entenda como funciona a equiparação hospitalar, quem pode se enquadrar, quais serviços são elegíveis e como reduzir a base de IRPJ e CSLL no Lucro Presumido. https://portal.mensure.com.br/equiparacao-hospitalar/
 <!-- BLOG-FIM -->

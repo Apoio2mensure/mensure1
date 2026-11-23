@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.mensure.com.br/sitemap.xml
+Sitemap: https://portal.mensure.com.br/sitemap.xml

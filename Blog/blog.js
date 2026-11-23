@@ -62,8 +62,8 @@
 
   var nav = document.getElementById('post-nav');
   if (nav) {
-    var atual = decodeURIComponent(location.pathname.split('/Blog/').pop() || '').replace(/index\.html$/, '');
-    fetch('../posts.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+    var atual = decodeURIComponent(location.pathname).replace(/^\/+/, '').replace(/index\.html$/, '');
+    fetch('../Blog/posts.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
       var l = d.posts, i = l.findIndex(function (p) { return p.url === atual; });
       if (i < 0) return;
       function a(p, t) { var e = document.createElement('a'); e.href = '../' + p.url; e.textContent = t; return e; }

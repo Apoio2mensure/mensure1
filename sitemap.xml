@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.mensure.com.br/</loc>
+    <loc>https://portal.mensure.com.br/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.mensure.com.br/infomacoes-cnpj.html</loc>
+    <loc>https://portal.mensure.com.br/infomacoes-cnpj.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://portal.mensure.com.br/simulador-das</loc>
+    <loc>https://portal.mensure.com.br/simulador-das/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <!-- BLOG-INICIO -->
   <url>
-    <loc>https://www.mensure.com.br/Blog/</loc>
+    <loc>https://portal.mensure.com.br/Blog/</loc>
     <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.mensure.com.br/Blog/equiparacao-hospitalar/</loc>
+    <loc>https://portal.mensure.com.br/equiparacao-hospitalar/</loc>
     <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

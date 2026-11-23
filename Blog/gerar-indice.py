@@ -4,8 +4,9 @@
 Uso:  python gerar-indice.py      (ou dois cliques em atualizar-blog.bat)
 
 O que faz
-- Encontra todo .html dentro de Blog (inclusive subpastas), menos o index.html da raiz
-  e tudo que começar com "_" (ex.: _modelo-post.html).
+- Encontra os artigos: cada artigo é uma pasta na RAIZ do site (ex.: equiparacao-hospitalar/index.html,
+  endereço portal.mensure.com.br/equiparacao-hospitalar/) cujo HTML tenha og:type "article".
+  Pastas que começam com "_" ou "." e as pastas do sistema (Blog, css, js, fotos...) são ignoradas.
 - Lê os dados de cada artigo (veja _modelo-post.html para os metadados).
 - Grava Blog/posts.json (usado pela navegação anterior/próximo dos artigos).
 - Escreve os cartões, categorias e dados estruturados DIRETO no HTML de Blog/index.html
@@ -22,7 +23,9 @@ from urllib.parse import quote
 
 BLOG = Path(__file__).resolve().parent
 SITE = BLOG.parent
-BASE = "https://www.mensure.com.br"
+BASE = "https://portal.mensure.com.br"
+# Pastas da raiz que NÃO são artigos
+IGNORAR = {"Blog", "css", "js", "fotos", "RECIBOSAUDE", "simulador-das"}
 POR_PAGINA = 9
 
 
@@ -64,7 +67,7 @@ def br(d):
 
 
 def ler_post(f):
-    rel = f.relative_to(BLOG).as_posix()
+    rel = f.relative_to(SITE).as_posix()
     src = f.read_text(encoding="utf-8", errors="replace")
     titulo = meta(src, "og:title")
     if not titulo:
@@ -114,7 +117,7 @@ def cartao(p, cats, grande=False):
     cslug = slug(p["categoria"])
     cnome = cats.get(cslug, {}).get("nome", p["categoria"])
     busca = slug(" ".join([p["titulo"], p["resumo"], cnome, p["palavras_chave"]])).replace("-", " ")
-    href = quote(p["url"])
+    href = "../" + quote(p["url"])
     return (
         '<article class="card js-card%s" data-cat="%s" data-busca="%s">\n'
         '  <a class="card-thumb" href="%s" tabindex="-1" aria-hidden="true">%s</a>\n'
@@ -143,11 +146,12 @@ def main():
     cats_lista = json.loads((BLOG / "categorias.json").read_text(encoding="utf-8"))
     cats = {c["slug"]: c for c in cats_lista}
     posts = []
-    for f in sorted(BLOG.rglob("*.html")):
-        rel = f.relative_to(BLOG)
-        if rel.as_posix().lower() == "index.html" or any(x.startswith("_") for x in rel.parts):
+    for pasta in sorted(SITE.iterdir()):
+        if not pasta.is_dir() or pasta.name in IGNORAR or pasta.name[0] in "._":
             continue
-        posts.append(ler_post(f))
+        f = pasta / "index.html"
+        if f.exists() and re.search(r'property=["\']og:type["\'][^>]*content=["\']article', f.read_text(encoding="utf-8", errors="replace")):
+            posts.append(ler_post(f))
     posts.sort(key=lambda p: (p["data"], p["arquivo"]), reverse=True)
     for p in posts:  # categoria nova, fora do categorias.json, também aparece nos filtros
         sl = slug(p["categoria"])
@@ -179,26 +183,29 @@ def main():
         for c in cats_lista))
 
     indexaveis = [p for p in posts if not p["noindex"]]
-    org = {"@type": "AccountingService", "@id": BASE + "/#organization", "name": "Mensure Assessoria Contábil",
-           "alternateName": "Mensure", "url": BASE + "/", "telephone": "+55-16-3633-7995",
-           "address": {"@type": "PostalAddress", "streetAddress": "R. Bahia, 1026 - Ipiranga",
-                       "addressLocality": "Ribeirão Preto", "addressRegion": "SP", "postalCode": "14055-020", "addressCountry": "BR"}}
+    org = json.loads((BLOG / "organizacao.json").read_text(encoding="utf-8"))
     blog = {"@type": "Blog", "@id": BASE + "/Blog/#blog", "name": "Blog Mensure", "url": BASE + "/Blog/",
             "inLanguage": "pt-BR", "publisher": {"@id": BASE + "/#organization"}}
     if indexaveis:
-        blog["blogPost"] = [{"@type": "BlogPosting", "headline": p["titulo"], "url": BASE + "/Blog/" + quote(p["url"]),
+        blog["blogPost"] = [{"@type": "BlogPosting", "headline": p["titulo"], "url": BASE + "/" + quote(p["url"]),
                              "datePublished": p["data"], "dateModified": p["atualizado"]} for p in indexaveis]
+    faq = json.loads((BLOG / "faq.json").read_text(encoding="utf-8")) if (BLOG / "faq.json").exists() else []
+    faq_ld = [{"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": x["q"], "acceptedAnswer": {"@type": "Answer", "text": x["a"]}} for x in faq]}] if faq else []
+    faq_html = ('<section class="faq-mini" id="faq" aria-labelledby="faq-t"><div class="faq-mini-in">\n<h2 id="faq-t">Perguntas frequentes</h2>\n'
+                + "\n".join('<details><summary>%s</summary><p>%s</p></details>' % (esc(x["q"]), esc(x["a"])) for x in faq)
+                + '\n</div></section>') if faq else ""
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "WebSite", "@id": BASE + "/Blog/#website", "url": BASE + "/Blog/", "name": "Blog Mensure",
-         "inLanguage": "pt-BR", "publisher": {"@id": BASE + "/#organization"}}, org, blog]}
+         "inLanguage": "pt-BR", "publisher": {"@id": BASE + "/#organization"}}, org, blog] + faq_ld}
     s = trocar(s, "JSONLD", '<script type="application/ld+json">\n' + json.dumps(ld, ensure_ascii=False, indent=2) + "\n</script>")
+    s = trocar(s, "FAQ", faq_html)
     idx.write_text(s, encoding="utf-8")
     print("index.html do Blog atualizado")
 
     sm = SITE / "sitemap.xml"
     if sm.exists():
         t = sm.read_text(encoding="utf-8")
-        urls = [(BASE + "/Blog/", "weekly", "0.7", max([p["atualizado"] for p in indexaveis] or [""]))] + [(BASE + "/Blog/" + quote(p["url"]), "monthly", "0.6", p["atualizado"]) for p in indexaveis]
+        urls = [(BASE + "/Blog/", "weekly", "0.7", max([p["atualizado"] for p in indexaveis] or [""]))] + [(BASE + "/" + quote(p["url"]), "monthly", "0.6", p["atualizado"]) for p in indexaveis]
         bloco = "<!-- BLOG-INICIO -->\n" + "".join(
             "  <url>\n    <loc>%s</loc>\n%s    <changefreq>%s</changefreq>\n    <priority>%s</priority>\n  </url>\n" % (esc(u), ("    <lastmod>%s</lastmod>\n" % lm) if lm else "", c, pr)
             for u, c, pr, lm in urls) + "  <!-- BLOG-FIM -->"
@@ -215,7 +222,7 @@ def main():
         ini, fim = "<!-- BLOG-INICIO -->", "<!-- BLOG-FIM -->"
         linhas = ["## Blog da Mensure", "Artigos informativos sobre impostos, contabilidade e gestão empresarial: " + BASE + "/Blog/", ""]
         for p in indexaveis:
-            linhas.append("- %s (atualizado em %s): %s %s/Blog/%s" % (p["titulo"], br(p["atualizado"]), p["resumo"], BASE, quote(p["url"])))
+            linhas.append("- %s (atualizado em %s): %s %s/%s" % (p["titulo"], br(p["atualizado"]), p["resumo"], BASE, quote(p["url"])))
         bloco = ini + "\n" + "\n".join(linhas) + "\n" + fim
         if ini in t:
             t = re.sub(re.escape(ini) + r".*?" + re.escape(fim), lambda _: bloco, t, flags=re.S)
