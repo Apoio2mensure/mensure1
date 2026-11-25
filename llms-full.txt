@@ -136,5 +136,6 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 ## Blog da Mensure
 Artigos informativos sobre impostos, contabilidade e gestão empresarial: https://portal.mensure.com.br/Blog/
 
+- Contabilidade para médicos: pague menos imposto, dentro da lei (atualizado em 25/11/2026): Pagando até 27,5% no CPF? Contabilidade para médicos: CNPJ, Fator R e impostos em dia. Marque sua reunião e tire suas dúvidas pelo WhatsApp da Mensure. https://portal.mensure.com.br/contabilidade-para-medicos/
 - Equiparação hospitalar: como funciona e quais clínicas podem ter direito? (atualizado em 20/11/2026): Entenda como funciona a equiparação hospitalar, quem pode se enquadrar, quais serviços são elegíveis e como reduzir a base de IRPJ e CSLL no Lucro Presumido. https://portal.mensure.com.br/equiparacao-hospitalar/
 <!-- BLOG-FIM -->
