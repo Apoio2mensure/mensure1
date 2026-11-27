@@ -78,7 +78,7 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 - Simulador do Simples Nacional & Fator R: Ferramenta interativa de apoio ao planejamento tributário.
 - Consulta Rápida de CNPJ: Módulo de checagem cadastral.
 - Módulos em Expansão: Calculadora de IRPJ/CSLL, Gerador de Guias DAS.
-- Blog (portal.mensure.com.br/Blog/): Notícias e informações contábeis e tributárias publicadas pela Mensure.
+- Blog (portal.mensure.com.br/blog/): Notícias e informações contábeis e tributárias publicadas pela Mensure.
 
 ---
 
@@ -134,7 +134,7 @@ A Mensure integra a tradição do atendimento presencial ao ecossistema digital 
 
 <!-- BLOG-INICIO -->
 ## Blog da Mensure
-Artigos informativos sobre impostos, contabilidade e gestão empresarial: https://portal.mensure.com.br/Blog/
+Artigos informativos sobre impostos, contabilidade e gestão empresarial: https://portal.mensure.com.br/blog/
 
 - Contabilidade para médicos: pague menos imposto, dentro da lei (atualizado em 25/11/2026): Pagando até 27,5% no CPF? Contabilidade para médicos: CNPJ, Fator R e impostos em dia. Marque sua reunião e tire suas dúvidas pelo WhatsApp da Mensure. https://portal.mensure.com.br/contabilidade-para-medicos/
 - Equiparação hospitalar: como funciona e quais clínicas podem ter direito? (atualizado em 20/11/2026): Entenda como funciona a equiparação hospitalar, quem pode se enquadrar, quais serviços são elegíveis e como reduzir a base de IRPJ e CSLL no Lucro Presumido. https://portal.mensure.com.br/equiparacao-hospitalar/

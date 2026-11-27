@@ -4,14 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador Simples Nacional 2026 | Mensure Assessoria Contábil</title>
-  <meta name="description" content="Calcule o DAS do Simples Nacional 2026 gratuitamente. Informe seu CNAE, faturamento e folha de pagamento para simular o imposto com Fator R. Mensure Assessoria Contábil – Ribeirão Preto.">
+  <meta name="description" content="Calcule o DAS do Simples Nacional 2026 de graça: informe CNAE, faturamento e folha e veja o imposto e o Fator R. Ferramenta da Mensure.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://portal.mensure.com.br/simulador-das/">
-  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
   <meta property="og:title" content="Simulador Simples Nacional 2026 | Mensure">
   <meta property="og:description" content="Simule seu DAS no Simples Nacional. Busca por CNAE, cálculo de Fator R e tabela completa de faixas 2026.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://portal.mensure.com.br/simulador-das/">
+  <meta property="og:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mensure Assessoria Contábil - Contabilidade em Ribeirão Preto">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+  <meta name="twitter:description" content="Simule seu DAS no Simples Nacional. Busca por CNAE, cálculo de Fator R e tabela completa de faixas 2026.">
+  <meta name="twitter:title" content="Simulador Simples Nacional 2026 | Mensure">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Mensure Assessoria Contábil">
 
@@ -20,11 +28,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/simulador.css">
-<script type="application/ld+json">
+  <link rel="stylesheet" href="/simulador-das/css/simulador.css">
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://portal.mensure.com.br/#website",
+      "url": "https://portal.mensure.com.br/",
+      "name": "Mensure Assessoria Contábil",
+      "inLanguage": "pt-BR",
+      "publisher": {
+        "@id": "https://portal.mensure.com.br/#organization"
+      }
+    },
     {
       "@type": "AccountingService",
       "@id": "https://portal.mensure.com.br/#organization",
@@ -34,8 +52,19 @@
       "taxID": "64.930.449/0001-31",
       "description": "Assessoria contábil em Ribeirão Preto (SP) desde 1990, especializada em contabilidade para médicos, clínicas, laboratórios, profissionais da saúde e prestadores de serviço.",
       "url": "https://portal.mensure.com.br/",
-      "logo": "https://portal.mensure.com.br/favicon.png",
-      "image": "https://portal.mensure.com.br/fotos/imagem-ini.webp",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://portal.mensure.com.br/#logo",
+        "url": "https://portal.mensure.com.br/fotos/logo-mensure.png",
+        "contentUrl": "https://portal.mensure.com.br/fotos/logo-mensure.png",
+        "width": 512,
+        "height": 512,
+        "caption": "Mensure Assessoria Contábil"
+      },
+      "image": [
+        "https://portal.mensure.com.br/fotos/og-mensure.jpg",
+        "https://portal.mensure.com.br/fotos/imagem-ini.webp"
+      ],
       "telephone": "+55-16-3633-7995",
       "email": "mensure@mensure.com.br",
       "priceRange": "$$",
@@ -78,7 +107,12 @@
       "foundingDate": "1990",
       "founder": {
         "@type": "Person",
-        "name": "Edson Caldeira"
+        "@id": "https://portal.mensure.com.br/#edson-caldeira",
+        "name": "Edson Caldeira",
+        "jobTitle": "Fundador",
+        "worksFor": {
+          "@id": "https://portal.mensure.com.br/#organization"
+        }
       },
       "sameAs": [
         "https://www.instagram.com/mensurecontabilidade",
@@ -102,52 +136,111 @@
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Contabilidade"
+              "name": "Contabilidade",
+              "@id": "https://portal.mensure.com.br/servicos/contabil/#service",
+              "url": "https://portal.mensure.com.br/servicos/contabil/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Fiscal e tributário"
+              "name": "Fiscal e tributário",
+              "@id": "https://portal.mensure.com.br/servicos/fiscal-tributario/#service",
+              "url": "https://portal.mensure.com.br/servicos/fiscal-tributario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Departamento pessoal (trabalhista e previdenciário)"
+              "name": "Departamento pessoal (trabalhista e previdenciário)",
+              "@id": "https://portal.mensure.com.br/servicos/trabalhista-previdenciario/#service",
+              "url": "https://portal.mensure.com.br/servicos/trabalhista-previdenciario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Societário e legalização (abertura de CNPJ)"
+              "name": "Societário e legalização (abertura de CNPJ)",
+              "@id": "https://portal.mensure.com.br/servicos/societario-legalizacao/#service",
+              "url": "https://portal.mensure.com.br/servicos/societario-legalizacao/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Planejamento tributário"
+              "name": "Planejamento tributário",
+              "@id": "https://portal.mensure.com.br/servicos/planejamento-tributario/#service",
+              "url": "https://portal.mensure.com.br/servicos/planejamento-tributario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Consultoria contábil"
+              "name": "Consultoria contábil",
+              "@id": "https://portal.mensure.com.br/servicos/consultoria-contabil/#service",
+              "url": "https://portal.mensure.com.br/servicos/consultoria-contabil/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Contabilidade para médicos e clínicas"
+              "name": "Contabilidade para médicos e clínicas",
+              "url": "https://portal.mensure.com.br/contabilidade-para-medicos/"
             }
           }
         ]
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone": "+55-16-3633-7995",
+        "email": "mensure@mensure.com.br",
+        "areaServed": "BR",
+        "availableLanguage": "pt-BR",
+        "hoursAvailable": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "17:30"
+        }
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://portal.mensure.com.br/simulador-das/#webpage",
+      "url": "https://portal.mensure.com.br/simulador-das/",
+      "name": "Simulador Simples Nacional 2026 | Mensure Assessoria Contábil",
+      "description": "Calcule o DAS do Simples Nacional 2026 gratuitamente. Informe seu CNAE, faturamento e folha de pagamento para simular o imposto com Fator R. Mensure Assessoria Contábil – Ribeirão Preto.",
+      "inLanguage": "pt-BR",
+      "isPartOf": {
+        "@id": "https://portal.mensure.com.br/#website"
+      },
+      "about": {
+        "@id": "https://portal.mensure.com.br/#organization"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://portal.mensure.com.br/fotos/og-mensure.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "breadcrumb": {
+        "@id": "https://portal.mensure.com.br/simulador-das/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://portal.mensure.com.br/simulador-das/#app"
       }
     },
     {
@@ -164,6 +257,10 @@
       },
       "provider": {
         "@id": "https://portal.mensure.com.br/#organization"
+      },
+      "@id": "https://portal.mensure.com.br/simulador-das/#app",
+      "isPartOf": {
+        "@id": "https://portal.mensure.com.br/simulador-das/#webpage"
       }
     },
     {
@@ -202,77 +299,87 @@
           }
         }
       ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://portal.mensure.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ferramentas",
+          "item": "https://portal.mensure.com.br/#ferramentas"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Simulador do Simples Nacional e Fator R",
+          "item": "https://portal.mensure.com.br/simulador-das/"
+        }
+      ],
+      "@id": "https://portal.mensure.com.br/simulador-das/#breadcrumb"
     }
   ]
 }
-</script>
+  </script>
+  <link rel="stylesheet" href="/css/header.css">
+  <script src="/js/header.js" defer></script>
+  <script src="/js/analytics.js" defer></script>
 </head>
 <body>
 
-<!-- ── HEADER ──────────────────────────────────────────────────────────── -->
-<header class="sim-header" role="banner">
-  <div class="sim-header-inner">
-    <a href="https://portal.mensure.com.br/" class="sim-logo-link" aria-label="Ir para o site da Mensure">
-      <div class="sim-logo-text">
-        <span class="sim-logo-name">Mensure<em>®</em></span>
-        <span class="sim-logo-sub">Assessoria Contábil</span>
-        <span class="sim-logo-tag">Contabilizando sucessos com excelência.</span>
-      </div>
+<!-- SITE:HEADER -->
+<header class="site-header" id="topo">
+  <a class="sh-skip" href="#conteudo">Ir para o conte&#250;do</a>
+  <div class="sh-inner">
+    <a class="sh-logo" href="/" aria-label="Mensure Assessoria Contábil - página inicial">
+      <span class="sh-ln">Mensure<em>&#174;</em></span>
+      <span class="sh-ls">Assessoria Cont&#225;bil</span>
+      <span class="sh-lt">Contabilizando sucessos com excel&#234;ncia.</span>
     </a>
-
-    <nav class="sim-nav" aria-label="Navegação principal">
-      <a href="https://portal.mensure.com.br/#home">Home</a>
-      <a href="https://portal.mensure.com.br/#servicos">Serviços</a>
-      <a href="https://portal.mensure.com.br/#sobre">Sobre Nós</a>
-      <a href="https://portal.mensure.com.br/#noticias">Notícias</a>
-      <a href="https://portal.mensure.com.br/Blog/">Blog</a>
-      <a href="https://portal.mensure.com.br/#ferramentas">Ferramentas</a>
-      <a href="https://portal.mensure.com.br/#login">Login Cliente</a>
+    <button class="sh-burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
+    <nav class="sh-nav" id="sh-menu" aria-label="Principal">
+      <ul class="sh-list">
+        <li><a href="/">In&#237;cio</a></li>
+        <li><a href="/sobre/">Sobre N&#243;s</a></li>
+        <li class="sh-has-sub">
+          <a href="/#servicos">Servi&#231;os</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Servi&#231;os" aria-expanded="false" aria-controls="sh-sub-servicos"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-servicos">
+            <li><a href="/servicos/contabil/">Cont&#225;bil</a></li>
+            <li><a href="/servicos/fiscal-tributario/">Fiscal / Tribut&#225;rio</a></li>
+            <li><a href="/servicos/trabalhista-previdenciario/">Trabalhista / Previdenci&#225;rio</a></li>
+            <li><a href="/servicos/societario-legalizacao/">Societ&#225;rio / Legaliza&#231;&#227;o</a></li>
+          </ul>
+        </li>
+        <li><a href="/#noticias">Not&#237;cias</a></li>
+        <li class="sh-has-sub">
+          <a href="/blog/">Blog</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Blog" aria-expanded="false" aria-controls="sh-sub-blog"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-blog">
+            <li><a href="/blog/">In&#237;cio</a></li>
+            <li><a href="/blog/artigos/">Artigos</a></li>
+            <li><a href="/blog/areas-de-interesse/">&#193;reas de interesse</a></li>
+            <li><a href="/blog/sobre/">Sobre a Mensure</a></li>
+          </ul>
+        </li>
+        <li><a href="/#ferramentas">Ferramentas</a></li>
+        <li><a href="/#login">Login</a></li>
+        <li class="sh-cta-li"><a class="sh-cta" href="tel:1636337995">Entre em contato</a></li>
+      </ul>
     </nav>
-
-    <a href="tel:1636337995" class="sim-nav-cta">Entre em contato</a>
-
-    <button class="sim-nav-toggle" id="sim-nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="sim-nav-mobile">
-      <span></span><span></span><span></span>
-    </button>
   </div>
-
-  <!-- MENU MOBILE (aparece abaixo do header em telas pequenas) -->
-  <nav class="sim-nav-mobile" id="sim-nav-mobile" aria-label="Navegação mobile">
-    <a href="https://portal.mensure.com.br/#home">Home</a>
-    <a href="https://portal.mensure.com.br/#servicos">Serviços</a>
-    <a href="https://portal.mensure.com.br/#sobre">Sobre Nós</a>
-    <a href="https://portal.mensure.com.br/#noticias">Notícias</a>
-      <a href="https://portal.mensure.com.br/Blog/">Blog</a>
-    <a href="https://portal.mensure.com.br/#ferramentas">Ferramentas</a>
-    <a href="https://portal.mensure.com.br/#login">Login Cliente</a>
-    <a href="tel:1636337995" class="sim-nav-cta sim-nav-cta-mobile">Entre em contato</a>
-  </nav>
 </header>
+<!-- /SITE:HEADER -->
 
-<script>
-  // Menu mobile do header (abre/fecha o painel de navegação)
-  (function () {
-    var btn   = document.getElementById('sim-nav-toggle');
-    var panel = document.getElementById('sim-nav-mobile');
-    if (!btn || !panel) return;
-    btn.addEventListener('click', function () {
-      var open = panel.classList.toggle('open');
-      btn.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    panel.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        panel.classList.remove('open');
-        btn.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-      });
-    });
-  })();
-</script>
 
 <!-- ── APP WRAPPER ─────────────────────────────────────────────────────── -->
-<main class="sim-main" id="simulador-main">
+<main class="sim-main" id="conteudo">
 
   <!-- LOADING -->
   <div id="sim-loading" class="sim-loading" role="status" aria-label="Carregando dados">
@@ -611,7 +718,7 @@
       </p>
       <p style="margin-top:8px;">
         © 2026
-        <a href="https://portal.mensure.com.br" target="_blank" rel="noopener noreferrer">
+        <a href="/" target="_blank" rel="noopener noreferrer">
           Mensure Assessoria Contábil
         </a>
         — Ribeirão Preto / SP &nbsp;|&nbsp;
@@ -625,13 +732,13 @@
 
 <!-- ── SCRIPTS (ordem importa!) ───────────────────────────────────────── -->
 <!-- 1. Dados e tabelas -->
-<script src="js/dados.js"></script>
+<script src="/simulador-das/js/dados.js"></script>
 <!-- 2. Funções de cálculo e helpers -->
-<script src="js/calculos.js"></script>
+<script src="/simulador-das/js/calculos.js"></script>
 <!-- 3. Renderização da UI -->
-<script src="js/ui.js"></script>
+<script src="/simulador-das/js/ui.js"></script>
 <!-- 4. Inicialização (carrega CSV e inicia tudo) -->
-<script src="js/main.js"></script>
+<script src="/simulador-das/js/main.js"></script>
 
 </body>
 </html>

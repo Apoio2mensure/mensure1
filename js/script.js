@@ -123,11 +123,11 @@ function loadObrigacoes() {
   var body = document.getElementById('obrig-body');
   if (!body) return;
   var list = [
-    { icon:'&#129518;', nome:'Simulador de Simples Nacional', link:'https://portal.mensure.com.br/simulador-das/' },
+    { icon:'&#129518;', nome:'Simulador de Simples Nacional', link:'/simulador-das/' },
     { icon:'&#128202;', nome:'Calculadora de IRPJ/CSLL' },
     { icon:'&#128203;', nome:'Gerador de Guias DAS' },
-    { icon:'&#128188;', nome:'Blog', link:'Blog/' },
-    { icon:'&#128269;', nome:'Informa&#231;&#245;es do CNPJ', link:'infomacoes-cnpj.html' }
+    { icon:'&#128188;', nome:'Blog', link:'/blog/' },
+    { icon:'&#128269;', nome:'Informa&#231;&#245;es do CNPJ', link:'/infomacoes-cnpj.html' }
   ];
   body.innerHTML = list.map(function(f){
     if (f.link) {
@@ -382,30 +382,6 @@ function initForm() {
   });
 }
 
-// ── Banner de cookies (LGPD) ─────────────────────────────────────────────────
-function initCookieBanner() {
-  var banner = document.getElementById('cookie-banner');
-  if (!banner) return;
-
-  var CHAVE = 'mensure_cookie_consent';
-  var jaEscolheu;
-  try { jaEscolheu = localStorage.getItem(CHAVE); } catch(e) { jaEscolheu = null; }
-
-  if (!jaEscolheu) {
-    setTimeout(function(){ banner.classList.add('active'); }, 600);
-  }
-
-  function fechar(valor) {
-    try { localStorage.setItem(CHAVE, valor); } catch(e) {}
-    banner.classList.remove('active');
-  }
-
-  var btnAceitar    = document.getElementById('cookie-accept-btn');
-  var btnEssenciais = document.getElementById('cookie-essential-btn');
-  if (btnAceitar)    btnAceitar.addEventListener('click', function(){ fechar('aceitou-todos'); });
-  if (btnEssenciais) btnEssenciais.addEventListener('click', function(){ fechar('somente-essenciais'); });
-}
-
 // ── Modal de noticias: abre a materia por cima do site, fundo borrado ───────
 function openNewsModal(url, title) {
   var overlay = document.getElementById('news-modal');
@@ -476,26 +452,6 @@ function initSeoInfoToggle() {
   });
 }
 
-// ── Menu hamburguer (mobile) ──────────────────────────────────────────────────
-function initMobileMenu() {
-  var btn = document.querySelector('.nav-mobile-btn');
-  var links = document.querySelector('.nav-links');
-  if (!btn || !links) return;
-
-  btn.addEventListener('click', function () {
-    btn.classList.toggle('active');
-    links.classList.toggle('active');
-  });
-
-  // Fecha o menu ao clicar em qualquer link
-  links.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () {
-      btn.classList.remove('active');
-      links.classList.remove('active');
-    });
-  });
-}
-
 // ── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function(){
   loadObrigacoes();
@@ -504,8 +460,6 @@ document.addEventListener('DOMContentLoaded', function(){
   initForm();
   initSvcLinks();
   initNewsModal();
-  initCookieBanner();
-  initMobileMenu();
   initSeoInfoToggle();
   setInterval(loadCotacoes, 5  * 60 * 1000);
   setInterval(loadNews,     30 * 60 * 1000);

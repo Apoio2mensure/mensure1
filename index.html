@@ -8,7 +8,7 @@
   <title>Mensure Assessoria Cont&#225;bil | Contabilidade em Ribeir&#227;o Preto</title>
 
   <!-- SEO: meta description e robots -->
-  <meta name="description" content="Contabilidade em Ribeir&#227;o Preto h&#225; mais de 35 anos. Especialistas em contabilidade para cl&#237;nicas m&#233;dicas, profissionais da sa&#250;de e prestadores de servi&#231;o. Planejamento tribut&#225;rio, Fator R, abertura de CNPJ e BPO financeiro.">
+  <meta name="description" content="Contabilidade em Ribeirão Preto há mais de 35 anos. Atendemos médicos e clínicas: planejamento tributário, Fator R, abertura de CNPJ e BPO financeiro.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://portal.mensure.com.br/">
 
@@ -19,37 +19,42 @@
   <meta property="og:title" content="Mensure Assessoria Cont&#225;bil | Contabilidade em Ribeir&#227;o Preto">
   <meta property="og:description" content="H&#225; mais de 35 anos ajudando empreendedores a crescer com seguran&#231;a. Especialistas em contabilidade para a &#225;rea da sa&#250;de e prestadores de servi&#231;o.">
   <meta property="og:url" content="https://portal.mensure.com.br/">
-  <meta property="og:image" content="https://portal.mensure.com.br/favicon-48x48.png">
+  <meta property="og:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mensure Assessoria Contábil - Contabilidade em Ribeirão Preto">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Mensure Assessoria Cont&#225;bil | Contabilidade em Ribeir&#227;o Preto">
   <meta name="twitter:description" content="H&#225; mais de 35 anos ajudando empreendedores a crescer com seguran&#231;a. Especialistas em contabilidade para a &#225;rea da sa&#250;de e prestadores de servi&#231;o.">
 
   <!-- Mantém a compatibilidade com navegadores mais antigos -->
-  <link rel="icon" type="image/x-icon" href="https://portal.mensure.com.br/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
   <!-- Tag específica que o Google exige para exibir na busca (múltiplo de 48px) -->
-  <link rel="icon" type="image/png" sizes="48x48" href="https://portal.mensure.com.br/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z0ZBCN0NXZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-Z0ZBCN0NXZ');
-</script>
+  <link rel="stylesheet" href="/css/style.css">
 
 <!-- Dados estruturados (Schema.org) para o Google exibir informações ricas nos resultados de busca -->
-<script type="application/ld+json">
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://portal.mensure.com.br/#website",
+      "url": "https://portal.mensure.com.br/",
+      "name": "Mensure Assessoria Contábil",
+      "inLanguage": "pt-BR",
+      "publisher": {
+        "@id": "https://portal.mensure.com.br/#organization"
+      }
+    },
     {
       "@type": "AccountingService",
       "@id": "https://portal.mensure.com.br/#organization",
@@ -59,8 +64,19 @@
       "taxID": "64.930.449/0001-31",
       "description": "Assessoria contábil em Ribeirão Preto (SP) desde 1990, especializada em contabilidade para médicos, clínicas, laboratórios, profissionais da saúde e prestadores de serviço.",
       "url": "https://portal.mensure.com.br/",
-      "logo": "https://portal.mensure.com.br/favicon.png",
-      "image": "https://portal.mensure.com.br/fotos/imagem-ini.webp",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://portal.mensure.com.br/#logo",
+        "url": "https://portal.mensure.com.br/fotos/logo-mensure.png",
+        "contentUrl": "https://portal.mensure.com.br/fotos/logo-mensure.png",
+        "width": 512,
+        "height": 512,
+        "caption": "Mensure Assessoria Contábil"
+      },
+      "image": [
+        "https://portal.mensure.com.br/fotos/og-mensure.jpg",
+        "https://portal.mensure.com.br/fotos/imagem-ini.webp"
+      ],
       "telephone": "+55-16-3633-7995",
       "email": "mensure@mensure.com.br",
       "priceRange": "$$",
@@ -103,7 +119,12 @@
       "foundingDate": "1990",
       "founder": {
         "@type": "Person",
-        "name": "Edson Caldeira"
+        "@id": "https://portal.mensure.com.br/#edson-caldeira",
+        "name": "Edson Caldeira",
+        "jobTitle": "Fundador",
+        "worksFor": {
+          "@id": "https://portal.mensure.com.br/#organization"
+        }
       },
       "sameAs": [
         "https://www.instagram.com/mensurecontabilidade",
@@ -127,61 +148,107 @@
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Contabilidade"
+              "name": "Contabilidade",
+              "@id": "https://portal.mensure.com.br/servicos/contabil/#service",
+              "url": "https://portal.mensure.com.br/servicos/contabil/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Fiscal e tributário"
+              "name": "Fiscal e tributário",
+              "@id": "https://portal.mensure.com.br/servicos/fiscal-tributario/#service",
+              "url": "https://portal.mensure.com.br/servicos/fiscal-tributario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Departamento pessoal (trabalhista e previdenciário)"
+              "name": "Departamento pessoal (trabalhista e previdenciário)",
+              "@id": "https://portal.mensure.com.br/servicos/trabalhista-previdenciario/#service",
+              "url": "https://portal.mensure.com.br/servicos/trabalhista-previdenciario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Societário e legalização (abertura de CNPJ)"
+              "name": "Societário e legalização (abertura de CNPJ)",
+              "@id": "https://portal.mensure.com.br/servicos/societario-legalizacao/#service",
+              "url": "https://portal.mensure.com.br/servicos/societario-legalizacao/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Planejamento tributário"
+              "name": "Planejamento tributário",
+              "@id": "https://portal.mensure.com.br/servicos/planejamento-tributario/#service",
+              "url": "https://portal.mensure.com.br/servicos/planejamento-tributario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Consultoria contábil"
+              "name": "Consultoria contábil",
+              "@id": "https://portal.mensure.com.br/servicos/consultoria-contabil/#service",
+              "url": "https://portal.mensure.com.br/servicos/consultoria-contabil/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Contabilidade para médicos e clínicas"
+              "name": "Contabilidade para médicos e clínicas",
+              "url": "https://portal.mensure.com.br/contabilidade-para-medicos/"
             }
           }
         ]
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone": "+55-16-3633-7995",
+        "email": "mensure@mensure.com.br",
+        "areaServed": "BR",
+        "availableLanguage": "pt-BR",
+        "hoursAvailable": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "17:30"
+        }
       }
     },
     {
-      "@type": "WebSite",
-      "@id": "https://portal.mensure.com.br/#website",
+      "@type": "WebPage",
+      "@id": "https://portal.mensure.com.br/#webpage",
       "url": "https://portal.mensure.com.br/",
-      "name": "Mensure Assessoria Contábil",
+      "name": "Mensure Assessoria Contábil | Contabilidade em Ribeirão Preto",
+      "description": "Contabilidade em Ribeirão Preto há mais de 35 anos. Atendemos médicos e clínicas: planejamento tributário, Fator R, abertura de CNPJ e BPO financeiro.",
       "inLanguage": "pt-BR",
-      "publisher": {
+      "isPartOf": {
+        "@id": "https://portal.mensure.com.br/#website"
+      },
+      "about": {
+        "@id": "https://portal.mensure.com.br/#organization"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://portal.mensure.com.br/fotos/og-mensure.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "mainEntity": {
         "@id": "https://portal.mensure.com.br/#organization"
       }
     },
@@ -232,32 +299,58 @@
     }
   ]
 }
-</script>
+  </script>
 
+  <link rel="stylesheet" href="/css/header.css">
+  <script src="/js/header.js" defer></script>
+  <script src="/js/analytics.js" defer></script>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <div class="logo-w">
-      <span class="ln">Mensure<em>&#174;</em></span>
-      <span class="ls">Assessoria Cont&#225;bil</span>
-      <span class="lt">Contabilizando sucessos com excel&#234;ncia.</span>
-    </div>
-    <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#servicos">Servi&#231;os</a>
-      <a href="#sobre">Sobre N&#243;s</a>
-      <a href="#noticias">Not&#237;cias</a>
-      <a href="Blog/">Blog</a>
-      <a href="#ferramentas">Ferramentas</a>
-      <a href="#login">Login Cliente</a>
-      <a href="tel:1636337995" class="btn-cta">Entre em contato</a>
-    </div>
-    <button class="nav-mobile-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+<!-- SITE:HEADER -->
+<header class="site-header" id="topo">
+  <a class="sh-skip" href="#conteudo">Ir para o conte&#250;do</a>
+  <div class="sh-inner">
+    <a class="sh-logo" href="/" aria-label="Mensure Assessoria Contábil - página inicial">
+      <span class="sh-ln">Mensure<em>&#174;</em></span>
+      <span class="sh-ls">Assessoria Cont&#225;bil</span>
+      <span class="sh-lt">Contabilizando sucessos com excel&#234;ncia.</span>
+    </a>
+    <button class="sh-burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
+    <nav class="sh-nav" id="sh-menu" aria-label="Principal">
+      <ul class="sh-list">
+        <li><a href="/">In&#237;cio</a></li>
+        <li><a href="/sobre/">Sobre N&#243;s</a></li>
+        <li class="sh-has-sub">
+          <a href="/#servicos">Servi&#231;os</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Servi&#231;os" aria-expanded="false" aria-controls="sh-sub-servicos"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-servicos">
+            <li><a href="/servicos/contabil/">Cont&#225;bil</a></li>
+            <li><a href="/servicos/fiscal-tributario/">Fiscal / Tribut&#225;rio</a></li>
+            <li><a href="/servicos/trabalhista-previdenciario/">Trabalhista / Previdenci&#225;rio</a></li>
+            <li><a href="/servicos/societario-legalizacao/">Societ&#225;rio / Legaliza&#231;&#227;o</a></li>
+          </ul>
+        </li>
+        <li><a href="/#noticias">Not&#237;cias</a></li>
+        <li class="sh-has-sub">
+          <a href="/blog/">Blog</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Blog" aria-expanded="false" aria-controls="sh-sub-blog"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-blog">
+            <li><a href="/blog/">In&#237;cio</a></li>
+            <li><a href="/blog/artigos/">Artigos</a></li>
+            <li><a href="/blog/areas-de-interesse/">&#193;reas de interesse</a></li>
+            <li><a href="/blog/sobre/">Sobre a Mensure</a></li>
+          </ul>
+        </li>
+        <li><a href="/#ferramentas">Ferramentas</a></li>
+        <li><a href="/#login">Login</a></li>
+        <li class="sh-cta-li"><a class="sh-cta" href="tel:1636337995">Entre em contato</a></li>
+      </ul>
+    </nav>
   </div>
-</nav>
+</header>
+<!-- /SITE:HEADER -->
+<main id="conteudo">
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -311,37 +404,37 @@
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 7H6a2 2 0 00-2 2v9a2 2 0 002 2h9a2 2 0 002-2v-3M13 3h8m0 0v8m0-8l-11 11"/></svg></div>
         <h3>Cont&#225;bil</h3>
         <p>Classifica&#231;&#227;o e escritura&#231;&#227;o em conformidade com normas vigentes. Apura&#231;&#227;o de balancetes mensais, elabora&#231;&#227;o de Balan&#231;o Anual e orienta&#231;&#227;o especializada.</p>
-        <a href="#contato" class="svc-link" data-assunto="Cont&#225;bil">Saiba mais &#8594;</a>
+        <a href="/servicos/contabil/" class="svc-link">Saiba mais &#8594;</a>
       </div>
       <div class="svc-card">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div>
         <h3>Fiscal / Tribut&#225;rio</h3>
         <p>Suporte abrangente: registro de notas fiscais, apura&#231;&#227;o de impostos federais, estaduais e municipais, emiss&#227;o de guias e cumprimento de obriga&#231;&#245;es acess&#243;rias.</p>
-        <a href="#contato" class="svc-link" data-assunto="Fiscal / Tribut&#225;rio">Saiba mais &#8594;</a>
+        <a href="/servicos/fiscal-tributario/" class="svc-link">Saiba mais &#8594;</a>
       </div>
       <div class="svc-card">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
         <h3>Trabalhista / Previdenci&#225;rio</h3>
         <p>Gest&#227;o de admiss&#245;es, rescis&#245;es, f&#233;rias e folha de pagamento. eSocial, FGTS, INSS e toda legisla&#231;&#227;o previdenci&#225;ria com precis&#227;o e pontualidade.</p>
-        <a href="#contato" class="svc-link" data-assunto="Trabalhista">Saiba mais &#8594;</a>
+        <a href="/servicos/trabalhista-previdenciario/" class="svc-link">Saiba mais &#8594;</a>
       </div>
       <div class="svc-card">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
         <h3>Societ&#225;rio / Legaliza&#231;&#227;o</h3>
         <p>Abertura, altera&#231;&#227;o e encerramento de empresas. Certid&#245;es negativas, documentos digitalizados e suporte completo para registros em &#243;rg&#227;os competentes.</p>
-        <a href="#contato" class="svc-link" data-assunto="Societ&#225;rio / Legaliza&#231;&#227;o">Saiba mais &#8594;</a>
+        <a href="/servicos/societario-legalizacao/" class="svc-link">Saiba mais &#8594;</a>
       </div>
       <div class="svc-card">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
         <h3>Planejamento Tribut&#225;rio</h3>
         <p>An&#225;lise do melhor enquadramento fiscal (Simples, Lucro Presumido ou Real). Estrat&#233;gias legais para redu&#231;&#227;o da carga tribut&#225;ria e aumento da competitividade.</p>
-        <a href="#contato" class="svc-link" data-assunto="Planejamento Tribut&#225;rio">Saiba mais &#8594;</a>
+        <a href="/servicos/planejamento-tributario/" class="svc-link">Saiba mais &#8594;</a>
       </div>
       <div class="svc-card">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
         <h3>Consultoria Cont&#225;bil</h3>
         <p>Orienta&#231;&#227;o estrat&#233;gica para tomada de decis&#245;es, an&#225;lise de viabilidade, reorganiza&#231;&#227;o societ&#225;ria e suporte a processos de fus&#227;o, aquisi&#231;&#227;o e due diligence.</p>
-        <a href="#contato" class="svc-link" data-assunto="Outro">Saiba mais &#8594;</a>
+        <a href="/servicos/consultoria-contabil/" class="svc-link">Saiba mais &#8594;</a>
       </div>
     </div>
   </div>
@@ -353,7 +446,7 @@
     <div class="about-grid">
       <div class="about-img-wrap">
         <div class="about-img-mock">
-          <img src="fotos/imagem-ini.webp" alt="Equipe Mensure Assessoria Cont&#225;bil" loading="lazy">
+          <img src="/fotos/imagem-ini.webp" alt="Equipe Mensure Assessoria Cont&#225;bil" width="640" height="480" loading="lazy" decoding="async">
         </div>
         <div class="about-badge">
           <span class="bn">35+</span>
@@ -537,12 +630,14 @@
 <h2 id="faq-t">Perguntas frequentes</h2>
 <details><summary>Onde fica a Mensure e qual é o horário de atendimento?</summary><p>A Mensure Assessoria Contábil fica na R. Bahia, 1026, bairro Ipiranga, em Ribeirão Preto (SP), CEP 14055-020. O atendimento é de segunda a sexta, das 8h às 17h30. O telefone e WhatsApp é (16) 3633-7995.</p></details>
 <details><summary>Há quanto tempo a Mensure atua em Ribeirão Preto?</summary><p>O escritório iniciou as atividades em 1990, com o nome ASPEC Contabilidade, e adotou a marca Mensure em 2005. São mais de 35 anos atendendo empresas de Ribeirão Preto e região.</p></details>
-<details><summary>A Mensure atende médicos e clínicas? Como abrir um CNPJ médico?</summary><p>Sim. Atendemos médicos, dentistas, psicólogos, clínicas e laboratórios. Na abertura do CNPJ comparamos Simples Nacional, Lucro Presumido e Carnê-Leão para mostrar qual regime pesa menos no seu caso. Veja também o <a href="Blog/">blog</a> sobre equiparação hospitalar.</p></details>
-<details><summary>O que é o Fator R e como ele pode reduzir impostos?</summary><p>O Fator R é a relação entre a folha de pagamento (incluindo pró-labore) e a receita bruta dos últimos 12 meses. Quando chega a 28% ou mais, empresas de serviço sujeitas à regra podem ser tributadas pelo Anexo III do Simples, a partir de 6%, e não pelo Anexo V, a partir de 15,5%. Use o <a href="simulador-das/">simulador gratuito</a>.</p></details>
+<details><summary>A Mensure atende médicos e clínicas? Como abrir um CNPJ médico?</summary><p>Sim. Atendemos médicos, dentistas, psicólogos, clínicas e laboratórios. Na abertura do CNPJ comparamos Simples Nacional, Lucro Presumido e Carnê-Leão para mostrar qual regime pesa menos no seu caso. Veja também o <a href="/blog/">blog</a> sobre equiparação hospitalar.</p></details>
+<details><summary>O que é o Fator R e como ele pode reduzir impostos?</summary><p>O Fator R é a relação entre a folha de pagamento (incluindo pró-labore) e a receita bruta dos últimos 12 meses. Quando chega a 28% ou mais, empresas de serviço sujeitas à regra podem ser tributadas pelo Anexo III do Simples, a partir de 6%, e não pelo Anexo V, a partir de 15,5%. Use o <a href="/simulador-das/">simulador gratuito</a>.</p></details>
 <details><summary>Como acesso o portal do cliente?</summary><p>Use o botão Entrar no quadro Login Cliente, na seção Ferramentas desta página. Ele abre o portal Onvio da Mensure, onde você envia documentos, consulta balancetes e baixa guias de impostos.</p></details>
 </div></section>
 
 <!-- FOOTER -->
+</main>
+
 <footer>
   <div class="footer-inner">
     <div style="display:flex;flex-direction:column;gap:3px;">
@@ -551,8 +646,8 @@
     </div>
     <p>&#169; 2026 Todos os direitos reservados.<br>MENSURE ASSESSORIA CONTABIL LTDA &middot; CNPJ 64.930.449/0001-31</p>
     <div class="social-links">
-      <a href="llms-full.txt" target="_blank" rel="noopener noreferrer">llms</a>
-      <a href="Blog/">Blog</a>
+      <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms</a>
+      <a href="/blog/">Blog</a>
       <a href="https://www.google.com/maps/place/Mensure+Assessoria+Cont%C3%A1bil/@-21.1544559,-47.8184432,17z/data=!3m1!4b1!4m16!1m9!3m8!1s0x94b9be4771b991cb:0xbca7b4c078abb54d!2sMensure+Assessoria+Cont%C3%A1bil!8m2!3d-21.1544609!4d-47.8158683!9m1!1b1!16s%2Fg%2F1tf66kzs!3m5!1s0x94b9be4771b991cb:0xbca7b4c078abb54d!8m2!3d-21.1544609!4d-47.8158683!16s%2Fg%2F1tf66kzs" target="_blank" rel="noopener noreferrer">Google Maps</a>
       <a href="https://www.instagram.com/mensurecontabilidade" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://www.mensure.com.br" target="_blank" rel="noopener noreferrer">mensure.com.br</a>
@@ -578,17 +673,6 @@
   </div>
 </footer>
 
-<!-- BANNER DE COOKIES (LGPD) ─────────────────────────────────────────────── -->
-<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
-  <div class="cookie-banner-inner">
-    <p>Usamos cookies essenciais para o funcionamento do site e, com sua permiss&#227;o, cookies que ajudam a melhorar sua experi&#234;ncia de navega&#231;&#227;o. <a href="#contato">Saiba mais</a></p>
-    <div class="cookie-banner-actions">
-      <button type="button" id="cookie-essential-btn" class="cookie-btn cookie-btn-ghost">Somente essenciais</button>
-      <button type="button" id="cookie-accept-btn" class="cookie-btn cookie-btn-primary">Aceitar todos</button>
-    </div>
-  </div>
-</div>
-
 <!-- MODAL DE NOTICIAS: abre a materia por cima do site, com fundo borrado -->
 <div class="news-modal-overlay" id="news-modal" aria-hidden="true">
   <div class="news-modal-box">
@@ -605,6 +689,6 @@
   </div>
 </div>
 
-<script src="js/script.js"></script>
+<script src="/js/script.js"></script>
 </body>
 </html>

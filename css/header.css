@@ -1,0 +1,79 @@
+/* Cabeçalho compartilhado do portal Mensure. Fonte do HTML: _includes/header.html
+   (aplicado em todas as páginas por blog/aplicar-cabecalho.py). Autossuficiente: não depende do CSS da página. */
+html { scroll-padding-top: 72px; }
+.site-header { --h-teal:#0d7a75; --h-teal2:#0a5e5a; --h-teal3:#e8f5f4; --h-orange:#e84c1e; --h-btn:#d24019; --h-orange2:#c73d14; --h-dark:#0f1f1e;
+  position: sticky; top: 0; z-index: 1000; background: var(--h-teal); font-family: 'DM Sans', Arial, sans-serif; box-shadow: 0 1px 0 rgba(255,255,255,.06), 0 2px 10px rgba(0,0,0,.12); }
+.site-header *, .site-header *::before, .site-header *::after { box-sizing: border-box; }
+.site-header ul { list-style: none; margin: 0; padding: 0; }
+.site-header a { text-decoration: none; color: inherit; }
+.sh-inner { max-width: 1440px; margin: 0 auto; padding: 0 5vw; height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+
+/* Logotipo */
+.sh-logo { display: flex; flex-direction: column; line-height: 1; flex: 0 0 auto; }
+.sh-ln { font-weight: 700; font-size: 1.28rem; color: #fff; letter-spacing: -.5px; }
+.sh-ln em { color: var(--h-orange); font-style: normal; }
+.sh-ls { font-size: .5rem; letter-spacing: 2.4px; text-transform: uppercase; color: rgba(255,255,255,.9); margin-top: 3px; }
+.sh-lt { font-size: .52rem; color: rgba(255,255,255,.82); font-style: italic; margin-top: 2px; display: none; }
+@media (min-width: 1240px) { .sh-lt { display: block; } }
+
+/* Menu (desktop) */
+.sh-nav { flex: 1 1 auto; }
+.sh-list { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.sh-list > li { position: relative; display: flex; align-items: center; }
+.sh-list > li > a { display: block; padding: 8px 11px; font-size: .84rem; font-weight: 500; color: rgba(255,255,255,.88); border-radius: 6px; transition: color .2s, background .2s; white-space: nowrap; }
+.sh-list > li > a:hover, .sh-list > li > a:focus-visible { color: #fff; background: rgba(255,255,255,.1); }
+.sh-list a[aria-current="page"] { color: #fff; box-shadow: inset 0 -2px 0 var(--h-orange); border-radius: 6px 6px 0 0; }
+.sh-list > li > a.sh-cta { background: var(--h-btn); color: #fff; font-weight: 600; padding: 8px 16px; margin-left: 8px; border-radius: 6px; transition: background .2s, transform .15s; }
+.sh-list > li > a.sh-cta:hover { background: var(--h-orange2); transform: translateY(-1px); }
+.site-header a:focus-visible, .site-header button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Setas e submenus */
+.sh-sub-btn { background: none; border: 0; color: rgba(255,255,255,.85); cursor: pointer; width: 24px; height: 28px; margin-left: -8px; margin-right: 2px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; }
+.sh-sub-btn svg { transition: transform .2s; }
+.sh-has-sub.is-open > .sh-sub-btn svg { transform: rotate(180deg); }
+.sh-sub { position: absolute; top: 100%; left: 0; min-width: 240px; background: #fff; border-radius: 0 0 10px 10px; padding: 8px; box-shadow: 0 14px 30px rgba(0,0,0,.18); border-top: 3px solid var(--h-orange);
+  opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease, visibility .18s; }
+.sh-sub a { display: block; padding: 10px 12px; font-size: .86rem; font-weight: 500; color: var(--h-dark); border-radius: 6px; transition: background .15s, color .15s; }
+.sh-sub a:hover, .sh-sub a:focus-visible { background: var(--h-teal3); color: var(--h-teal2); outline: none; }
+.sh-sub a[aria-current="page"] { color: var(--h-teal2); font-weight: 700; }
+.sh-has-sub.is-open > .sh-sub { opacity: 1; visibility: visible; transform: none; }
+@media (hover: hover) and (min-width: 981px) {
+  .sh-has-sub:hover > .sh-sub, .sh-has-sub:focus-within > .sh-sub { opacity: 1; visibility: visible; transform: none; }
+  .sh-has-sub:hover > .sh-sub-btn svg { transform: rotate(180deg); }
+}
+
+/* Botão hambúrguer */
+.sh-burger { display: none; background: none; border: 0; cursor: pointer; padding: 10px; margin-right: -10px; }
+.sh-burger span { display: block; width: 22px; height: 2px; background: #fff; margin: 4px 0; border-radius: 2px; transition: transform .2s, opacity .2s; }
+.sh-burger.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.sh-burger.is-open span:nth-child(2) { opacity: 0; }
+.sh-burger.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Tablet e celular */
+@media (max-width: 980px) {
+  .sh-inner { height: 56px; }
+  .sh-burger { display: block; }
+  .sh-nav { position: absolute; top: 100%; left: 0; right: 0; background: var(--h-teal); box-shadow: 0 14px 24px rgba(0,0,0,.22); max-height: calc(100vh - 56px); max-height: calc(100dvh - 56px); overflow-y: auto; overscroll-behavior: contain;
+    display: none; padding: 6px 5vw 18px; }
+  .sh-nav.is-open { display: block; animation: shdrop .18s ease; }
+  @keyframes shdrop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .sh-list { flex-direction: column; align-items: stretch; gap: 0; }
+  .sh-list > li { flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .sh-list > li > a { flex: 1 1 auto; padding: 14px 4px; font-size: .95rem; border-radius: 0; }
+  .sh-list > li > a:hover { background: none; }
+  .sh-list a[aria-current="page"] { box-shadow: none; color: #fff; font-weight: 700; }
+  .sh-sub-btn { width: 44px; height: 44px; margin: 0; }
+  .sh-sub { position: static; flex: 1 0 100%; min-width: 0; box-shadow: none; border-top: 0; border-radius: 0; background: rgba(0,0,0,.14); padding: 0 0 6px 12px;
+    opacity: 1; visibility: visible; transform: none; display: none; }
+  .sh-has-sub.is-open > .sh-sub { display: block; }
+  .sh-sub a { color: rgba(255,255,255,.92); padding: 12px 8px; }
+  .sh-sub a:hover, .sh-sub a:focus-visible { background: rgba(255,255,255,.1); color: #fff; }
+  .sh-list > li.sh-cta-li { border-bottom: 0; padding-top: 14px; }
+  .sh-list > li > a.sh-cta { margin: 0; text-align: center; padding: 13px; }
+}
+@media (prefers-reduced-motion: reduce) { .sh-sub, .sh-nav.is-open, .sh-burger span, .sh-sub-btn svg { transition: none; animation: none; } }
+
+/* Link "ir para o conteúdo" (teclado e leitores de tela) */
+.sh-skip { position: absolute; left: 8px; top: -60px; z-index: 1100; background: #fff; color: #0a5e5a; font-weight: 700; font-size: .85rem; padding: 10px 16px; border-radius: 0 0 8px 8px; transition: top .15s; }
+.sh-skip:focus { top: 0; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

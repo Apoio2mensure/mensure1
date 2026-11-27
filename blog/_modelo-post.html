@@ -5,9 +5,9 @@
      (ex.: simples-nacional-fator-r/) e salve uma cópia deste arquivo lá como index.html.
      O endereço final será portal.mensure.com.br/simples-nacional-fator-r/
   2. Troque título, descrição, data, categoria, palavras-chave, o canonical e o texto.
-     A categoria deve ser um dos nomes de Blog/categorias.json (ou um nome novo: ele vira filtro sozinho).
+     A categoria deve ser um dos nomes de blog/categorias.json (ou um nome novo: ele vira filtro sozinho).
   3. Para publicar no Google, deixe robots como "index, follow". Use "noindex, nofollow" enquanto for rascunho.
-  4. Dê dois cliques em Blog/atualizar-blog.bat (ou apenas envie ao GitHub: o índice se atualiza sozinho).
+  4. Dê dois cliques em blog/atualizar-blog.bat (ou apenas envie ao GitHub: o índice se atualiza sozinho).
   5. Mantenha o bloco "Perguntas frequentes" e o Schema FAQPage com 4 a 5 perguntas reais sobre o tema do artigo.
   Pastas que começam com "_" são ignoradas.
 -->
@@ -20,21 +20,28 @@
   <meta name="keywords" content="palavra principal, outra expressão que o cliente pesquisa">
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://portal.mensure.com.br/nome-da-pasta/">
-  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
   <meta property="article:published_time" content="2026-01-01">
   <meta property="article:modified_time" content="2026-01-01">
   <meta property="article:section" content="Impostos e planejamento tributário">
   <!-- <meta name="blog:destaque" content="true"> (só um artigo por vez; aparece em "Em destaque") -->
-  <!-- <meta property="og:image" content="https://portal.mensure.com.br/fotos/imagem-do-artigo.webp"> (opcional; use 1200x630) -->
   <meta property="og:type" content="article">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Mensure Assessoria Contábil">
   <meta property="og:title" content="Título do artigo">
   <meta property="og:description" content="Resumo de 1 a 3 frases.">
   <meta property="og:url" content="https://portal.mensure.com.br/nome-da-pasta/">
+  <meta property="og:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mensure Assessoria Contábil - Contabilidade em Ribeirão Preto">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+  <meta name="twitter:description" content="Resumo de 1 a 3 frases.">
+  <meta name="twitter:title" content="Título do artigo">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../Blog/blog.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/blog/blog.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -46,7 +53,11 @@
         "inLanguage": "pt-BR",
         "datePublished": "2026-01-01",
         "dateModified": "2026-01-01",
-        "mainEntityOfPage": "https://portal.mensure.com.br/nome-da-pasta/",
+        "@id": "https://portal.mensure.com.br/nome-da-pasta/#article",
+        "url": "https://portal.mensure.com.br/nome-da-pasta/",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://portal.mensure.com.br/nome-da-pasta/#webpage" },
+        "image": ["https://portal.mensure.com.br/fotos/og-mensure.jpg"],
+        "isPartOf": { "@id": "https://portal.mensure.com.br/blog/#blog" },
         "author": { "@id": "https://portal.mensure.com.br/#organization" },
         "publisher": { "@id": "https://portal.mensure.com.br/#organization" }
       },
@@ -60,22 +71,57 @@
     ]
   }
   </script>
-  <!-- Copie também o objeto "AccountingService" (@id .../#organization) de equiparacao-hospitalar/index.html ou de Blog/organizacao.json para dentro do @graph. -->
+  <!-- Copie também o objeto "AccountingService" (@id .../#organization) de equiparacao-hospitalar/index.html ou de blog/organizacao.json para dentro do @graph. -->
+  <link rel="stylesheet" href="/css/header.css">
+  <script src="/js/header.js" defer></script>
+  <script src="/js/analytics.js" defer></script>
 </head>
 <body>
-<nav aria-label="Principal">
-  <div class="nav-inner">
-    <a class="logo-w" href="../index.html"><span class="ln">Mensure<em>&#174;</em></span><span class="ls">Assessoria Cont&#225;bil</span></a>
-    <div class="nav-links">
-      <a href="../Blog/">In&#237;cio</a>
-      <a href="../Blog/#artigos">Artigos</a>
-      <a href="../index.html#sobre">Sobre a Mensure</a>
-    </div>
-    <button class="nav-mobile-btn" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+<!-- SITE:HEADER -->
+<header class="site-header" id="topo">
+  <a class="sh-skip" href="#conteudo">Ir para o conte&#250;do</a>
+  <div class="sh-inner">
+    <a class="sh-logo" href="/" aria-label="Mensure Assessoria Contábil - página inicial">
+      <span class="sh-ln">Mensure<em>&#174;</em></span>
+      <span class="sh-ls">Assessoria Cont&#225;bil</span>
+      <span class="sh-lt">Contabilizando sucessos com excel&#234;ncia.</span>
+    </a>
+    <button class="sh-burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
+    <nav class="sh-nav" id="sh-menu" aria-label="Principal">
+      <ul class="sh-list">
+        <li><a href="/">In&#237;cio</a></li>
+        <li><a href="/sobre/">Sobre N&#243;s</a></li>
+        <li class="sh-has-sub">
+          <a href="/#servicos">Servi&#231;os</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Servi&#231;os" aria-expanded="false" aria-controls="sh-sub-servicos"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-servicos">
+            <li><a href="/servicos/contabil/">Cont&#225;bil</a></li>
+            <li><a href="/servicos/fiscal-tributario/">Fiscal / Tribut&#225;rio</a></li>
+            <li><a href="/servicos/trabalhista-previdenciario/">Trabalhista / Previdenci&#225;rio</a></li>
+            <li><a href="/servicos/societario-legalizacao/">Societ&#225;rio / Legaliza&#231;&#227;o</a></li>
+          </ul>
+        </li>
+        <li><a href="/#noticias">Not&#237;cias</a></li>
+        <li class="sh-has-sub">
+          <a href="/blog/">Blog</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Blog" aria-expanded="false" aria-controls="sh-sub-blog"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-blog">
+            <li><a href="/blog/">In&#237;cio</a></li>
+            <li><a href="/blog/artigos/">Artigos</a></li>
+            <li><a href="/blog/areas-de-interesse/">&#193;reas de interesse</a></li>
+            <li><a href="/blog/sobre/">Sobre a Mensure</a></li>
+          </ul>
+        </li>
+        <li><a href="/#ferramentas">Ferramentas</a></li>
+        <li><a href="/#login">Login</a></li>
+        <li class="sh-cta-li"><a class="sh-cta" href="tel:1636337995">Entre em contato</a></li>
+      </ul>
+    </nav>
   </div>
-</nav>
-<main class="post">
-  <p class="crumbs"><a href="../Blog/">Blog</a></p>
+</header>
+<!-- /SITE:HEADER -->
+<main class="post" id="conteudo">
+  <p class="crumbs"><a href="/blog/">Blog</a></p>
   <h1>Título do artigo</h1>
   <p class="post-meta">Publicado em <time datetime="2026-01-01">01/01/2026</time></p>
   <div class="resposta"><strong>Resposta rápida</strong><p>Responda a dúvida central em 40 a 55 palavras.</p></div>
@@ -95,12 +141,12 @@
       <p class="b-foot-nome">Mensure&#174; Assessoria Cont&#225;bil</p>
       <p>R. Bahia, 1026 &ndash; Ipiranga, Ribeir&#227;o Preto/SP &ndash; CEP 14055-020</p>
       <p>Telefone e WhatsApp: <a href="tel:1636337995">(16) 3633-7995</a></p>
-      <p><a href="../Blog/">Blog</a> &middot; <a href="../index.html">mensure.com.br</a></p>
+      <p><a href="/blog/">Blog</a> &middot; <a href="/">mensure.com.br</a></p>
     </div>
     <p class="b-aviso">Os artigos deste blog t&#234;m car&#225;ter informativo e n&#227;o substituem a an&#225;lise individual da situa&#231;&#227;o de cada empresa.</p>
   </div>
   <p class="b-copy">&#169; 2026 Mensure Assessoria Cont&#225;bil &middot; MENSURE ASSESSORIA CONTABIL LTDA &middot; CNPJ 64.930.449/0001-31. Todos os direitos reservados.</p>
 </footer>
-<script src="../Blog/blog.js" defer></script>
+<script src="/blog/blog.js" defer></script>
 </body>
 </html>

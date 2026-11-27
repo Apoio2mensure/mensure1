@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src https://economia.awesomeapi.com.br https://api.allorigins.win https://corsproxy.io https://www.gov.br https://www.contabeis.com.br;">
+        content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://economia.awesomeapi.com.br https://api.allorigins.win https://corsproxy.io https://www.gov.br https://www.contabeis.com.br;">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar CNPJ e Inscri&#231;&#227;o Estadual | Mensure Assessoria Cont&#225;bil</title>
-    <meta name="description" content="Consulte CNPJ, inscrição estadual (SP e outros estados) e o regime tributário de empresas. Atalhos organizados pela Mensure Assessoria Contábil, de Ribeirão Preto.">
+    <meta name="description" content="Consulte CNPJ, inscrição estadual (SP e outros estados) e o regime tributário de empresas. Atalhos organizados pela Mensure, de Ribeirão Preto.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://portal.mensure.com.br/infomacoes-cnpj.html">
     <meta property="og:type" content="website">
@@ -16,9 +16,16 @@
     <meta property="og:site_name" content="Mensure Assessoria Contábil">
     <meta property="og:title" content="Consultar CNPJ e Inscrição Estadual | Mensure">
     <meta property="og:url" content="https://portal.mensure.com.br/infomacoes-cnpj.html">
-    <meta property="og:image" content="https://portal.mensure.com.br/favicon-48x48.png">
-    <link rel="icon" type="image/x-icon" href="https://portal.mensure.com.br/favicon.ico">
+    <meta property="og:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Mensure Assessoria Contábil - Contabilidade em Ribeirão Preto">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://portal.mensure.com.br/fotos/og-mensure.jpg">
+    <meta name="twitter:title" content="Consultar CNPJ e Inscrição Estadual | Mensure">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
@@ -61,13 +68,6 @@
             color: inherit;
         }
 
-        nav {
-            background: var(--teal);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 0 5vw;
-        }
 
         .nav-inner {
             max-width: 1440px;
@@ -1237,10 +1237,20 @@
             }
         }
     </style>
-<script type="application/ld+json">
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://portal.mensure.com.br/#website",
+      "url": "https://portal.mensure.com.br/",
+      "name": "Mensure Assessoria Contábil",
+      "inLanguage": "pt-BR",
+      "publisher": {
+        "@id": "https://portal.mensure.com.br/#organization"
+      }
+    },
     {
       "@type": "AccountingService",
       "@id": "https://portal.mensure.com.br/#organization",
@@ -1250,8 +1260,19 @@
       "taxID": "64.930.449/0001-31",
       "description": "Assessoria contábil em Ribeirão Preto (SP) desde 1990, especializada em contabilidade para médicos, clínicas, laboratórios, profissionais da saúde e prestadores de serviço.",
       "url": "https://portal.mensure.com.br/",
-      "logo": "https://portal.mensure.com.br/favicon.png",
-      "image": "https://portal.mensure.com.br/fotos/imagem-ini.webp",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://portal.mensure.com.br/#logo",
+        "url": "https://portal.mensure.com.br/fotos/logo-mensure.png",
+        "contentUrl": "https://portal.mensure.com.br/fotos/logo-mensure.png",
+        "width": 512,
+        "height": 512,
+        "caption": "Mensure Assessoria Contábil"
+      },
+      "image": [
+        "https://portal.mensure.com.br/fotos/og-mensure.jpg",
+        "https://portal.mensure.com.br/fotos/imagem-ini.webp"
+      ],
       "telephone": "+55-16-3633-7995",
       "email": "mensure@mensure.com.br",
       "priceRange": "$$",
@@ -1294,7 +1315,12 @@
       "foundingDate": "1990",
       "founder": {
         "@type": "Person",
-        "name": "Edson Caldeira"
+        "@id": "https://portal.mensure.com.br/#edson-caldeira",
+        "name": "Edson Caldeira",
+        "jobTitle": "Fundador",
+        "worksFor": {
+          "@id": "https://portal.mensure.com.br/#organization"
+        }
       },
       "sameAs": [
         "https://www.instagram.com/mensurecontabilidade",
@@ -1318,65 +1344,108 @@
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Contabilidade"
+              "name": "Contabilidade",
+              "@id": "https://portal.mensure.com.br/servicos/contabil/#service",
+              "url": "https://portal.mensure.com.br/servicos/contabil/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Fiscal e tributário"
+              "name": "Fiscal e tributário",
+              "@id": "https://portal.mensure.com.br/servicos/fiscal-tributario/#service",
+              "url": "https://portal.mensure.com.br/servicos/fiscal-tributario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Departamento pessoal (trabalhista e previdenciário)"
+              "name": "Departamento pessoal (trabalhista e previdenciário)",
+              "@id": "https://portal.mensure.com.br/servicos/trabalhista-previdenciario/#service",
+              "url": "https://portal.mensure.com.br/servicos/trabalhista-previdenciario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Societário e legalização (abertura de CNPJ)"
+              "name": "Societário e legalização (abertura de CNPJ)",
+              "@id": "https://portal.mensure.com.br/servicos/societario-legalizacao/#service",
+              "url": "https://portal.mensure.com.br/servicos/societario-legalizacao/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Planejamento tributário"
+              "name": "Planejamento tributário",
+              "@id": "https://portal.mensure.com.br/servicos/planejamento-tributario/#service",
+              "url": "https://portal.mensure.com.br/servicos/planejamento-tributario/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Consultoria contábil"
+              "name": "Consultoria contábil",
+              "@id": "https://portal.mensure.com.br/servicos/consultoria-contabil/#service",
+              "url": "https://portal.mensure.com.br/servicos/consultoria-contabil/"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Contabilidade para médicos e clínicas"
+              "name": "Contabilidade para médicos e clínicas",
+              "url": "https://portal.mensure.com.br/contabilidade-para-medicos/"
             }
           }
         ]
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone": "+55-16-3633-7995",
+        "email": "mensure@mensure.com.br",
+        "areaServed": "BR",
+        "availableLanguage": "pt-BR",
+        "hoursAvailable": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "17:30"
+        }
       }
     },
     {
       "@type": "WebPage",
-      "@id": "https://portal.mensure.com.br/infomacoes-cnpj.html",
+      "@id": "https://portal.mensure.com.br/infomacoes-cnpj.html#webpage",
       "url": "https://portal.mensure.com.br/infomacoes-cnpj.html",
-      "name": "Consultar CNPJ e Inscrição Estadual",
+      "name": "Consultar CNPJ e Inscrição Estadual | Mensure Assessoria Contábil",
+      "description": "Consulte CNPJ, inscrição estadual (SP e outros estados) e o regime tributário de empresas. Atalhos organizados pela Mensure Assessoria Contábil, de Ribeirão Preto.",
       "inLanguage": "pt-BR",
       "isPartOf": {
         "@id": "https://portal.mensure.com.br/#website"
       },
-      "publisher": {
+      "about": {
         "@id": "https://portal.mensure.com.br/#organization"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://portal.mensure.com.br/fotos/og-mensure.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "breadcrumb": {
+        "@id": "https://portal.mensure.com.br/infomacoes-cnpj.html#breadcrumb"
       }
     },
     {
@@ -1415,35 +1484,85 @@
           }
         }
       ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://portal.mensure.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ferramentas",
+          "item": "https://portal.mensure.com.br/#ferramentas"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Consulta de CNPJ e Inscrição Estadual",
+          "item": "https://portal.mensure.com.br/infomacoes-cnpj.html"
+        }
+      ],
+      "@id": "https://portal.mensure.com.br/infomacoes-cnpj.html#breadcrumb"
     }
   ]
 }
-</script>
+  </script>
+  <link rel="stylesheet" href="/css/header.css">
+  <script src="/js/header.js" defer></script>
+  <script src="/js/analytics.js" defer></script>
 </head>
 
 <body>
 
-    <!-- NAV -->
-    <nav>
-        <div class="nav-inner">
-            <div class="logo-w">
-                <span class="ln">Mensure<em>&#174;</em></span>
-                <span class="ls">Assessoria Cont&#225;bil</span>
-                <span class="lt">Contabilizando sucessos com excel&#234;ncia.</span>
-            </div>
-            <div class="nav-links">
-                <a href="index.html#home">Home</a>
-                <a href="index.html#servicos">Servi&#231;os</a>
-                <a href="index.html#sobre">Sobre N&#243;s</a>
-                <a href="index.html#noticias">Not&#237;cias</a>
-                <a href="Blog/">Blog</a>
-                <a href="index.html#ferramentas">Ferramentas</a>
-                <a href="index.html#login">Login Cliente</a>
-                <a href="tel:1636337995" class="btn-cta">Entre em contato</a>
-            </div>
-            <button class="nav-mobile-btn" aria-label="Menu"><span></span><span></span><span></span></button>
-        </div>
+    <!-- SITE:HEADER -->
+<header class="site-header" id="topo">
+  <a class="sh-skip" href="#conteudo">Ir para o conte&#250;do</a>
+  <div class="sh-inner">
+    <a class="sh-logo" href="/" aria-label="Mensure Assessoria Contábil - página inicial">
+      <span class="sh-ln">Mensure<em>&#174;</em></span>
+      <span class="sh-ls">Assessoria Cont&#225;bil</span>
+      <span class="sh-lt">Contabilizando sucessos com excel&#234;ncia.</span>
+    </a>
+    <button class="sh-burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
+    <nav class="sh-nav" id="sh-menu" aria-label="Principal">
+      <ul class="sh-list">
+        <li><a href="/">In&#237;cio</a></li>
+        <li><a href="/sobre/">Sobre N&#243;s</a></li>
+        <li class="sh-has-sub">
+          <a href="/#servicos">Servi&#231;os</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Servi&#231;os" aria-expanded="false" aria-controls="sh-sub-servicos"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-servicos">
+            <li><a href="/servicos/contabil/">Cont&#225;bil</a></li>
+            <li><a href="/servicos/fiscal-tributario/">Fiscal / Tribut&#225;rio</a></li>
+            <li><a href="/servicos/trabalhista-previdenciario/">Trabalhista / Previdenci&#225;rio</a></li>
+            <li><a href="/servicos/societario-legalizacao/">Societ&#225;rio / Legaliza&#231;&#227;o</a></li>
+          </ul>
+        </li>
+        <li><a href="/#noticias">Not&#237;cias</a></li>
+        <li class="sh-has-sub">
+          <a href="/blog/">Blog</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Blog" aria-expanded="false" aria-controls="sh-sub-blog"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-blog">
+            <li><a href="/blog/">In&#237;cio</a></li>
+            <li><a href="/blog/artigos/">Artigos</a></li>
+            <li><a href="/blog/areas-de-interesse/">&#193;reas de interesse</a></li>
+            <li><a href="/blog/sobre/">Sobre a Mensure</a></li>
+          </ul>
+        </li>
+        <li><a href="/#ferramentas">Ferramentas</a></li>
+        <li><a href="/#login">Login</a></li>
+        <li class="sh-cta-li"><a class="sh-cta" href="tel:1636337995">Entre em contato</a></li>
+      </ul>
     </nav>
+  </div>
+</header>
+<!-- /SITE:HEADER -->
+<main id="conteudo">
 
     <!-- HERO REDUZIDO -->
     <section class="hero" id="home" style="min-height: 40vh; padding: 120px 5vw 80px;">
@@ -1556,6 +1675,8 @@
     <details><summary>Como saber qual é o regime tributário de uma empresa?</summary><p>A Receita Federal tem uma consulta pública do Simples Nacional que mostra o enquadramento atual da empresa. O atalho está no quadro Regime Tributário da Empresa. Em caso de dúvida sobre o regime ideal, fale com a Mensure: (16) 3633-7995.</p></details>
     </div></section>
 
+</main>
+
     <footer>
         <div class="footer-inner">
             <div style="display:flex;flex-direction:column;gap:3px;">
@@ -1567,7 +1688,7 @@
             </div>
             <p>&#169; 2026 Todos os direitos reservados.<br>MENSURE ASSESSORIA CONTABIL LTDA &middot; CNPJ 64.930.449/0001-31</p>
             <div class="social-links">
-                <a href="Blog/">Blog</a>
+                <a href="/blog/">Blog</a>
                 <a href="https://www.google.com/maps/place/Mensure+Assessoria+Cont%C3%A1bil/@-21.1544559,-47.8184432,17z/data=!3m1!4b1!4m16!1m9!3m8!1s0x94b9be4771b991cb:0xbca7b4c078abb54d!2sMensure+Assessoria+Cont%C3%A1bil!8m2!3d-21.1544609!4d-47.8158683!9m1!1b1!16s%2Fg%2F1tf66kzs!3m5!1s0x94b9be4771b991cb:0xbca7b4c078abb54d!8m2!3d-21.1544609!4d-47.8158683!16s%2Fg%2F1tf66kzs" target="_blank" rel="noopener noreferrer">Google Maps</a>
                 <a href="https://www.instagram.com/mensurecontabilidade" target="_blank"
                     rel="noopener noreferrer">Instagram</a>
@@ -1661,7 +1782,7 @@
                 { icon: '&#129518;', nome: 'Simulador de Simples Nacional' },
                 { icon: '&#128202;', nome: 'Calculadora de IRPJ/CSLL' },
                 { icon: '&#128203;', nome: 'Gerador de Guias DAS' },
-                { icon: '&#128188;', nome: 'Blog', link: 'Blog/' },
+                { icon: '&#128188;', nome: 'Blog', link: 'blog/' },
                 { icon: '&#128269;', nome: 'Consulta de CNPJ' }
             ];
             body.innerHTML = list.map(function (f) {
