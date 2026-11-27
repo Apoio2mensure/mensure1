@@ -2,8 +2,8 @@ name: Atualizar índice do Blog
 on:
   push:
     paths:
-      - 'Blog/**.html'
-      - 'Blog/**/*.html'
+      - 'blog/**.html'
+      - 'blog/**/*.html'
 permissions:
   contents: write
 jobs:
