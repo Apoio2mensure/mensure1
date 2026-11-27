@@ -36,7 +36,7 @@
   if (path === '/') grupo = 'home';
   else if (m) { grupo = 'servico'; servico = m[1]; }
   else if (/^\/blog\//i.test(path)) grupo = 'blog';
-  else if (/^\/simulador-das\//i.test(path) || /infomacoes-cnpj/i.test(path)) grupo = 'ferramenta';
+  else if (/^\/simulador-das\//i.test(path) || /informacoes-cnpj/i.test(path)) grupo = 'ferramenta';
   else if (document.querySelector('meta[property="og:type"][content="article"]')) grupo = 'artigo';
 
   gtag('js', new Date());
@@ -75,7 +75,7 @@
       else if (/^mailto:/i.test(h)) { nome = 'email_click'; base.link_url = 'mailto'; }
       else if (a.closest('#login') && /onvio\.com\.br/i.test(h)) nome = 'client_login_click';
       else if (a.closest('.obrig-item, #obrig-body')) { nome = 'tool_use'; base.tool_name = base.link_text || 'ferramenta'; base.tool_action = 'abrir'; }
-      else if (grupo === 'ferramenta' && /infomacoes-cnpj/i.test(path) && /^https?:/i.test(h) && a.closest('main, section, .tools, body') && !a.closest('.site-header, footer')) { nome = 'tool_use'; base.tool_name = 'consulta_cnpj'; base.tool_action = 'consultar'; base.link_url = h.replace(/^(https?:\/\/[^\/]+).*/i, '$1'); }
+      else if (grupo === 'ferramenta' && /informacoes-cnpj/i.test(path) && /^https?:/i.test(h) && a.closest('main, section, .tools, body') && !a.closest('.site-header, footer')) { nome = 'tool_use'; base.tool_name = 'consulta_cnpj'; base.tool_action = 'consultar'; base.link_url = h.replace(/^(https?:\/\/[^\/]+).*/i, '$1'); }
       if (nome && !repetido(nome + h)) enviar(nome, base);
       return;
     }

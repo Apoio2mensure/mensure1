@@ -127,7 +127,7 @@ function loadObrigacoes() {
     { icon:'&#128202;', nome:'Calculadora de IRPJ/CSLL' },
     { icon:'&#128203;', nome:'Gerador de Guias DAS' },
     { icon:'&#128188;', nome:'Blog', link:'/blog/' },
-    { icon:'&#128269;', nome:'Informa&#231;&#245;es do CNPJ', link:'/infomacoes-cnpj.html' }
+    { icon:'&#128269;', nome:'Informa&#231;&#245;es do CNPJ', link:'/informacoes-cnpj.html' }
   ];
   body.innerHTML = list.map(function(f){
     if (f.link) {

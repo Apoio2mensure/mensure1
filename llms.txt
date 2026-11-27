@@ -23,7 +23,7 @@ Versão completa deste resumo, com mais detalhes: [llms-full.txt](https://portal
 ## Ferramentas
 
 - [Simulador de Simples Nacional e Fator R](https://portal.mensure.com.br/simulador-das/): calcula o DAS e a simulação do Fator R
-- [Consulta de CNPJ e Inscrição Estadual](https://portal.mensure.com.br/infomacoes-cnpj.html): atalhos organizados para consultas cadastrais
+- [Consulta de CNPJ e Inscrição Estadual](https://portal.mensure.com.br/informacoes-cnpj.html): atalhos organizados para consultas cadastrais
 
 <!-- BLOG-INICIO -->
 ## Blog
