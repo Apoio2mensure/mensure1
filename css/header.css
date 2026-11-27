@@ -77,3 +77,6 @@ html { scroll-padding-top: 72px; }
 .sh-skip { position: absolute; left: 8px; top: -60px; z-index: 1100; background: #fff; color: #0a5e5a; font-weight: 700; font-size: .85rem; padding: 10px 16px; border-radius: 0 0 8px 8px; transition: top .15s; }
 .sh-skip:focus { top: 0; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Submenu "Portal do Cliente": textos longos sem quebra no PC */
+@media (min-width: 981px) { #sh-sub-portal { min-width: 290px; } }

@@ -139,10 +139,15 @@ a { text-decoration: none; color: inherit; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
 .api-error { font-size: .78rem; color: #dc2626; padding: 12px 0; text-align: center; }
 
-.onvio-client-sign-in { display: flex; align-items: center; justify-content: center; flex-direction: column; width: 100%; height: 100%; min-height: 160px; background-color: transparent; }
-.onvio-client-sign-in span { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
-.onvio-client-sign-in a { padding: 0 32px; height: 44px; border-radius: 6px; background-color: var(--teal); display: flex; align-items: center; justify-content: center; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #fff; transition: background .2s, transform .15s; }
-.onvio-client-sign-in a:hover { background-color: var(--teal2); transform: translateY(-1px); color: #fff; }
+.portal-links { display: flex; flex-direction: column; justify-content: center; width: 100%; height: 100%; padding: 22px 20px 24px; }
+.portal-links span { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; text-align: center; }
+.portal-links span::after { content: ''; display: block; width: 36px; height: 3px; border-radius: 2px; background: var(--teal); margin: 10px auto 16px; }
+.portal-links ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.portal-links li { margin: 0; }
+.portal-links a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 16px; background: var(--teal3); border: 1px solid rgba(13,122,117,.15); border-left: 4px solid var(--teal); border-radius: 10px; color: var(--teal2); font-weight: 600; font-size: .92rem; line-height: 1.35; text-decoration: none; transition: background .2s, color .2s, transform .15s, box-shadow .2s; }
+.portal-links a::after { content: '\2192'; flex: none; font-size: 1.05rem; transition: transform .2s; }
+.portal-links a:hover, .portal-links a:focus-visible { background: var(--teal); color: #fff; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(13,122,117,.22); outline: none; }
+.portal-links a:hover::after, .portal-links a:focus-visible::after { transform: translateX(3px); }
 
 .contact-bg { background: var(--dark); }
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 48px; align-items: start; }

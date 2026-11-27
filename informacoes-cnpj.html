@@ -944,48 +944,6 @@
             text-align: center;
         }
 
-        .onvio-client-sign-in {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            min-height: 160px;
-            background-color: transparent;
-        }
-
-        .onvio-client-sign-in span {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 20px;
-        }
-
-        .onvio-client-sign-in a {
-            padding: 0 32px;
-            height: 44px;
-            border-radius: 6px;
-            background-color: var(--teal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'DM Sans', sans-serif;
-            font-size: .85rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #fff;
-            transition: background .2s, transform .15s;
-        }
-
-        .onvio-client-sign-in a:hover {
-            background-color: var(--teal2);
-            transform: translateY(-1px);
-            color: #fff;
-        }
-
         .contact-bg {
             background: var(--dark);
         }
@@ -1555,6 +1513,16 @@
           </ul>
         </li>
         <li><a href="/#ferramentas">Ferramentas</a></li>
+        <li class="sh-has-sub">
+          <a href="/#login">Portal do Cliente</a>
+          <button class="sh-sub-btn" type="button" aria-label="Abrir submenu Portal do Cliente" aria-expanded="false" aria-controls="sh-sub-portal"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4.2l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <ul class="sh-sub" id="sh-sub-portal">
+            <li><a href="https://onvio.com.br/clientcenter/pt/auth?r=%2Fhome" target="_blank" rel="noopener noreferrer">1. Onvio Documentos</a></li>
+            <li><a href="https://passport.nibo.com.br/Account/Login" target="_blank" rel="noopener noreferrer">2. NFSE Emissor - NIBO</a></li>
+            <li><a href="https://www.notaeletronica.com.br/ribeiraopreto/Login/Login_NFE.aspx" target="_blank" rel="noopener noreferrer">3. NFSE Emissor - Nota Control RP</a></li>
+            <li><a href="https://www.nfse.gov.br/EmissorNacional/Login" target="_blank" rel="noopener noreferrer">4. NFSE Emissor - Portal Nacional</a></li>
+          </ul>
+        </li>
         <li><a href="/#login">Login</a></li>
         <li class="sh-cta-li"><a class="sh-cta" href="tel:1636337995">Entre em contato</a></li>
       </ul>
